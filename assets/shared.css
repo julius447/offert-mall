@@ -425,9 +425,11 @@ a { -webkit-tap-highlight-color: transparent; }
    erbjudande. Nu: ljus yta med teal-kant, TVÅ meningar, resten i en expander. */
 .of-bundle {
   margin-top: 22px; padding: 18px 20px;
-  border: 1px solid rgba(0,169,145,.34); border-left: 3px solid var(--teal);
+  border: 1px solid rgba(0,169,145,.30);
   border-radius: var(--r-md);
-  background: rgba(255,255,255,.86);
+  /* mjuk teal-yta i stället för en tjock vänsterkant — sidolinjen är en
+     igenkännbar AI-markör och gör inget som ytan inte gör bättre */
+  background: rgba(0,169,145,.05);
 }
 .of-bundle .b-eyebrow {
   font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
