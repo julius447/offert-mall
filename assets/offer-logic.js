@@ -143,10 +143,17 @@
     if (sendBtn) {
       sendBtn.addEventListener("click", function () {
         var hint = changePanel.querySelector(".c-hint");
-        if (hint) hint.textContent = "Mockup: här skickas din fråga till ansvarig elektriker — du får svar samma vardag. (Wiring = Yassine.)";
+        if (hint) hint.textContent = "Skickat till Marcus. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
       });
     }
   }
+
+  // Felmeddelande. Saknades helt; utan en kanonisk sträng uppfinns den i
+  // produktion när backend kopplas in. Voice-kanon: säg vad som hände och ge
+  // en väg vidare, aldrig bara "något gick fel".
+  window.ampyOfferError = function (el) {
+    if (el) el.textContent = "Vi kunde inte skicka just nu. Ring oss på 010-265 79 79 så tar vi det direkt.";
+  };
 
   // "Tacka nej"-vägen (GAP-N1 — ritas i Riktning 3)
   var declineBtn = document.getElementById("decline-btn");

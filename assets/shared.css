@@ -385,6 +385,11 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-svc__price {
   flex: 0 0 auto; text-align: right; padding-left: 8px;
 }
+/* när prisbrickan wrappar till egen rad ska den vänsterställas — högerställd
+   text under vänsterställd rubrik läses som ett centrerat block (uppmätt 390px) */
+@media (max-width: 620px) {
+  .of-svc__price { text-align: left; padding-left: 0; margin-top: 4px; }
+}
 .of-svc__price .p-amt {
   display: block; font-size: clamp(26px, 1.8vw, 32px); font-weight: 700;
   letter-spacing: -.02em; line-height: 1; color: var(--navy); font-variant-numeric: tabular-nums;
@@ -704,9 +709,11 @@ a { -webkit-tap-highlight-color: transparent; }
 }
 .of-confirm .cf-actions { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
 .of-confirm .cf-angra {
-  font-size: 13.5px; color: var(--muted); text-decoration: underline; background: none;
-  border: 0; cursor: pointer; font-family: inherit; padding: 10px;
+  font-size: 14.5px; font-weight: 600; color: var(--ink); background: none;
+  border: 0; cursor: pointer; font-family: inherit; padding: 12px 10px; min-height: 44px;
+  text-decoration: underline; text-underline-offset: 3px; line-height: 1.35;
 }
+.of-confirm .cf-angra small { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 400; color: var(--muted); text-decoration: none; }
 
 /* utgången offert (§4.10) */
 .of-expired {
