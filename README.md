@@ -74,3 +74,97 @@ Designspråket ärvs 1:1 från `Website-blocks-git/Offer-accepted/` (glaskort, a
 guldstjärnor) och `ROT-GT-CRO-/designs/d2-kvittot-forst.html` (kvitto-mönstret, live på Pages,
 verifierad 2026-08-17). Tokens verbatim ur `Testimonial documentation/assets/tokens.css`.
 Research-kondensaten: `~/Desktop/Ampy Designuppdrag/_research-offertmall-{juridik,upsell,verktyg}.md`.
+
+---
+
+# v2 — R2 »Checkouten« vald som vinnare (2026-08-17)
+
+Ägaren valde Riktning 2. Den är nu utvecklad från mockup till produktionsnära design med sex
+research-agenter som underlag (marknad, kredit/finansiering, elavtal, CRO, UX-arkitektur,
+spacing/UI-granskning). R1 och R3 ligger kvar orörda som referens.
+
+**Nytt separat dokument:** `SERVICEAVTAL-UTKAST.md` — innehåll, pris, faktureringsmodell och
+operativa krav för serviceavtalet, samt elavtals- och delbetalningsvägarna. Allt [FELIX]-gated.
+
+## Vad som ändrades enligt ägarens noteringar
+
+| # | Ägarens punkt | Vad som gjordes |
+|---|---|---|
+| 1 | Ansvarig elektriker = bokaren, med bild | Grön check-ikon ersatt av bokarens porträttyta (56 px, initialavatar som fallback + liten teal behörighetsbock i hörnet). Namn + roll + namnteckning. Foto och namn är per-offert-data från CRM. Demonamnet är EXEMPEL-märkt. |
+| 2 | Bara totalkostnad + valda tillägg | Arbetskostnad, material, pris före avdrag och ROT-raden borta ur panelen. Kvar: jobbraden, de tillägg kunden själv valt, och EN dominant total (40 px) med »inkl. moms, efter ROT-avdrag«. |
+| 3 | Serviceavtal, egen sektion, 149 kr/mån | Egen sektion med prisbricka, värdeankare, 7 förmåner i två spalter, elavtals-erbjudandet som eget kort, och TVÅ vägar: teckna nu, eller »berätta mer när jobbet är klart«. Arbetsgarantin flyttad hit från tillvalen. |
+| 4 | Mindre knapp »Avböj offert« | Ren textlänk, lättast av de tre utgångarna, aldrig sida vid sida med accepten. Öppnar ett skälval (5 alternativ, allt frivilligt) — ett nej med skäl är mer värt än tystnad. |
+| 5 | Designa om trust-blocket | Ny komposition: citatet är sektionens dominant (29 px), husbilden från ampy.se/kontakt bär resultatet, ett tal får display-grad (5,0 vid 44 px = 3× brödtext), certifikaten får rubricerad rad i färg. |
+| 6 | UC kreditvärdighet | Ritad som textrad med gate, INTE som märke — se varningen nedan. |
+| 7 | Ta bort bildplatshållare | Alla `[GAP-B]`-rutor borta. Arbetssektionen har nu ett riktigt Ampy-foto (elektriker vid elcentral, 4:5). |
+
+## Tre saker ägaren bör läsa innan beslut
+
+**1. UC-märket får inte ritas av oss.** UC:s sigill är en licensierad, serverrenderad bild där
+texten (»HÖGSTA KREDITVÄRDIGHET« / »god kreditvärdighet« / »kreditvärdigt«) och dagens datum är
+inbakade, och metallfärgen ÄR betyget. Ett egenritat »UC«-märke är en imitation av ett registrerat
+varumärke. Webbsigillet kostar 4 995 kr ex moms och kräver riskklass 3–5. Sidan visar därför en
+textrad med gate tills licensen är köpt och Ampys riskklass är känd.
+
+**2. Serviceavtalet på just den här sidan är en avvägning, inte en självklarhet.** Ett tillägg som
+säljs digitalt utan människa tecknas av 4–6 %; samma tillägg sålt av teknikern på plats av 20–30 %.
+En sida med en enda uppmaning konverterar 13,5 %, en med 2–4 uppmaningar 11,9 %. Räknat på Ampys
+siffror blir marginalen negativ om sektionen kostar mer än ~1,5 procentenheter i accept-grad.
+Därför bär mockupen båda vägarna. **Mät accept-graden innan sektionen går live.**
+
+**3. Betyget bör visa antal.** Forskning på 57 000 omdömen: köpsannolikheten toppar mellan 4,0 och
+4,7 och **sjunker mot 5,0** — perfekta betyg läses som manipulerade. Volym slår siffra. Sidan visar
+nu »5,0 av 5 · 27 omdömen på Google« med UPPDATERA-märkning, eftersom antalet är från 2026-07-19.
+
+## Defekter som granskningen hittade och som är åtgärdade
+
+Nio P0 och ett tjugotal P1 från en mätande UI-granskning:
+
+- **Accept-knappen hade ingen synlig fokusring.** `box-shadow`-ringen förlorade kaskaden mot knappens
+  egen skugga, så den juridiskt bindande knappen var otillgänglig för tangentbord. Ringen bärs nu av
+  `outline`, med `forced-colors`-stöd.
+- **Panelens CTA låg under viken.** Med Express + tillval blev panelen 953 px hög och knappen låg
+  permanent 160 px under kanten på en 1280×800-laptop. Panelen har nu tak och intern sticky acceptzon.
+- **Tvåspalten tände vid 980 px** och gav arbetsbeskrivningen en 211 px spalt som bröt på 10–30 tecken
+  per rad. Flyttad till 1140 px.
+- **Kvittot och accepten låg SIST på mobil**, efter villkoren — för 58 % av kunderna. Panelen ligger nu
+  mellan »Forma ditt köp« och trust-sektionen i DOM.
+- **Tillvalskorten kollapsade på mobil** (17–24 tecken per rad). Priset flyttas till egen rad ≤560 px.
+- **`--faint` #8a90ac mätte 3,07:1** mot krav 4,5:1 → #646b88. **`--line-strong` mätte 1,41:1** mot krav
+  3:1 för kontrollgränser → .48. **Vit text på nodgradienten mätte 2,27:1** → mörkare stopp.
+- **Kvittots tre viktigaste tal låg på tre olika högerkanter** (1225 / 1210 / 1205 px). Totalplattans
+  bakgrund ritas nu av ett `::before` som blöder ut i kortets padding, så alla tal delar räls.
+- **Sektionsbytet var mindre än största interna avstånd** (24 mot 32 px) — hierarkin inverterad. Nu 48.
+- **Rubrikhierarkin var inverterad i DOM:en**: en 13 px `h2` följd av en 24 px `h3`. Varje kort har nu
+  en riktig 24 px `h2` och underrubriker på 17 px.
+- **Prickraden — kvittots enda signaturenhet — försvann på mobil.** Container-tröskeln sänkt till 300 px.
+- **Print-CSS:en gömde Express-samtycket** ur den utskrivna handlingen. Nu tvingas det fram.
+- **Verifieringslänken pekade på fel URL.** Rätt register: `e-tjanster.elsakerhetsverket.se/foretag` (200).
+- **Gråskala på auktoritetsmärken borttagen.** 33 av 33 svenska sajter visar UC-sigillet i färg; Vanta
+  färglägger compliancemärken men dämpar kundloggor. Ett märke som är en länk till en kontrollerbar
+  uppgift ska inte muteras till textur.
+- **Det uppblåsta citattecknet** (1,9em) ersatt av textens egen grad med hängande indrag.
+- Tryckytor under 44 px, ångerknappen som sidfotens svagaste länk, `✓ 2 3`-numreringen i stegen.
+
+## Nya öppna beslut (utöver GAP-listan ovan)
+
+| # | Fråga | Ägare |
+|---|---|---|
+| UC-1 | Ampys riskklass hos UC + är webbsigill-licensen (4 995 kr) köpt? | Felix |
+| SVC-1..7 | Serviceavtalets innehåll, satser, bemanning — se `SERVICEAVTAL-UTKAST.md` §6 | Felix |
+| FIN-1 | Långivare: Svea (dokumenterat API, tjänstemedveten) eller LF Finans (marknadsstandard, ingen API) | Julius + Felix |
+| BANK-1 | Bank för Swish Återkommande — Nordea 2 kr vs Swedbank 3,50 kr per dragning | Julius |
+| MÄT-1 | Baseline på accept-graden innan serviceavtalssektionen aktiveras | Julius |
+| ORG-1 | Org.nr 559254-9819 är hämtat ur allabolag — bekräfta | Julius |
+| FOTO-1 | Bokarporträtt saknas helt. Ampys fotostil är ansiktslös (elektriker bakifrån) | Julius |
+| REV-1 | Antal Google-omdömen per dagens datum (27 är från 2026-07-19) | Julius |
+
+## Vad som medvetet INTE gjordes
+
+- **Ingen prisnedbrytning bakom expander.** Både juridikunderlaget och UX-agenten föreslog att lägga
+  arbete/material/före-ROT i en kollapsad »Så räknas priset fram«. Ägaren avgjorde 2026-08-17 att
+  sidan kör enbart totalen. Beslutet är loggat här, inte glidet igenom — det är en enkel ändring om
+  det ska in.
+- **Ingen dubblerad acceptzon på mobil.** UX-agenten rekommenderade en andra acceptzon längst ned.
+  Den sticky bottenbaren löser räckvidden, och att duplicera den juridiskt bindande knappen dubblar
+  riskytan. Kan läggas till om ägaren vill.

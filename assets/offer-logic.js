@@ -11,7 +11,9 @@
 
   var BASE_TOTAL = 11900; // kr inkl. moms efter ROT — riktig offert (Ali)
   var TIER_PRICES = { express: 1000, prioritet: 700, standard: 0 };
-  var ADDON_PRICES = { garanti: 1200, timme: 850 }; // EXEMPEL — GAP-G1/GAP-G2
+  var ADDON_PRICES = { timme: 850 }; // EXEMPEL — GAP-G2. Garantin flyttad till serviceavtalet.
+  var SVC_MONTHLY = 149;             // kr/mån — ägarsatt, [FELIX] godkänner innehållet
+  var FINANCE_MONTHS = 12;           // EXEMPEL-löptid för delbetalningsindikationen
 
   function kr(n) {
     return n.toLocaleString("sv-SE").replace(/ /g, " ") + " kr";
@@ -29,6 +31,8 @@
     return checked ? checked.value : "standard";
   }
 
+  // ENGÅNGSTOTALEN. Serviceavtalets 149 kr/mån ligger medvetet UTANFÖR:
+  // att blanda en månadskostnad in i ett engångsbelopp vore vilseledande.
   function total() {
     var sum = BASE_TOTAL + (TIER_PRICES[currentTier()] || 0);
     addonInputs.forEach(function (i) {
@@ -36,6 +40,9 @@
     });
     return sum;
   }
+
+  var svcInput = document.getElementById("svc-optin");
+  function svcChosen() { return !!(svcInput && svcInput.checked); }
 
   function needsConsent() {
     var t = currentTier();
@@ -83,6 +90,21 @@
       chip.textContent = "+" + " " + kr(diff) + " · totalt " + kr(sum);
     });
 
+    // serviceavtalets månadsrad — egen yta, aldrig inne i engångstotalen
+    Array.prototype.forEach.call(document.querySelectorAll("[data-monthly]"), function (row) {
+      row.classList.toggle("visible", svcChosen());
+    });
+
+    // Delbetalningsindikationen. RÄKNAS SOM REN DIVISION och är därför INTE ett
+    // erbjudande: ränta, uppläggnings- och aviavgift är utelämnade. Riktig siffra
+    // + effektiv ränta MÅSTE komma från långivaren (research 2026-08-17: effektiv
+    // ränta är beloppsberoende — samma avgiftsstruktur ger 18,98 % på 10 000 kr
+    // men 10,06 % på 17 990 kr). Ny konsumentkreditlag 2026:1011 gäller från
+    // 2026-11-20 och omfattar även 0 %-kampanjer.
+    Array.prototype.forEach.call(document.querySelectorAll("[data-finance-amt]"), function (el) {
+      el.textContent = kr(Math.ceil(sum / FINANCE_MONTHS));
+    });
+
     // samtyckesgrinden — Express/Prioritet fäller ut rutan; okryssad ruta blockerar accept
     if (consentBox) {
       consentBox.classList.toggle("visible", needsConsent());
@@ -100,6 +122,7 @@
   tierInputs.forEach(function (i) { i.addEventListener("change", render); });
   addonInputs.forEach(function (i) { i.addEventListener("change", render); });
   if (consentCheck) consentCheck.addEventListener("change", render);
+  if (svcInput) svcInput.addEventListener("change", render);
 
   // accept → bekräftelsemock (visar ångerknappens plats, DAL 2:10a)
   var backdrop = document.getElementById("confirm-backdrop");
