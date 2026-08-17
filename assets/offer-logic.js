@@ -21,8 +21,6 @@
 
   var tierInputs = Array.prototype.slice.call(document.querySelectorAll('input[name="tid"]'));
   var addonInputs = Array.prototype.slice.call(document.querySelectorAll('input[data-addon]'));
-  var consentBox = document.getElementById("express-consent");
-  var consentCheck = document.getElementById("consent-check");
   var acceptBtns = Array.prototype.slice.call(document.querySelectorAll("[data-accept]"));
   var blockMsgs = Array.prototype.slice.call(document.querySelectorAll("[data-blockmsg]"));
 
@@ -44,14 +42,8 @@
   var svcInput = document.getElementById("svc-optin");
   function svcChosen() { return !!(svcInput && svcInput.checked); }
 
-  function needsConsent() {
-    var t = currentTier();
-    return t === "express" || t === "prioritet";
-  }
-
   function acceptBlocked() {
-    if (document.body.classList.contains("is-expired")) return true;
-    return needsConsent() && !(consentCheck && consentCheck.checked);
+    return document.body.classList.contains("is-expired");
   }
 
   function render() {
@@ -105,23 +97,15 @@
       el.textContent = kr(Math.ceil(sum / FINANCE_MONTHS));
     });
 
-    // samtyckesgrinden — Express/Prioritet fäller ut rutan; okryssad ruta blockerar accept
-    if (consentBox) {
-      consentBox.classList.toggle("visible", needsConsent());
-      if (!needsConsent() && consentCheck) consentCheck.checked = false;
-    }
     var blocked = acceptBlocked();
     acceptBtns.forEach(function (b) { b.setAttribute("aria-disabled", blocked ? "true" : "false"); });
-    blockMsgs.forEach(function (m) {
-      m.classList.toggle("visible", needsConsent() && !(consentCheck && consentCheck.checked) && !document.body.classList.contains("is-expired"));
-    });
+    blockMsgs.forEach(function (m) { m.classList.remove("visible"); });
 
     document.dispatchEvent(new CustomEvent("offer:render", { detail: { total: sum } }));
   }
 
   tierInputs.forEach(function (i) { i.addEventListener("change", render); });
   addonInputs.forEach(function (i) { i.addEventListener("change", render); });
-  if (consentCheck) consentCheck.addEventListener("change", render);
   if (svcInput) svcInput.addEventListener("change", render);
 
   // accept → bekräftelsemock (visar ångerknappens plats, DAL 2:10a)
@@ -129,16 +113,7 @@
   acceptBtns.forEach(function (b) {
     b.addEventListener("click", function (e) {
       e.preventDefault();
-      if (acceptBlocked()) {
-        if (needsConsent() && consentBox) {
-          consentBox.scrollIntoView({ block: "center" });
-          consentBox.animate(
-            [{ boxShadow: "0 0 0 3px rgba(246,181,61,.6)" }, { boxShadow: "none" }],
-            { duration: 900 }
-          );
-        }
-        return;
-      }
+      if (acceptBlocked()) return;
       if (backdrop) {
         var t = backdrop.querySelector("[data-total]");
         if (t) t.textContent = kr(total());

@@ -95,15 +95,6 @@
     .co-sub { margin-top: 32px; }
     /* underrubrik inne i ett kort — måste vara MINDRE än kortets h2 (24px) */
     .of-h3 { font-size: 17px; font-weight: 600; letter-spacing: -.005em; color: var(--ink); line-height: 1.3; margin-bottom: 14px; }
-    /* bilden i arbetssektionen: 4:5, riktigt Ampy-foto, aldrig platshållare */
-    .co-work__photo { border-radius: var(--r-md); overflow: hidden; box-shadow: 0 10px 26px rgba(9,11,50,.14); }
-    .co-work__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    @media (min-width: 620px) {
-      .co-work { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .34fr); gap: 24px; align-items: start; }
-    }
-    @media (max-width: 619px) {
-      .co-work__photo { margin-top: 24px; aspect-ratio: 4 / 3; }
-    }
   </style>
 </head>
 <body>
@@ -131,15 +122,14 @@
             <span class="of-initials" aria-hidden="true">ME</span>
             <span class="of-signed__verify" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
           </span>
-          <span class="of-signed__who">Marcus Ek <span class="of-gap">EXEMPEL</span><small>Har räknat på ditt jobb · behörig elektriker</small></span>
-          <span class="of-signed__sig"><span class="of-script">Marcus Ek</span>Redan undertecknad för Ampy</span>
+          <span class="of-signed__who">Marcus Ek <span class="of-gap">EXEMPEL</span><small>Har räknat på ditt jobb</small></span>
+          <span class="of-signed__sig"><span class="of-script">Marcus Ek</span>Undertecknare för Ampy</span>
         </div>
       </section>
 
       <!-- 2 · det här gör vi -->
       <section class="co-card" aria-labelledby="work-h">
         <h2 class="of-h2" id="work-h">Det här gör vi</h2>
-        <div class="co-work">
         <ul class="of-work">
           <li>
             <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
@@ -168,10 +158,6 @@
             <div><h3>Uppdaterat gruppschema</h3></div>
           </li>
         </ul>
-        <figure class="co-work__photo">
-          <img src="../assets/elektriker-elcentral.jpg" alt="En av Ampys elektriker arbetar i en öppen elcentral" width="720" height="900" loading="lazy">
-        </figure>
-        </div>
         <details class="of-material co-sub">
           <summary>
             Material som ingår <span class="m-count">9 poster</span>
@@ -234,16 +220,6 @@
           </div>
         </div>
 
-        <!-- Express/Prioritet: separat, okryssad samtyckesruta -->
-        <div class="of-consent" id="express-consent">
-          <label>
-            <input type="checkbox" id="consent-check">
-            <span class="c-text">
-              <strong>Jag begär att arbetet påbörjas under ångerfristen</strong> och godkänner att min ångerrätt upphör när tjänsten är fullgjord. Ångrar jag mig innan dess betalar jag för utfört arbete.
-              <span class="c-tag">[JURIST] Slutlig text låses av jurist · krävs för Express och Prioritet</span>
-            </span>
-          </label>
-        </div>
 
         <h3 class="of-h3 co-sub">Vill du lägga till något?</h3>
         <div class="of-addons">
@@ -324,8 +300,6 @@
       <div class="of-accept">
         <button class="of-btn-primary" type="button" data-accept aria-disabled="false" aria-describedby="payline">Acceptera offert</button>
         <p class="of-payline" id="payline">Beställning med betalningsskyldighet · Totalt <strong data-total>11 900 kr</strong> inkl. moms</p>
-        <p class="of-blockmsg" data-blockmsg role="status">Kryssa i samtycket om arbetsstart för att acceptera med Express eller Prioritet.</p>
-
           <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Begär ändring eller ställ en fråga</button>
           <div class="of-change" id="change-panel">
             <label for="change-text" class="c-hint" style="display:block;margin-bottom:6px;">Beskriv vad du vill ändra eller undrar över. Offerten ligger kvar oförändrad tills vi återkommer.</label>
@@ -416,7 +390,6 @@
 
             </div>
             <p class="of-verify" style="margin-top:16px;">Du kan kontrollera oss själv. Ampy finns i <a href="https://e-tjanster.elsakerhetsverket.se/foretag" rel="noopener">Elsäkerhetsverkets register över elinstallationsföretag</a>.</p>
-            <p class="of-verify">Kreditvärdighet enligt UC: <span class="of-gap">[FELIX] riskklass + sigill-licens 4 995 kr krävs innan märket får visas</span></p>
           </div>
         </div>
       </section>

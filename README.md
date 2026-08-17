@@ -168,3 +168,27 @@ Nio P0 och ett tjugotal P1 från en mätande UI-granskning:
 - **Ingen dubblerad acceptzon på mobil.** UX-agenten rekommenderade en andra acceptzon längst ned.
   Den sticky bottenbaren löser räckvidden, och att duplicera den juridiskt bindande knappen dubblar
   riskytan. Kan läggas till om ägaren vill.
+
+## v2.1 — ägarändringar 2026-08-17 (kväll)
+
+| # | Ändring | Följd |
+|---|---|---|
+| 1 | Bilden i »Det här gör vi« borttagen | Arbetslistan går full bredd i kortet; `co-work`-gridden och dess CSS är borta |
+| 2 | »· behörig elektriker« struket efter »Har räknat på ditt jobb« | Bokarraden är kortare; rollen framgår ändå av behörighetsbocken på avataren |
+| 3 | »Redan undertecknad för Ampy« → **»Undertecknare för Ampy«** | — |
+| 4 | **Express/Prioritet-samtycket borttaget** — villkoret bor i köpvillkoren som kunden godkänner | Se nedan |
+| 5 | UC-raden i bevispanelen borttagen | Certifikatraden är nu de fyra märkena; UC-frågan lever kvar i GAP-listan |
+
+**Följdändring på punkt 4 som var nödvändig:** accept-grinden i `offer-logic.js` krävde en ikryssad
+samtyckesruta för Express och Prioritet. Hade bara HTML:en tagits bort skulle `acceptBlocked()`
+returnerat `true` för de två snabbaste alternativen **utan någon väg att låsa upp** — accept-knappen
+hade varit permanent död. `acceptBlocked()` kollar därför nu bara om offerten är utgången.
+Verifierat i alla tre riktningarna: Express och Prioritet accepteras direkt, totalen räknar rätt
+(12 900 / 12 600 kr), noll JS-fel.
+
+Samtyckesrutan togs bort ur **R1 och R3 också**. Beslutet gäller produkten, inte layouten — och de
+delar samma logikfil, så rutorna hade blivit tysta attrapper där.
+
+Kvar att notera för jurist: villkoret om arbetsstart under ångerfristen (DAL 2:11+15) måste finnas
+i köpvillkoren, och kundens godkännande av köpvillkoren vid accept måste loggas — annars kan Ampy
+inte fakturera utfört arbete om kunden ångrar sig. Ytan för det är accept-knappens payline.
