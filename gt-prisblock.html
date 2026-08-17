@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payload 2 – prisblocket med grön teknik (laddbox) – Ampy offertmall</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/shared.css">
+  <style>
+    /* Payload 2 (GT/laddbox): visar att mallen bär BÅDA avdragen.
+       Samma kvitto-komponent som riktningarna – bara avdragsraden byter. */
+    .gt-wrap { max-width: 640px; margin-inline: auto; padding: clamp(16px, 3vw, 40px) clamp(10px, 2.5vw, 28px); }
+    .gt-card {
+      background: rgba(255, 255, 255, 0.85); border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      box-shadow: 0 18px 44px rgba(9,11,50,.09), inset 0 1px 0 rgba(255,255,255,.6);
+      padding: clamp(22px, 3.2vw, 36px) clamp(18px, 3.6vw, 40px);
+    }
+    .gt-intro { margin-bottom: 20px; }
+    .gt-intro h1 { font-size: clamp(20px, 1vw + 17px, 25px); font-weight: 600; color: var(--ink); letter-spacing: -.015em; line-height: 1.2; }
+    .gt-intro p { margin-top: 8px; font-size: 14px; font-weight: 300; color: var(--body-ink); line-height: 1.55; text-wrap: pretty; }
+    .gt-back { display: inline-block; margin-top: 18px; font-size: 13.5px; font-weight: 600; color: var(--teal-deep); text-decoration: none; }
+    .gt-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="gt-wrap">
+  <div class="gt-card of-receipt">
+    <div class="gt-intro">
+      <h1>Payload 2 · Installation av laddbox</h1>
+      <p>Samma prisblock-komponent som i alla tre riktningarna. Enda skillnaden mot ROT-fallet: avdragsraden byter till grön teknik, 50&nbsp;% på både arbete och material, och mellanskillnadsnoten byter lydelse. ROT och grön teknik används aldrig på samma arbete.</p>
+    </div>
+
+    <h2 class="p-cap">Ditt pris <span class="fastpris-pill">Fast pris</span></h2>
+    <div class="r-row">
+      <span class="lbl">Arbetskostnad <small>EXEMPEL-split – låses per offert [GAP-P1]</small></span>
+      <span class="dots" aria-hidden="true"></span>
+      <span class="amt">4 800 kr</span>
+    </div>
+    <div class="r-row">
+      <span class="lbl">Material inkl. laddbox <small>EXEMPEL-split – låses per offert [GAP-P1]</small></span>
+      <span class="dots" aria-hidden="true"></span>
+      <span class="amt">12 400 kr</span>
+    </div>
+    <div class="r-row subtotal">
+      <span class="lbl">Pris före avdrag</span>
+      <span class="dots" aria-hidden="true"></span>
+      <span class="amt">17 200 kr</span>
+    </div>
+    <div class="r-row deduct">
+      <span class="lbl">Grön teknik på arbete och material, 50&nbsp;%</span>
+      <span class="dots" aria-hidden="true"></span>
+      <span class="amt">−8 600 kr</span>
+    </div>
+    <div class="r-total">
+      <span class="t-label">Att betala</span>
+      <span class="amt">8 600 kr</span>
+      <span class="t-note">Inklusive moms. Avdraget för grön teknik är preliminärt – se raden under.</span>
+    </div>
+    <div class="of-price-notes">
+      <p class="of-price-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
+        <span>Avdraget förutsätter att du uppfyller Skatteverkets villkor för grön teknik och har utrymme kvar. Saknas utrymme fakturerar vi återstående belopp.</span>
+      </p>
+      <p class="of-price-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+        <span>Priset omfattar det som specificeras ovan. Behövs något utöver detta kontaktar vi dig alltid för godkännande innan vi utför det.</span>
+      </p>
+    </div>
+
+    <a class="gt-back" href="index.html">Tillbaka till riktningarna</a>
+  </div>
+</div>
+</body>
+</html>

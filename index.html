@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ampy offertmall – tre riktningar (mockups)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/shared.css">
+  <style>
+    .ix-wrap { max-width: 880px; margin-inline: auto; padding: clamp(24px, 4vw, 56px) clamp(12px, 2.5vw, 28px) 60px; }
+    .ix-head { margin-bottom: 28px; }
+    .ix-head img { height: 30px; width: auto; margin-bottom: 18px; }
+    .ix-head h1 { font-size: clamp(24px, 1.4vw + 20px, 32px); font-weight: 600; letter-spacing: -.02em; color: var(--ink); line-height: 1.15; text-wrap: balance; }
+    .ix-head p { margin-top: 10px; font-size: 15px; font-weight: 300; color: var(--body-ink); max-width: 62ch; line-height: 1.55; text-wrap: pretty; }
+    .ix-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 720px) { .ix-grid { grid-template-columns: repeat(3, 1fr); } }
+    .ix-card {
+      display: flex; flex-direction: column; gap: 10px;
+      background: var(--card-glass); border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      box-shadow: 0 18px 44px rgba(9,11,50,.09), inset 0 1px 0 rgba(255,255,255,.6);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      padding: 22px 22px 20px; text-decoration: none; color: inherit;
+      transition: transform .16s var(--ease), box-shadow .16s var(--ease);
+    }
+    .ix-card:hover { transform: translateY(-2px); box-shadow: 0 24px 54px rgba(9,11,50,.13), inset 0 1px 0 rgba(255,255,255,.6); }
+    .ix-card .n {
+      width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(145deg, #00c2a6, #018271); color: #fff; font-weight: 600; font-size: 15px;
+      box-shadow: 0 6px 16px rgba(0,169,145,.34), inset 0 0 0 3px rgba(255,255,255,.9);
+    }
+    .ix-card h2 { font-size: 19px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+    .ix-card p { font-size: 13.5px; font-weight: 300; color: var(--body-ink); line-height: 1.55; text-wrap: pretty; }
+    .ix-card .go { margin-top: auto; font-size: 13.5px; font-weight: 600; color: var(--teal-deep); }
+    .ix-extra { margin-top: 26px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+    .ix-extra a { color: var(--teal-deep); font-weight: 600; text-decoration: none; }
+    .ix-extra a:hover { text-decoration: underline; }
+    .ix-extra span { color: var(--muted); font-weight: 300; }
+  </style>
+</head>
+<body>
+<div class="ix-wrap">
+  <header class="ix-head">
+    <img src="assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
+    <h1>Offertmallen – tre riktningar att välja mellan</h1>
+    <p>Klickbara mockups av den nya offertsidan, byggda på payload 1 (Ali · byte av elcentral · ROT). Alla tre bär samma innehållskanon och samma juridiska ytor: betalningsraden vid knappen, båda priserna, Express-samtycket, mellanskillnadsraden, tilläggslöftet och live-totalen. Testa gärna på mobil – 58&nbsp;% av offerterna öppnas där.</p>
+  </header>
+
+  <div class="ix-grid">
+    <a class="ix-card" href="r1-dokumentet/">
+      <span class="n" aria-hidden="true">1</span>
+      <h2>Dokumentet</h2>
+      <p>Offerten som en genomarbetad handling: ett sammanhållet vertikalt glaskort, sektionerna som lugna avsnitt, accepten sist. Ingen sticky – dokumentet läses uppifrån och ner.</p>
+      <span class="go">Öppna riktning 1</span>
+    </a>
+    <a class="ix-card" href="r2-checkouten/">
+      <span class="n" aria-hidden="true">2</span>
+      <h2>Checkouten</h2>
+      <p>Innehåll till vänster, sticky summeringspanel till höger som räknas om live. På mobil en sticky bottenbar med totalen. E-handelns klarhet applicerad på hantverk.</p>
+      <span class="go">Öppna riktning 2</span>
+    </a>
+    <a class="ix-card" href="r3-genomgangen/">
+      <span class="n" aria-hidden="true">3</span>
+      <h2>Genomgången</h2>
+      <p>Elektrikern går igenom offerten med dig: fyra numrerade steg på en sida, förankrad stegindikator, mest pedagogik. Bär även den explicita »Tacka nej«-vägen (GAP-N1).</p>
+      <span class="go">Öppna riktning 3</span>
+    </a>
+  </div>
+
+  <div class="ix-extra">
+    <div><a href="gt-prisblock.html">Payload 2 · prisblocket med grön teknik (laddbox)</a> <span>– visar att mallen bär båda avdragen</span></div>
+    <div><a href="r1-dokumentet/index.html?expired=1">Utgången offert-vyn</a> <span>– accept-knappen inaktiverad med vänlig kontakta-oss-text (demo i riktning 1, finns i alla tre via ?expired=1)</span></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Din offert – Ampy · Riktning 3 »Genomgången«</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/shared.css">
+  <style>
+    /* Riktning 3 – »Genomgången«: elektrikern går igenom offerten med dig.
+       Allt på EN sida, guidat av stegnumreringen 1-4 + förankrad stegindikator.
+       Störst pedagogik, mest yta. Bär GAP-N1: BÅDA neka-vägarna ritade. */
+    .gv-shell { max-width: 780px; margin-inline: auto; padding: 0 clamp(10px, 2.5vw, 28px) 40px; }
+    .gv-top {
+      background: var(--card-glass); border: 1px solid var(--card-border);
+      border-radius: 18px; margin-top: clamp(10px, 2vw, 24px);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-1);
+    }
+    /* förankrad stegindikator */
+    .gv-nav {
+      position: sticky; top: 0; z-index: 30;
+      margin: clamp(14px, 2vw, 20px) 0;
+      background: rgba(255,255,255,.9);
+      border: 1px solid var(--card-border); border-radius: 999px;
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-2);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; gap: 4px;
+    }
+    .gv-nav a {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--muted); font-size: 13px; font-weight: 600;
+      padding: 6px 10px; border-radius: 999px; min-height: 36px;
+      transition: background .15s var(--ease), color .15s var(--ease);
+    }
+    .gv-nav a .n {
+      width: 24px; height: 24px; border-radius: 50%; flex: none;
+      display: grid; place-items: center; font-size: 12.5px; font-weight: 600;
+      background: rgba(11,16,48,.07); color: var(--muted);
+      transition: background .15s var(--ease), color .15s var(--ease);
+      font-variant-numeric: tabular-nums;
+    }
+    .gv-nav a.active { color: var(--navy); background: rgba(0,169,145,.07); }
+    .gv-nav a.active .n { background: linear-gradient(145deg, #00c2a6, #018271); color: #fff; }
+    .gv-nav a .t { white-space: nowrap; }
+    @media (max-width: 640px) { .gv-nav a .t { display: none; } .gv-nav { justify-content: center; gap: 10px; } }
+    .gv-flow { display: flex; flex-direction: column; gap: clamp(16px, 2.2vw, 26px); }
+    .gv-card {
+      /* ingen backdrop-filter på stora innehållskort – GPU-risk på mobil i den ytstorleken */
+      background: rgba(255, 255, 255, 0.85); border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      box-shadow: 0 18px 44px rgba(9,11,50,.09), inset 0 1px 0 rgba(255,255,255,.6);
+      padding: clamp(22px, 3.2vw, 36px) clamp(18px, 3.6vw, 40px);
+      scroll-margin-top: 76px;
+    }
+    .gv-stephead { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .gv-stephead .of-node { width: 44px; height: 44px; }
+    .gv-stephead h2 { font-size: clamp(20px, 1vw + 17px, 26px); font-weight: 600; letter-spacing: -.015em; color: var(--ink); line-height: 1.2; }
+    .gv-stephead small { display: block; font-size: 13.5px; font-weight: 400; color: var(--ink-soft); margin-top: 2px; }
+    .gv-sub { margin-top: 24px; }
+    @media (min-width: 700px) {
+      .gv-work-img { display: grid; grid-template-columns: 1fr 190px; gap: 20px; align-items: start; }
+    }
+    .gv-guide {
+      background: rgba(0,169,145,.055); border-radius: var(--r-md);
+      padding: 12px 16px;
+      font-size: 14.5px; font-weight: 300; color: var(--body-ink); line-height: 1.55;
+      margin-bottom: 18px; max-width: 62ch; text-wrap: pretty;
+    }
+    .gv-guide strong { font-weight: 600; color: var(--ink); }
+  </style>
+</head>
+<body>
+<div class="gv-shell">
+
+  <!-- toppanel -->
+  <header class="of-top gv-top">
+    <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
+    <div class="of-top__meta">
+      <span class="of-pill">Offert #2026-0187</span>
+      <span class="of-pill of-pill--date">Gäller t.o.m. 31 augusti 2026</span>
+    </div>
+  </header>
+
+  <!-- hälsning -->
+  <section class="gv-card of-greet" style="margin-top: clamp(14px, 2vw, 20px);" aria-labelledby="greet-h">
+    <h1 id="greet-h">Hej Ali – vi går igenom din offert tillsammans</h1>
+    <p class="of-lede">Byte av elcentral, steg för steg: först vad vi gör, sedan formar du köpet, sedan priset – och sist bestämmer du dig. Inget är bindande förrän du själv accepterar.</p>
+    <div class="of-signed">
+      <span class="of-signed__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+      <span class="of-signed__who">[Ansvarig elektriker] <small>Behörig elektriker · har räknat på ditt jobb</small></span>
+      <span class="of-signed__sig"><span class="of-script">[Namnteckning]</span>Redan undertecknad för Ampy</span>
+    </div>
+  </section>
+
+  <!-- förankrad stegindikator -->
+  <nav class="gv-nav" aria-label="Offertens steg">
+    <a href="#steg-1" class="active"><span class="n">1</span><span class="t">Det här gör vi</span></a>
+    <a href="#steg-2"><span class="n">2</span><span class="t">Forma ditt köp</span></a>
+    <a href="#steg-3"><span class="n">3</span><span class="t">Ditt pris</span></a>
+    <a href="#steg-4"><span class="n">4</span><span class="t">Acceptera</span></a>
+  </nav>
+
+  <div class="gv-flow">
+
+    <!-- STEG 1 -->
+    <section class="gv-card" id="steg-1" aria-labelledby="s1-h">
+      <div class="gv-stephead">
+        <span class="of-node" aria-hidden="true"><span>1</span></span>
+        <h2 id="s1-h">Det här gör vi<small>Arbetet punkt för punkt, och varför</small></h2>
+      </div>
+      <p class="gv-guide"><strong>Din elektriker förklarar:</strong> vi delar upp huset på två jordfelsbrytare och ger kyl och frys en egen säkring. Det är skillnaden mellan ett strömlöst hus och ett hus där bara felet är avstängt.</p>
+      <div class="gv-work-img">
+        <ul class="of-work">
+          <li>
+            <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><h3>Demontering av din gamla elcentral</h3></div>
+          </li>
+          <li>
+            <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><h3>Installation av två modulkapslingar (2×13)</h3></div>
+          </li>
+          <li>
+            <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <h3>Två jordfelsbrytare</h3>
+              <p>Huset delas upp på två jordfelsbrytare i stället för en – vid ett jordfel blir aldrig hela huset strömlöst.</p>
+            </div>
+          </li>
+          <li>
+            <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <h3>Personskyddsautomat för kyl och frys</h3>
+              <p>Egen säkring med inbyggt jordfelsskydd – kyl och frys står kvar även vid jordfel i andra delar av anläggningen.</p>
+            </div>
+          </li>
+          <li>
+            <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div><h3>Uppdaterat gruppschema</h3></div>
+          </li>
+        </ul>
+        <div class="of-imgslot" aria-hidden="true">[GAP-B]<br>Produktbild /<br>illustration: elcentral</div>
+      </div>
+      <details class="of-material gv-sub">
+        <summary>
+          Material som ingår <span class="m-count">9 poster</span>
+          <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <ul>
+          <li>2 st modulkapsling 2×13</li>
+          <li>2 st jordfelsbrytare</li>
+          <li>1 st personskyddsautomat 10 A</li>
+          <li>1 st huvudbrytare</li>
+          <li>Dvärgbrytare 10 A</li>
+          <li>Dvärgbrytare 16 A</li>
+          <li>Installationsmaterial</li>
+          <li>Invändiga kopplingar och kabel</li>
+          <li>Uppmärkning</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- STEG 2 -->
+    <section class="gv-card" id="steg-2" aria-labelledby="s2-h">
+      <div class="gv-stephead">
+        <span class="of-node" aria-hidden="true"><span>2</span></span>
+        <h2 id="s2-h">Forma ditt köp<small>Installationstid och tillval – totalen räknas om direkt</small></h2>
+      </div>
+      <p class="gv-guide"><strong>Din elektriker förklarar:</strong> Standard kostar inget extra och räcker för de flesta. Express och Prioritet finns när tiden är viktigare än priset – då garanterar vi dagen.</p>
+
+      <h3 class="of-h2">När vill du ha jobbet gjort? <span class="of-gap" title="Datum i mockupen är exempel">EXEMPEL-DATUM</span></h3>
+      <div class="of-tiers" role="radiogroup" aria-label="Installationstid">
+        <div class="of-tier">
+          <input type="radio" name="tid" value="express" id="tid-express">
+          <label for="tid-express">
+            <span class="t-radio" aria-hidden="true"></span>
+            <span>
+              <span class="t-name">Express</span>
+              <span class="t-date">Installerad senast tisdag 19 augusti – inom 24 timmar</span>
+              <span class="t-why">Du får en garanterad tid och en elektriker prioriteras till ditt jobb.</span>
+            </span>
+            <span class="t-price">+1 000 kr</span>
+          </label>
+        </div>
+        <div class="of-tier">
+          <input type="radio" name="tid" value="prioritet" id="tid-prio">
+          <label for="tid-prio">
+            <span class="t-radio" aria-hidden="true"></span>
+            <span>
+              <span class="t-name">Prioritet</span>
+              <span class="t-date">Installerad senast fredag 22 augusti – inom 72 timmar</span>
+              <span class="t-why">Garanterad tid inom tre dygn, när det är bråttom men inte akut.</span>
+            </span>
+            <span class="t-price">+700 kr</span>
+          </label>
+        </div>
+        <div class="of-tier">
+          <input type="radio" name="tid" value="standard" id="tid-standard" checked>
+          <label for="tid-standard">
+            <span class="t-radio" aria-hidden="true"></span>
+            <span>
+              <span class="t-name">Standard <span class="t-rek">Vår rekommendation</span></span>
+              <span class="t-date">24 augusti – 1 september – inom 3 till 14 dagar</span>
+              <span class="t-why">Vi ringer och bokar en tid som passar dig, utan extra kostnad.</span>
+            </span>
+            <span class="t-price free">+0 kr</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="of-consent" id="express-consent">
+        <label>
+          <input type="checkbox" id="consent-check">
+          <span class="c-text">
+            <strong>Jag begär att arbetet påbörjas under ångerfristen</strong> och godkänner att min ångerrätt upphör när tjänsten är fullgjord. Ångrar jag mig innan dess betalar jag för utfört arbete.
+            <span class="c-tag">[JURIST] Slutlig text låses av jurist · krävs för Express och Prioritet</span>
+          </span>
+        </label>
+      </div>
+
+      <h3 class="of-h2 gv-sub">Tillval – helt valfria, av som standard</h3>
+      <div class="of-addons">
+        <div class="of-addon">
+          <input type="checkbox" data-addon="garanti" id="addon-garanti">
+          <label for="addon-garanti">
+            <span class="a-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span>
+              <span class="a-name">Förlängd arbetsgaranti</span>
+              <span class="a-desc">Förlänger Ampys garanti på det utförda arbetet. Omfattning och längd fastställs av ägaren. <span class="of-gap">GAP-G1</span></span>
+            </span>
+            <span class="a-price">+1 200 kr <span class="of-gap">EXEMPEL</span></span>
+          </label>
+        </div>
+        <div class="of-addon">
+          <input type="checkbox" data-addon="timme" id="addon-timme">
+          <label for="addon-timme">
+            <span class="a-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span>
+              <span class="a-name">Extra arbetstimme på plats</span>
+              <span class="a-desc">En timmes småfix medan elektrikern ändå är hemma hos dig – till exempel byte av vägguttag eller strömbrytare.</span>
+            </span>
+            <span class="a-price">+850 kr <span class="of-gap">EXEMPEL</span></span>
+          </label>
+        </div>
+      </div>
+      <p style="margin-top:12px;"><span class="of-delta" data-delta aria-live="polite"></span></p>
+    </section>
+
+    <!-- STEG 3 -->
+    <section class="gv-card of-receipt" id="steg-3" aria-labelledby="s3-h">
+      <div class="gv-stephead">
+        <span class="of-node" aria-hidden="true"><span>3</span></span>
+        <h2 id="s3-h">Ditt pris<small>Båda priserna öppet – före och efter avdrag</small></h2>
+      </div>
+      <p class="gv-guide"><strong>Din elektriker förklarar:</strong> arbete och material redovisas var för sig, och du ser priset både före och efter ROT. Det ska aldrig finnas något att leta efter i finstilten.</p>
+      <h3 class="p-cap">Kvitto <span class="fastpris-pill">Fast pris</span></h3>
+      <div class="r-row">
+        <span class="lbl">Arbetskostnad <small>EXEMPEL-split – låses per offert [GAP-P1]</small></span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">9 000 kr</span>
+      </div>
+      <div class="r-row">
+        <span class="lbl">Material <small>EXEMPEL-split – låses per offert [GAP-P1]</small></span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">5 600 kr</span>
+      </div>
+      <div class="r-row subtotal">
+        <span class="lbl">Pris före avdrag</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">14 600 kr</span>
+      </div>
+      <div class="r-row addon-row" data-tier-row>
+        <span class="lbl" data-tier-label>Installationstid</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt" data-tier-amt></span>
+      </div>
+      <div class="r-row addon-row" data-addon-row="garanti">
+        <span class="lbl">Tillval: förlängd arbetsgaranti</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">+ 1 200 kr</span>
+      </div>
+      <div class="r-row addon-row" data-addon-row="timme">
+        <span class="lbl">Tillval: extra arbetstimme</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">+ 850 kr</span>
+      </div>
+      <div class="r-row deduct">
+        <span class="lbl">ROT-avdrag på arbetet, 30&nbsp;%</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">−2 700 kr</span>
+      </div>
+      <div class="r-total">
+        <span class="t-label">Att betala</span>
+        <span class="amt" data-total>11 900 kr</span>
+        <span class="t-note">Inklusive moms. ROT-avdraget är preliminärt – se raderna under.</span>
+      </div>
+      <div class="of-price-notes">
+        <p class="of-price-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
+          <span>Avdraget förutsätter att du äger bostaden och har ROT-utrymme kvar. Saknas utrymme fakturerar vi återstående arbetskostnad.</span>
+        </p>
+        <p class="of-price-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Priset omfattar det som specificeras ovan. Behövs något utöver detta kontaktar vi dig alltid för godkännande innan vi utför det.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- interlude: trust – innan du bestämmer dig -->
+    <section class="gv-card of-trust" aria-labelledby="trust-h">
+      <h2 class="of-eyebrow" id="trust-h">Innan du bestämmer dig – det här är Ampy</h2>
+      <div class="of-trust__stats">
+        <span class="of-trust__item">
+          <span class="of-stars" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+          </span>
+          <strong>5 av 5</strong>&nbsp;· Betyg på Google
+        </span>
+        <span class="of-trust__item"><strong>3 000+</strong>&nbsp;genomförda installationer om året</span>
+      </div>
+      <figure class="of-quote">
+        <div class="of-quote__top">
+          <span class="of-quote__mark" aria-hidden="true">“</span>
+          <img class="of-quote__google" src="../assets/google-g.svg" alt="Google-omdöme" width="20" height="20">
+        </div>
+        <blockquote class="of-quote__text">Snabb hjälp när elcentralen strulade. Ampy dök upp direkt och löste allt med högsta precision. Rekommenderas!</blockquote>
+        <figcaption class="of-quote__meta">
+          <span class="of-stars" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
+          </span>
+          <strong>Moa Olaussen</strong> · elcentral · mars 2026
+        </figcaption>
+      </figure>
+      <div class="of-certs" aria-label="Certifieringar och partners">
+        <img src="../assets/elsakerhetsverket.svg" alt="Elsäkerhetsverket">
+        <img src="../assets/id06.svg" alt="ID06">
+        <img src="../assets/trygg-hansa.svg" alt="Trygg-Hansa">
+        <img src="../assets/installatorsforetagen.svg" alt="Installatörsföretagen">
+      </div>
+      <p class="of-verify">Kontrollera oss gärna själv – Ampy finns i Elsäkerhetsverkets företagsregister <a href="https://www.elsakerhetsverket.se" rel="noopener">Kolla elföretaget</a>.</p>
+    </section>
+
+    <!-- STEG 4 -->
+    <section class="gv-card" id="steg-4" aria-labelledby="s4-h">
+      <div class="gv-stephead">
+        <span class="of-node" aria-hidden="true"><span>4</span></span>
+        <h2 id="s4-h">Acceptera – eller säg vad du tycker<small>Alla tre vägarna är lika välkomna</small></h2>
+      </div>
+
+      <div class="of-expired" role="status">
+        Den här offerten gick ut den 31 augusti 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+      </div>
+
+      <details class="of-legal" style="margin-top:12px;">
+        <summary>
+          Villkor för uppdraget <span class="jurist-tag">[JURIST]</span>
+          <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="l-body">
+          <p>[JURIST] Fullständiga villkor baserade på Hantverkarformuläret 17 skrivs av jurist: betalning och fakturering, ROT-hantering och kundens försäkran om ägande, tider och avbokning, garanti och reklamation, försäkring.</p>
+          <p>De tre villkor som väger tyngst står redan öppet på sidan: samtycket vid Express och Prioritet, ROT-mellanskillnadsraden vid priset och löftet om godkännande före varje tilläggsarbete.</p>
+          <span class="l-version">Villkorsversion: 2026-08-17-mockup · versionsstämplas per offert</span>
+        </div>
+      </details>
+      <details class="of-legal">
+        <summary>
+          Din ångerrätt – 14 dagar <span class="jurist-tag">[JURIST]</span>
+          <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="l-body">
+          <p>Du har 14 dagars ångerrätt från accepten. [JURIST] Fullständig ångerrättsinformation samt Konsumentverkets standardformulär för utövande av ångerrätten tillhandahålls här före accept.</p>
+          <p>Efter accept finns en tydligt märkt funktion »Ångra köp« här på sidan och i din bekräftelse – du behöver aldrig leta.</p>
+        </div>
+      </details>
+
+      <div class="of-accept" style="margin-top:20px;">
+        <button class="of-btn-primary" type="button" data-accept aria-disabled="false" aria-describedby="payline">Acceptera offert</button>
+        <p class="of-payline" id="payline">Beställning med betalningsskyldighet · Totalt <strong data-total>11 900 kr</strong> inkl. moms</p>
+        <p class="of-blockmsg" data-blockmsg role="status">Kryssa i samtycket om arbetsstart i steg 2 för att acceptera med Express eller Prioritet.</p>
+        <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Begär ändring eller ställ en fråga</button>
+        <div class="of-change" id="change-panel">
+          <label for="change-text" class="c-hint" style="display:block;margin-bottom:6px;">Beskriv vad du vill ändra eller undrar över – offerten ligger kvar oförändrad tills vi återkommer.</label>
+          <textarea id="change-text" placeholder="Till exempel: Kan ni även dra fram ett uttag i garaget?"></textarea>
+          <button class="of-btn-secondary c-send" type="button" data-send-change>Skicka till ansvarig elektriker</button>
+          <p class="c-hint" role="status"></p>
+        </div>
+        <!-- GAP-N1: explicit "Tacka nej"-väg – ritad i DENNA riktning, neutral, utan skam -->
+        <button class="of-btn-secondary" type="button" id="decline-btn" aria-expanded="false" aria-controls="decline-panel" style="border-style: dashed;">Tacka nej till offerten</button>
+        <div class="of-change" id="decline-panel">
+          <label for="decline-text" class="c-hint" style="display:block;margin-bottom:6px;">Tack för att du säger till – det hjälper oss mer än tystnad. Vill du berätta varför? (Helt frivilligt.)</label>
+          <textarea id="decline-text" placeholder="Till exempel: Vi valde en annan lösning / priset passade inte."></textarea>
+          <button class="of-btn-secondary c-send" type="button">Skicka och avsluta ärendet</button>
+          <p class="c-hint">Mockup – GAP-N1: ägaren avgör om denna explicita nej-väg ska finnas bredvid »Begär ändring«.</p>
+        </div>
+        <p class="of-phone">Hellre prata? Ring <a href="tel:+46102657979">010-265 79 79</a></p>
+      </div>
+
+      <div class="gv-sub">
+        <h3 class="of-eyebrow">Vad händer när du accepterat</h3>
+        <ol class="of-steps">
+          <li class="of-step">
+            <span class="of-node" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="of-step-text">Du får en bekräftelse direkt<small>Hela offerten, villkoren och ångerinformationen på mejl.</small></span>
+          </li>
+          <li class="of-step">
+            <span class="of-node" aria-hidden="true"><span>2</span></span>
+            <span class="of-step-text">En elektriker ringer och bokar tid<small>Vi hör av oss inom 24 timmar.</small></span>
+          </li>
+          <li class="of-step">
+            <span class="of-node" aria-hidden="true"><span>3</span></span>
+            <span class="of-step-text">Ampys behöriga elektriker utför arbetet<small>På avtalad tid, till fast pris.</small></span>
+          </li>
+        </ol>
+        <p style="margin-top:18px;"><a href="#" class="of-verify" style="font-size:13.5px;" onclick="return false;">Ladda ner offerten som PDF (bilaga)</a></p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="of-foot">
+    Ampy Nordic AB · Org.nr [ORG.NR] · <a href="tel:+46102657979" class="nb">010-265 79 79</a>
+    <div class="f-links">
+      <a href="#" onclick="return false;">Köpvillkor</a>
+      <a href="#" onclick="return false;">Ångerrätt och ångerformulär</a>
+      <a href="#" onclick="return false;">Ångra köp</a>
+      <a href="#" onclick="return false;">Integritetspolicy</a>
+    </div>
+  </footer>
+</div>
+
+<!-- accept-bekräftelsens mockvy – visar ångerknappens plats (DAL 2:10a) -->
+<div class="of-confirm-backdrop" id="confirm-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
+  <div class="of-confirm" tabindex="-1">
+    <h2 id="confirm-h">Tack Ali – din accept är mottagen</h2>
+    <p>Totalt <strong data-total>11 900 kr</strong> inkl. moms. Du får en bekräftelse med hela offerten på mejl, och en elektriker ringer dig inom 24 timmar för att boka tid.</p>
+    <p class="cf-mock">Mockup – accept, tidsstämpel och offertversion loggas av Yassines backend</p>
+    <div class="cf-actions">
+      <button class="of-btn-secondary" type="button" data-close>Stäng</button>
+      <button class="cf-angra" type="button">Ångra köp – din lagstadgade ångerfunktion, 14 dagar</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/offer-logic.js"></script>
+<script>
+  // stegindikatorn: scroll-spy på de fyra ankarna
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll(".gv-nav a"));
+    var targets = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+    if (!("IntersectionObserver" in window)) return;
+    var current = 0;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) current = targets.indexOf(e.target);
+        links.forEach(function (a, i) { a.classList.toggle("active", i === current); });
+      });
+    }, { rootMargin: "-30% 0px -55% 0px" });
+    targets.forEach(function (t) { if (t) io.observe(t); });
+  })();
+</script>
+</body>
+</html>
