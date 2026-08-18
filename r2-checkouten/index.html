@@ -6,11 +6,9 @@
   <title>Din offert från Ampy</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/shared.css">
+  <style>@media (max-width: 1139px) { html { scroll-behavior: auto; } }</style>
   <style>
     /* »Checkouten« v2 — innehåll vänster, sticky summeringspanel höger.
        Mobil: sticky bottenbar med engångstotalen. */
@@ -95,7 +93,8 @@
     .co-bar__total .b-mo.visible { display: block; }
     .co-bar .of-btn-primary { flex: 1; min-height: 50px; padding: 9px 18px; font-size: 15.5px; }
     @media (min-width: 1140px) { .co-bar { display: none; } }
-    body { padding-bottom: 84px; }
+    /* baren mäter 71px (2 rader), 76px (3 rader) och ~100px med iOS safe-area */
+    body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
     @media (min-width: 1140px) { body { padding-bottom: 0; } }
     .co-sub { margin-top: 32px; }
     /* underrubrik inne i ett kort — måste vara MINDRE än kortets h2 (24px) */
@@ -110,7 +109,7 @@
     <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
     <div class="of-top__meta">
       <span class="of-pill">Offert #2026-0187</span>
-      <span class="of-pill of-pill--date">Gäller t.o.m. 31 augusti 2026</span>
+      <span class="of-pill of-pill--date"><span class="d-long">Gäller t.o.m. 31 augusti 2026</span><span class="d-short">T.o.m. 31 aug 2026</span></span>
     </div>
   </header>
 
@@ -193,7 +192,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Express</span>
-                <span class="t-date">Installerad senast tisdag 19 augusti, inom 24 timmar</span>
+                <span class="t-date">Installerad senast tisdag 18 augusti, inom 24 timmar</span>
                 <span class="t-why">Du får en garanterad dag och en elektriker prioriteras till ditt jobb.</span>
               </span>
               <span class="t-price">+1 000 kr</span>
@@ -205,7 +204,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Prioritet</span>
-                <span class="t-date">Installerad senast fredag 22 augusti, inom 72 timmar</span>
+                <span class="t-date">Installerad senast torsdag 20 augusti, inom 72 timmar</span>
                 <span class="t-why">Garanterad dag inom tre dygn, när det är bråttom men inte akut.</span>
               </span>
               <span class="t-price">+700 kr</span>
@@ -217,7 +216,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Standard <span class="t-rek">Vår rekommendation</span></span>
-                <span class="t-date">24 augusti till 1 september, inom 3 till 14 dagar</span>
+                <span class="t-date">20 augusti till 31 augusti, inom 3 till 14 dagar</span>
                 <span class="t-why">Vi ringer och bokar en tid som passar dig, utan extra kostnad.</span>
               </span>
               <span class="t-price free">+0 kr</span>
@@ -226,6 +225,7 @@
         </div>
 
 
+        <p class="of-deltarow"><span class="of-delta" data-delta aria-live="polite"></span></p>
         <h3 class="of-h3 co-sub">Vill du lägga till något?</h3>
         <div class="of-addons">
           <div class="of-addon">
@@ -240,7 +240,7 @@
             </label>
           </div>
         </div>
-        <p style="margin-top:12px;"><span class="of-delta" data-delta aria-live="polite"></span></p>
+
       </section>
 
     </div>
@@ -283,10 +283,10 @@
       <p class="of-finance">
         <span class="f-tag">Delbetalning</span>
         <span>Vi kan erbjuda delbetalning på det här jobbet. <span class="of-gap">[LÅNGIVARE]</span></span>
-        <button type="button" id="finance-btn" aria-expanded="false" aria-controls="finance-panel">Vad som gäller</button>
+        <button class="f-terms" type="button" id="finance-btn" aria-expanded="false" aria-controls="finance-panel">Vad som gäller</button>
       </p>
       <div class="of-change" id="finance-panel">
-        <p class="c-hint">Månadsbelopp, effektiv ränta och representativt exempel får du innan du binder dig, och de hämtas från långivaren. Marknadens upplägg för den här typen av jobb är 0&nbsp;% ränta upp till 100 000 kr, plus en uppläggningsavgift runt 295 till 495 kr och en aviavgift runt 45 kr per månad. Med sådana avgifter blir den verkliga månadskostnaden högre än siffran ovan, och effektiv ränta beror på beloppet. Riktiga villkor, effektiv ränta och representativt exempel hämtas från långivaren innan detta aktiveras. Från 20 november 2026 gäller nya konsumentkreditlagen (2026:1011), som även kräver en särskild upplysning om kreditens kostnader och risken för skuldsättning. <span class="of-gap">[LÅNGIVARE] + [JURIST]</span></p>
+        <p class="c-hint">Månadsbelopp, effektiv ränta och representativt exempel får du innan du binder dig, och de hämtas från långivaren. Marknadens upplägg för den här typen av jobb är 0&nbsp;% ränta upp till 100 000 kr, plus en uppläggningsavgift runt 295 till 495 kr och en aviavgift runt 45 kr per månad. Med sådana avgifter blir den verkliga månadskostnaden högre än siffran ovan, och effektiv ränta beror på beloppet. Riktiga villkor, effektiv ränta och representativt exempel hämtas från långivaren innan detta aktiveras. Från 20 november 2026 gäller nya konsumentkreditlagen (2026:1011), som även kräver en särskild upplysning om kreditens kostnader och risken för skuldsättning. <span class="of-gap of-gap--note">[LÅNGIVARE] + [JURIST]</span></p>
       </div>
 
       <!-- serviceavtalets månadskostnad: ALDRIG inne i engångstotalen -->
@@ -371,16 +371,17 @@
 
       <!-- 5 · serviceavtalet — egen sektion, allt innehåll [FELIX]-gated -->
       <section class="co-card of-svc" aria-labelledby="svc-h">
+        <p class="of-draftband">Utkast. Serviceavtalets innehåll och villkor är inte beslutade än.</p>
         <div class="of-svc__head">
           <div class="of-svc__title">
-            <p class="of-eyebrow" style="margin-bottom:10px;">Serviceavtal · 149 kr/mån <span class="of-gap">[FELIX] UTKAST</span></p>
+            <p class="of-eyebrow" style="margin-bottom:10px;">Serviceavtal · 149 kr/mån</p>
             <h2 id="svc-h">En elcentral är ny en gång</h2>
             <p>Sedan går det år innan någon tittar på den igen. Med serviceavtal kommer vi tillbaka vartannat år och går igenom anläggningen. Du får ett protokoll, och en elektriker som redan känner ditt hus när något händer.</p>
           </div>
           <div class="of-svc__price">
             <span class="p-amt">149 kr</span>
             <span class="p-per">per månad · 1 788 kr per år</span>
-            <span class="p-cancel">Ingen bindningstid <span class="of-gap">[FELIX]</span></span>
+            <span class="p-cancel">Ingen bindningstid <span class="of-gap of-gap--note">[FELIX]</span></span>
           </div>
         </div>
 
@@ -390,37 +391,37 @@
              styckepris är starkare än ett påklistrat värdeankare. -->
         <div class="of-svc__anchor">
           <span class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-          <span class="a-txt"><strong>Din första elbesiktning ingår, och vi gör den i samband med installationen.</strong> Du slipper ett separat besök. Samma besiktning kostar 1 500 kr om du beställer den fristående av oss. <span class="of-gap">[FELIX] styckepriset måste finnas på riktigt</span></span>
+          <span class="a-txt"><strong>Din första elbesiktning ingår, och vi gör den i samband med installationen.</strong> Du slipper ett separat besök. Samma besiktning kostar 1 500 kr om du beställer den fristående av oss. <span class="of-gap of-gap--note">[FELIX] styckepriset måste finnas på riktigt</span></span>
         </div>
 
         <ul class="of-svc__list">
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Elbesiktning vartannat år<small>En behörig elektriker går igenom anläggningen och du får ett protokoll. <span class="of-gap">[FELIX] intervallet bär kalkylen</span></small></span>
+            <span class="l-txt">Elbesiktning vartannat år<small>En behörig elektriker går igenom anläggningen och du får ett protokoll. <span class="of-gap of-gap--note">[FELIX] intervallet bär kalkylen</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Intyg på jordfelsbrytare<small>Vi testar dina jordfelsbrytare och du får ett intyg. Länsförsäkringar ger 10 % rabatt på villaförsäkringen mot intyg. <span class="of-gap">[FELIX]</span></small></span>
+            <span class="l-txt">Intyg på jordfelsbrytare<small>Vi testar dina jordfelsbrytare och du får ett intyg. Länsförsäkringar ger 10 % rabatt på villaförsäkringen mot intyg. <span class="of-gap of-gap--note">[FELIX]</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Förlängd garanti på utfört arbete<small>Gäller så länge avtalet löper. <span class="of-gap">[FELIX] längd</span></small></span>
+            <span class="l-txt">Förlängd garanti på utfört arbete<small>Gäller så länge avtalet löper. <span class="of-gap of-gap--note">[FELIX] längd</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Lägre timpris på kommande jobb<small>Avtalskunder betalar [X] kr/tim mot [Y] kr/tim utan avtal. <span class="of-gap">[FELIX] satser: konkret timpris säljer bättre än en procentsats</span></small></span>
+            <span class="l-txt">Lägre timpris på kommande jobb<small>Avtalskunder betalar [X] kr/tim mot [Y] kr/tim utan avtal. <span class="of-gap of-gap--note">[FELIX] satser: konkret timpris säljer bättre än en procentsats</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Förtur i bokningen<small>Avtalskunder går före när kalendern är full. <span class="of-gap">[FELIX]</span></small></span>
+            <span class="l-txt">Förtur i bokningen<small>Avtalskunder går före när kalendern är full. <span class="of-gap of-gap--note">[FELIX]</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Jourutryckning ingår<small>Utan avtal kostar en jourutryckning från 1 600 kr. <span class="of-gap">[FELIX] antal per år</span></small></span>
+            <span class="l-txt">Jourutryckning ingår<small>Utan avtal kostar en jourutryckning från 1 600 kr. <span class="of-gap of-gap--note">[FELIX] antal per år</span></small></span>
           </li>
           <li>
             <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Felanmälan dygnet runt<small>Du når oss när som helst. Åtgärd sker vardagar om det inte är akut. <span class="of-gap">[FELIX] lova mottagning, inte utförande</span></small></span>
+            <span class="l-txt">Felanmälan dygnet runt<small>Du når oss när som helst. Åtgärd sker vardagar om det inte är akut. <span class="of-gap of-gap--note">[FELIX] lova mottagning, inte utförande</span></small></span>
           </li>
         </ul>
 
@@ -430,7 +431,7 @@
           <p class="b-after">Efter 24 månader kostar det 149 kr per månad om du inte säger upp det.</p>
           <details class="of-legal b-more">
             <summary>
-              Så fungerar erbjudandet <span class="jurist-tag">[FELIX] + [JURIST]</span>
+              Så fungerar erbjudandet <span class="jurist-tag of-gap--note">[FELIX] + [JURIST]</span>
               <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
             </summary>
             <div class="l-body">
@@ -443,31 +444,46 @@
              tydlig: ett avtal som stängs av elektrikern på plats tecknas 4-6× oftare
              än ett som stängs i ett webbformulär. Den som inte vill bestämma nu ska
              kunna säga "hör av er" utan att tappa erbjudandet. -->
-        <div class="of-svc__optin of-addons">
+        <!-- Var två oberoende kryssrutor: båda kunde kryssas samtidigt, och
+             "berätta mer" var inte kopplad till någon logik alls. Nu tre
+             ömsesidigt uteslutande val, inget förvalt (AVLK 13 §). -->
+        <div class="of-svc__optin of-addons" role="radiogroup" aria-label="Serviceavtal">
           <div class="of-addon">
-            <input type="checkbox" id="svc-optin">
+            <input type="radio" name="svc" value="ja" id="svc-optin">
             <label for="svc-optin">
-              <span class="a-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="a-box a-radio" aria-hidden="true"></span>
               <span>
                 <span class="a-name">Ja, teckna serviceavtal</span>
-                <span class="a-desc">149 kr per månad, faktureras separat från det här jobbet. Första elbesiktningen ingår.</span>
+                <span class="a-desc">149 kr per månad. Första elbesiktningen ingår.</span>
               </span>
               <span class="a-price">149 kr/mån</span>
             </label>
           </div>
           <div class="of-addon">
-            <input type="checkbox" id="svc-later">
+            <input type="radio" name="svc" value="senare" id="svc-later">
             <label for="svc-later">
-              <span class="a-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span class="a-box a-radio" aria-hidden="true"></span>
               <span>
                 <span class="a-name">Berätta mer när jobbet är klart</span>
-                <span class="a-desc">Elektrikern tar upp det på plats. Du binder dig inte till något nu och priset för installationen påverkas inte.</span>
+                <span class="a-desc">Marcus tar upp det på plats. Du binder dig inte till något nu och priset för installationen påverkas inte.</span>
               </span>
               <span class="a-price" style="font-weight:500;color:var(--muted);">0 kr</span>
             </label>
           </div>
+          <div class="of-addon">
+            <input type="radio" name="svc" value="nej" id="svc-no">
+            <label for="svc-no">
+              <span class="a-box a-radio" aria-hidden="true"></span>
+              <span>
+                <span class="a-name">Inte aktuellt för mig</span>
+                <span class="a-desc">Vi tar inte upp det igen.</span>
+              </span>
+              <span class="a-price" style="font-weight:500;color:var(--muted);">0 kr</span>
+            </label>
+          </div>
+          <p class="of-svc__ack" data-svc-ack role="status"></p>
         </div>
-        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Fullständiga villkor, bindningstid och uppsägning skrivs av jurist. Ingen del av serviceavtalet är beslutad än. Din offert på byte av elcentral gäller som den står. <span class="of-gap">[FELIX] UTKAST</span></p>
+        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Fullständiga villkor, bindningstid och uppsägning skrivs av jurist. Ingen del av serviceavtalet är beslutad än. Din offert på byte av elcentral gäller som den står. <span class="of-gap of-gap--note">[FELIX] UTKAST</span></p>
       </section>
 
       <!-- 6 · villkor, ändring, avböj, nästa steg -->
@@ -475,7 +491,7 @@
         <h2 class="of-h2" id="legal-h">Villkor och ångerrätt</h2>
         <details class="of-legal">
           <summary>
-            Villkor för uppdraget <span class="jurist-tag">[JURIST]</span>
+            Villkor för uppdraget <span class="jurist-tag of-gap--note">[JURIST]</span>
             <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
@@ -486,7 +502,7 @@
         </details>
         <details class="of-legal">
           <summary>
-            Din ångerrätt, 14 dagar <span class="jurist-tag">[JURIST]</span>
+            Din ångerrätt, 14 dagar <span class="jurist-tag of-gap--note">[JURIST]</span>
             <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
@@ -531,7 +547,7 @@
 </div>
 
 <!-- mobil sticky bottenbar -->
-<div class="co-bar visible" id="co-bar" aria-hidden="false">
+<div class="co-bar" id="co-bar" aria-hidden="true">
   <span class="co-bar__total">
     <small>Att betala</small>
     <strong data-total>11 900 kr</strong>
@@ -568,12 +584,18 @@
     // är synlig, och baren blev då hängande i fel läge (samma fälla som gjorde
     // IntersectionObserver opålitlig här). En getBoundingClientRect per
     // scroll-event är billigt nog.
+    // Tröskel: baren tänds inte förrän kunden passerat arbetsbeskrivningen.
+    // Utan den var det andra en mobilkund såg en uppmaning att acceptera
+    // 12 000 kr innan en enda rad om jobbet var läst.
+    var work = document.getElementById("work-h");
     function sync() {
       var r = accept.getBoundingClientRect();
       var vh = window.innerHeight || document.documentElement.clientHeight;
-      var visible = r.top < vh - 24 && r.bottom > 24;
-      bar.classList.toggle("visible", !visible);
-      bar.setAttribute("aria-hidden", visible ? "true" : "false");
+      var acceptSyns = r.top < vh - 24 && r.bottom > 24;
+      var passerat = !work || work.getBoundingClientRect().bottom < vh * 0.5;
+      var show = passerat && !acceptSyns;
+      bar.classList.toggle("visible", show);
+      bar.setAttribute("aria-hidden", show ? "false" : "true");
     }
     window.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);

@@ -1,8 +1,9 @@
 /* =========================================================================
    Ampy offertsida — delad beteendelogik (alla tre riktningar)
    Renderingskontraktet: allt innehåll är läsbart utan JS. Det här lagret
-   adderar ENBART: live-total, samtyckesgrinden (DAL 2:11+15), delta-chips,
-   ändringsbegäran, bekräftelsemocken och utgången-demon (?expired=1).
+   adderar ENBART: live-total, delta-chips, serviceavtalets val, ändrings-
+   begäran, bekräftelsemocken och utgången-demon (?expired=1). Samtyckes-
+   grinden är borttagen per ägarbeslut 2026-08-17: villkoret bor i köpvillkoren.
    Priser: bas 11 900 kr = riktiga offerten (Ali). Split + tillvalspriser =
    EXEMPEL/[GAP] — se README.
    ========================================================================= */
@@ -39,8 +40,12 @@
     return sum;
   }
 
-  var svcInput = document.getElementById("svc-optin");
-  function svcChosen() { return !!(svcInput && svcInput.checked); }
+  var svcRadios = Array.prototype.slice.call(document.querySelectorAll('input[name="svc"]'));
+  function svcValue() {
+    var c = svcRadios.filter(function (i) { return i.checked; })[0];
+    return c ? c.value : "";
+  }
+  function svcChosen() { return svcValue() === "ja"; }
 
   function acceptBlocked() {
     return document.body.classList.contains("is-expired");
@@ -97,6 +102,17 @@
       el.textContent = kr(Math.ceil(sum / FINANCE_MONTHS));
     });
 
+    // Alla tre serviceavtalsvalen kvitteras. Tidigare var två av tre döda
+    // kontroller: de gick att kryssa men gjorde ingenting alls.
+    Array.prototype.forEach.call(document.querySelectorAll("[data-svc-ack]"), function (el) {
+      var v = svcValue();
+      el.textContent =
+        v === "ja" ? "Serviceavtalet läggs till. Det faktureras separat från installationen." :
+        v === "senare" ? "Noterat. Marcus tar upp det när jobbet är klart." :
+        v === "nej" ? "Noterat. Vi tar inte upp det igen." : "";
+      el.classList.toggle("visible", !!v);
+    });
+
     var blocked = acceptBlocked();
     acceptBtns.forEach(function (b) { b.setAttribute("aria-disabled", blocked ? "true" : "false"); });
     blockMsgs.forEach(function (m) { m.classList.remove("visible"); });
@@ -106,7 +122,7 @@
 
   tierInputs.forEach(function (i) { i.addEventListener("change", render); });
   addonInputs.forEach(function (i) { i.addEventListener("change", render); });
-  if (svcInput) svcInput.addEventListener("change", render);
+  svcRadios.forEach(function (i) { i.addEventListener("change", render); });
 
   // accept → bekräftelsemock (visar ångerknappens plats, DAL 2:10a)
   var backdrop = document.getElementById("confirm-backdrop");
@@ -164,6 +180,9 @@
       declineBtn.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
+
+  // ?gaps=1 visar författaranteckningarna igen (för Felix och jurist)
+  if (/[?&]gaps=1/.test(location.search)) document.body.classList.add("show-gaps");
 
   // utgången offert — demo via ?expired=1 (§4.10)
   if (/[?&]expired=1/.test(location.search)) document.body.classList.add("is-expired");

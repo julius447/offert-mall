@@ -192,3 +192,73 @@ delar samma logikfil, så rutorna hade blivit tysta attrapper där.
 Kvar att notera för jurist: villkoret om arbetsstart under ångerfristen (DAL 2:11+15) måste finnas
 i köpvillkoren, och kundens godkännande av köpvillkoren vid accept måste loggas — annars kan Ampy
 inte fakturera utfört arbete om kunden ångrar sig. Ytan för det är accept-knappens payline.
+
+## v3.3 — fem granskningsagenter (2026-08-17 kväll)
+
+Tre agenter levererade (mobil, copy/röst, adversariell helhet); två dog på API-fel
+(spacing/typografi, craft-granskning av beviskortet). Beviskortet mätte jag själv i stället.
+
+### Två P0 som gjorde sidan trasig på mobil
+
+**Summeringspanelen renderade 38 px bred** vid allt under 1140 px — kvittot, totalen och
+accept-knappen låg i en smal remsa med texten utanför kortet. Orsak: `margin-inline: auto` på ett
+grid-item stänger av `justify-self: stretch`, och `container-type: inline-size` gör att innehållet
+bidrar med noll intrinsic size. Shrink-to-fit av noll = padding + border = 38 px. `width: 100%`
+återställer. Två var för sig rimliga rader CSS som möts i en spec-detalj.
+
+**Bottenbaren låg dold under sidans första 2 000 px.** IntersectionObserver mot en panel som är
+högre än viewporten är opålitlig. Ersatt av direkt kontroll mot accept-knappen. Den första
+ersättningen använde `requestAnimationFrame`, som pausas i dolda flikar — nu direktanrop.
+
+### Fynd som ändrade innehållet
+
+- **Datumen motsade sig själva.** »senast tisdag 19 augusti, inom 24 timmar« — 19 augusti 2026 är en
+  onsdag, och 24 timmar från måndag är den 18:e. Prioritet sa »fredag 22 augusti, inom 72 timmar«
+  (= lördag, och 120 timmar). Alla tre raderna rättade: tisdag 18, torsdag 20, 20–31 augusti.
+- **Serviceavtalets två kryssrutor var logiskt trasiga.** Båda kunde kryssas samtidigt, och
+  »Berätta mer när jobbet är klart« hade ingen lyssnare alls — en död kontroll på ett
+  beslutsdokument. Nu tre ömsesidigt uteslutande val, inget förvalt, alla tre kvitterar.
+- **19 chip, varav 13 var anteckningar till oss själva** (»[FELIX] satser: konkret timpris säljer
+  bättre än en procentsats«) renderade i kundens dokument. Ett ärligt utkastband ersätter dem;
+  Felix ser alla igen med `?gaps=1`. Kvar synliga: 4, alla kundvända (EXEMPEL-priser, [LÅNGIVARE]).
+- **Copy påstod en samtyckesruta som tagits bort.** Villkorstexten sa att samtycket »står redan
+  öppet på sidan«. Referensen städad.
+- **En projektanteckning läckte till kund** i en JS-sträng: »(Wiring = Yassine.)«
+- **Alla tankstreck** ur kundvänd text. `ampy-rost` R12 förbjuder både em- och en-streck; mitt
+  tidigare svep bytte bara det ena mot det andra. Noll kvar.
+- **Delbetalningens 992 kr borttaget.** Finstilten under sa själv att den verkliga kostnaden blir
+  högre — ett tal man underkänner i nästa mening överlever inte candour-grinden.
+
+### Tillgänglighet och hantverk
+
+- Beviskortets slöja **omkalibrerad för den här bredden**. Källkomponenten är tunad för 852 px;
+  här är kortet 648 px (desktop) och 332 px (mobil), så texten nådde in i det ljusa partiet.
+  Uppmätt: attributionen låg på 2,19:1 mot krav 4,5:1. Texten slutar vid 52 % av kortet, så
+  slöjan är tät till 58 % och släpper sedan fram fotot. Komponentens **egna färger behållna**.
+- Bottenbaren var **fokusbar när den var aria-hidden** — tangentbordsanvändare tabbade in i tomma
+  intet. `visibility: hidden` efter transformen, renderingen oförändrad.
+- Baren tänds inte förrän arbetsbeskrivningen passerats. Tidigare var det andra en mobilkund såg
+  en uppmaning att acceptera 12 000 kr.
+- Textfälten till 16 px: iOS zoomar in på allt under 16 och zoomar aldrig tillbaka.
+- Tryckytor: PDF-länken (selektorn `.of-verify a` matchade aldrig elementet, som bär klassen
+  själv) och delbetalningens villkorsknapp (38×16 px) till 44 px. Skälvalen fick 8 px luft och
+  egen kontrollstil — de låg 2 px isär.
+- **Outfit självhostad.** En Google Fonts-request per öppning läcker till Google att en namngiven
+  kund tittat på sin offert.
+- `body{padding-bottom}` följer nu `env(safe-area-inset-bottom)`; baren mäter 71–100 px.
+
+### Invändningar jag INTE åtgärdade, och varför
+
+- **Express-samtycket.** Den adversariella granskningen kallar det sidans värsta fel och en
+  no-go-grind: kunden kan välja Express, få jobbet gjort på 24 timmar och ångra sig inom 14 dagar.
+  Du beslutade 2026-08-17 att villkoret bor i köpvillkoren. Beslutet står, risken är loggad här.
+- **Elavtal och delbetalning bort.** Båda föreslogs strykas eftersom parterna inte är valda. Du
+  har uttryckligen bett om dem; de är kvar och gated.
+- **Serviceavtalet ned till ≤10 % av sidan.** Det är 30 %. Du bad om en egen sektion »likt
+  Därför kan du känna dig trygg«. Chip-städningen tar bort det som fick den att läsa som ofärdig.
+- **`#5eb1bf` i knappgradienten** flaggades som en uppfunnen färg utanför tokens. Den kommer ur
+  `CTA button documentation/delivery/ampy-cta-buttons.css` — det är produktionens egen CTA-gradient.
+  Falskt positivt.
+- **Antalet Google-omdömen.** Två agenter uppgav olika tal (16 respektive 27). Kortet visar
+  »5 av 5 · Betyg på Google« precis som den ägargodkända energikalkylator-komponenten. Behöver
+  ett aktuellt tal från dig innan det byggs ut.
