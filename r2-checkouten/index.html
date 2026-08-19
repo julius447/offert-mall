@@ -162,7 +162,7 @@
   <header class="of-top co-top">
     <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
     <div class="of-top__meta">
-      <span class="of-pill" data-oa="offert.referens">Offert #2026-0187</span>
+      <span class="of-pill">Offert <span data-oa="offert.referens">#2026-0187</span></span>
       <span class="of-top__valid" data-oa="offert.giltig_till_kort">Gäller t.o.m. 16 sep 2026</span>
     </div>
   </header>
@@ -170,7 +170,7 @@
   <!-- Utgången offert: den befintliga rutan låg 79 % ner i dokumentet, efter att
        kunden konfigurerat färdigt. Samma besked högst upp, före allt annat. -->
   <div class="of-expired" role="status" style="margin-top:16px;">
-    Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+    Den här offerten gick ut den <span data-oa="offert.gick_ut_lang">16 september 2026</span> och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
   </div>
 
   <main class="co-layout" id="innehall">
@@ -483,7 +483,7 @@
       </div>
 
       <div class="of-expired" style="margin-top:14px;" role="status">
-        Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+        Den här offerten gick ut den <span data-oa="offert.gick_ut_lang">16 september 2026</span> och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
       </div>
 
       <div class="of-accept">
@@ -513,7 +513,7 @@
             </div>
             <label for="decline-text" class="sr-only">Något mer du vill säga (frivilligt)</label>
             <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
-            <button class="of-btn-send" type="button">
+            <button class="of-btn-send" type="button" data-send-decline>
               <span>Avböj offerten</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
             </button>

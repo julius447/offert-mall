@@ -15,6 +15,13 @@
   var ADDON_PRICES = { timme: 850 }; // EXEMPEL — GAP-G2. Garantin flyttad till serviceavtalet.
   var SVC_MONTHLY = 149;             // kr/mån — ägarsatt, [FELIX] godkänner innehållet
 
+  // Bokarens namn behövs även i JS-genererade strängar. Samma nyckel som
+  // markupens fem [data-oa="bokare.namn"], så det aldrig kan glida isär.
+  function bokare() {
+    var d = window.AMPY_OFFER || {};
+    return d["bokare.namn"] || "[Bokare]";
+  }
+
   function kr(n) {
     return n.toLocaleString("sv-SE").replace(/ /g, " ") + " kr";
   }
@@ -286,11 +293,11 @@
         // Tom ruta kvitterades som skickad: kunden väntade på ett svar som
         // aldrig kunde komma.
         if (!falt || !falt.value.trim()) {
-          if (hint) hint.textContent = "Skriv din fråga eller ändring i rutan först, så går den till [Bokare].";
+          if (hint) hint.textContent = "Skriv din fråga eller ändring i rutan först, så går den till " + bokare() + ".";
           if (falt) falt.focus();
           return;
         }
-        if (hint) hint.textContent = "Skickat till [Bokare]. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
+        if (hint) hint.textContent = "Skickat till " + bokare() + ". Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
         sendBtn.disabled = true;
         falt.readOnly = true;
         // Panelen är avklarad: bottenbaren ska inte längre hållas nere av den.
@@ -302,13 +309,29 @@
   // Felmeddelande. Saknades helt; utan en kanonisk sträng uppfinns den i
   // produktion när backend kopplas in. Voice-kanon: säg vad som hände och ge
   // en väg vidare, aldrig bara "något gick fel".
+  /* Publikt läsläge. Utan det här måste den som bygger integrationen gissa
+     DOM-selektorer inifrån den här filen för att kunna skicka med kundens val.
+     Returnerar alltid samma form, även när "Forma ditt köp" är avstängd. */
+  window.ampyOfferState = function () {
+    var t = document.querySelector('input[name="tid"]:checked');
+    var svc = document.querySelector('input[name="svc"]:checked');
+    return {
+      tid: t ? t.value : null,
+      tillagg: addonInputs.filter(function (i) { return i.checked; })
+                          .map(function (i) { return i.getAttribute("data-addon"); }),
+      serviceavtal: svc ? svc.value : null,
+      totalbelopp: total(),
+      referens: (document.querySelector('[data-oa="offert.referens"]') || {}).textContent || null
+    };
+  };
+
   window.ampyOfferError = function (el) {
     if (el) el.textContent = "Vi kunde inte skicka just nu. Ring oss på 010-265 79 79 så tar vi det direkt.";
   };
 
   // "Tacka nej"-vägen (GAP-N1 — ritas i Riktning 3)
   // Avböj: "Skicka svar" tar kunden till avböjd-sidan.
-  var declineSend = document.querySelector("#decline-panel .of-btn-send");
+  var declineSend = document.querySelector("[data-send-decline]");
   if (declineSend) {
     declineSend.addEventListener("click", function (e) {
       e.preventDefault();
@@ -355,10 +378,12 @@
   if (/[?&]gaps=1/.test(location.search)) document.body.classList.add("show-gaps");
 
   // utgången offert — demo via ?expired=1 (§4.10)
-  if (/[?&]expired=1/.test(location.search)) {
-    document.body.classList.add("is-expired");
+  if (/[?&]expired=1/.test(location.search)) document.body.classList.add("is-expired");
+  if (document.body.classList.contains("is-expired")) {
     // Huvudet sa "Gäller t.o.m. 16 sep 2026" samtidigt som rutan längre ner
     // sa att offerten gått ut samma datum: två motsatta besked.
+    // Utan detta står "Gäller t.o.m. X" kvar i huvudet samtidigt som rutan
+    // säger att offerten gått ut: två motsatta besked om samma datum.
     var giltig = document.querySelector(".of-top__valid");
     var d0 = window.AMPY_OFFER || {};
     if (giltig) giltig.textContent = d0["offert.gick_ut_kort"] || "Gick ut 16 sep 2026";

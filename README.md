@@ -571,3 +571,44 @@ Agaren bekraftade 2026-08-19: strangen ar **"5 av 5 i betyg pa Google"** pa bada
 
 Slutmatning: 65/65 kontroller, 0 konsolfel pa sex sidtillstand, 0 horisontellt overflode
 320-1920, 0 tankstreck i kundvand text.
+
+---
+
+## v7.6 — overlamning till Yassine
+
+Fyra uttommande inventeringar (datakontrakt, integrationer, filer/drift, QA) plus tva
+granskare som lasta det fardiga dokumentet mot koden. Granskningen hittade fem
+BLOCKERANDE brister, alla i koden snarare an i texten. Alla ar atgardade i koden.
+
+### Injektionslagret, som saknades helt
+Offertsidan hade noll datakrokar: varje varde var hardkodad text. Fyra deklarativa hookar
+nu, alla i markupen. `window.AMPY_OFFER` -> hela sidan. Listorna renderas av koden
+eftersom arbetsbeskrivningens `<li>` ar en tvakolumnsgrid, och utan ratt wrapper hamnar
+beskrivningen i den 26 px breda ikonkolumnen. All text satts med textContent.
+
+### De fem blockerande fynden
+1. **Utgangstriggern fungerade inte skarpt.** `offert.gick_ut_kort` lastes bara inuti
+   `?expired=1`-grenen, och datumet i de tva rutorna var hardkodat. En kund vars offert
+   gick ut 3 oktober hade last "gick ut 16 september 2026" samtidigt som huvudet sa
+   "Galler t.o.m.". Alla tre ledden rattade; verifierat med `ar_utgangen: true`.
+2. **En nyckel, tva vardeformat.** Offertsidans pill bar hela strangen `Offert #2026-0187`
+   medan landningssidorna bar ordet i markupen. Samma varde till alla tre gav
+   "Offert Offert #2026-0421" pa bekraftelsesidan. Normaliserat i markupen.
+3. **Accepterad-sidan hade `[Bokare]` utan hook.** Kunden som just accepterat hade last
+   "[Bokare] ringer och bokar tid".
+4. **Tva `[Bokare]` lag i JS-genererade strangar** och nadde aldrig nyckeln. Kvittensen
+   pa en stalld fraga hade visat platshallaren.
+5. **Kundens val gick inte att lasa utifran.** Allt lag inuti en IIFE.
+   `window.ampyOfferState()` returnerar nu tid, tillagg, serviceavtal, totalbelopp och
+   referens i samma form aven nar "Forma ditt kop" ar avstangd.
+
+Verifierat med full payload: noll kvarvarande platshallare pa alla tre sidorna.
+
+### Leveranser
+- `HANDOVER.md` (engelska): datakontrakt, listformer, CRM-toggeln, integrationer med
+  forslag pa API-form, drift, designsystemets granser, korbar acceptanschecklista, tolv
+  fallor som redan uppstatt har, nio oppna fragor.
+- `exempel-integration.html`: tvapanelsharness for datakontraktet.
+- Hela kundflodet i ett repo: `r2-checkouten/`, `offert-accepterad/`, `offert-avbojd/`.
+
+66/66 kontroller, 0 konsolfel pa sex sidtillstand.
