@@ -244,7 +244,11 @@
       </section>
 
       <!-- 3 · forma ditt köp -->
-      <section class="co-card" aria-labelledby="shape-h">
+      <!-- VALFRI SEKTION. Styrs av CRM-fältet offert.forma_ditt_kop (bool,
+           default TRUE). Är den false tas hela sektionen bort ur DOM:en av
+           offer-logic.js, och med den både tidsvalen och tillägget.
+           Demo: lägg till ?forma=0 i URL:en. -->
+      <section class="co-card" aria-labelledby="shape-h" data-section="forma">
         <h2 class="of-h2" id="shape-h">Forma ditt köp</h2>
         <h3 class="of-h3">När vill du ha jobbet gjort?</h3>
         <div class="of-tiers" role="radiogroup" aria-label="Installationstid">
@@ -527,11 +531,7 @@
           </summary>
           <div class="l-body">
             <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
-            <!-- [GAP] URL till Ampys allmänna köpvillkor saknas. Tills den är satt
-                 renderas raden som TEXT: en teal understruken länk som inte gör
-                 något är en död träffyta på 174x44 px mitt i villkorsrutan.
-                 När URL:en finns: <a class="of-terms-link" href="..."> utan onclick. -->
-            <p><span class="of-terms-link is-gap">Läs våra allmänna köpvillkor</span><span class="of-gap of-gap--note">GAP: URL</span></p>
+            <p><a class="of-terms-link" href="https://ampy.se/kopvillkor" target="_blank" rel="noopener">Läs våra allmänna köpvillkor</a></p>
           </div>
         </details>
 

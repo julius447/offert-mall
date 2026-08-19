@@ -19,6 +19,24 @@
     return n.toLocaleString("sv-SE").replace(/ /g, " ") + " kr";
   }
 
+  // "Forma ditt köp" är valfri per offert. CRM-fältet offert.forma_ditt_kop är
+  // en toggle som står PÅ som standard; slås den av ska hela sektionen bort,
+  // inklusive tidsvalen och tillägget. Sektionen tas bort ur DOM:en, inte bara
+  // döljs: en dold radiogroup ligger kvar i tab-ordningen och i kvittot.
+  // Ordningen spelar roll — detta körs FÖRE render() så totalen räknas utan dem.
+  (function () {
+    var pa = !/[?&]forma=0/.test(location.search);
+    var d = window.AMPY_OFFER;
+    if (d && typeof d["offert.forma_ditt_kop"] === "boolean") pa = d["offert.forma_ditt_kop"];
+    if (pa) return;
+    var sek = document.querySelector('[data-section="forma"]');
+    if (sek) sek.remove();
+    // Kvittoraderna för tidsnivå och tillägg hör till sektionen.
+    Array.prototype.forEach.call(
+      document.querySelectorAll("[data-tier-row], [data-addon-row]"),
+      function (r) { r.remove(); });
+  })();
+
   var tierInputs = Array.prototype.slice.call(document.querySelectorAll('input[name="tid"]'));
   var addonInputs = Array.prototype.slice.call(document.querySelectorAll('input[data-addon]'));
   var acceptBtns = Array.prototype.slice.call(document.querySelectorAll("[data-accept]"));
