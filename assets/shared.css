@@ -105,15 +105,12 @@ a { -webkit-tap-highlight-color: transparent; }
   font-variant-numeric: tabular-nums;
 }
 .of-top__valid { font-size: 12.5px; font-weight: 400; color: var(--muted); white-space: nowrap; }
-.of-top__valid .v-short { display: none; }
 @media (max-width: 480px) {
-  .of-top { min-height: 56px; padding: 0 16px; gap: 10px; }
+  .of-top { min-height: 56px; padding: 0 14px; gap: 8px; }
   .of-top__logo { height: 20px; }
   .of-top__meta { gap: 8px; }
   .of-pill { font-size: 12px; padding: 4px 10px; }
-  .of-top__valid { font-size: 11.5px; }
-  .of-top__valid .v-long { display: none; }
-  .of-top__valid .v-short { display: inline; }
+  .of-top__valid { font-size: 11px; }
 }
 
 /* ---------- hälsning ---------- */
@@ -413,12 +410,15 @@ a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 620px) {
   .of-svc__price { text-align: left; padding-left: 0; margin-top: 4px; }
 }
-.of-svc__price .p-amt {
-  display: block; font-size: clamp(26px, 1.8vw, 32px); font-weight: 700;
-  letter-spacing: -.02em; line-height: 1; color: var(--navy); font-variant-numeric: tabular-nums;
+.of-svc__price .p-label {
+  display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--faint); margin-bottom: 6px;
 }
-.of-svc__price .p-per { display: block; margin-top: 4px; font-size: 13px; font-weight: 500; color: var(--muted); }
-.of-svc__price .p-cancel { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 400; color: var(--faint); }
+.of-svc__price .p-amt {
+  display: block; font-size: clamp(24px, 1.6vw, 29px); font-weight: 700;
+  letter-spacing: -.02em; line-height: 1; color: var(--navy); font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 
 /* värdeankaret — gratis elbesiktning */
 .of-svc__anchor {
@@ -437,11 +437,10 @@ a { -webkit-tap-highlight-color: transparent; }
   display: grid; grid-template-columns: 1fr; gap: 12px 26px;
 }
 @media (min-width: 620px) { .of-svc__list { grid-template-columns: 1fr 1fr; } }
-.of-svc__list li { display: grid; grid-template-columns: 22px 1fr; gap: 11px; align-items: start; }
+.of-svc__list li { display: grid; grid-template-columns: 22px 1fr; gap: 11px; align-items: center; }
 .of-svc__list .l-check { width: 22px; height: 22px; border-radius: 50%; background: var(--teal-soft); display: grid; place-items: center; margin-top: 1px; }
 .of-svc__list .l-check svg { width: 12px; height: 12px; fill: none; stroke: var(--teal-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.of-svc__list .l-txt { font-size: 14.5px; font-weight: 500; color: var(--ink); line-height: 1.4; }
-.of-svc__list .l-txt small { display: block; font-size: 13px; font-weight: 300; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+.of-svc__list .l-txt { font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.4; }
 
 
 /* teckna-kontrollen */
@@ -803,3 +802,67 @@ body.show-gaps .of-gap--note { display: inline-block; }
   background: rgba(246,181,61,.14); border: 1px solid rgba(246,181,61,.42);
   font-size: 13px; font-weight: 600; color: #7a5512; line-height: 1.45;
 }
+
+/* Skicka-knappen: var en outline-knapp identisk med "Fråga eller ändra något",
+   så det gick inte att se vilken som var handlingen. Nu fylld navy med pil —
+   tydligt primär inuti panelen, men aldrig teal (teal är accept-knappens ensamma
+   färg på sidan). */
+.of-btn-send {
+  margin-top: 12px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 12px 22px; border-radius: 14px; border: 0;
+  font-family: inherit; font-size: 15.5px; font-weight: 600; line-height: 1.2;
+  color: #fff; background: var(--navy); cursor: pointer;
+  box-shadow: 0 6px 16px -6px rgba(9,11,50,.45);
+  transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s var(--ease);
+}
+.of-btn-send svg { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex: none; transition: transform .16s var(--ease); }
+.of-btn-send:hover { background: #12174a; transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(9,11,50,.5); }
+.of-btn-send:hover svg { transform: translateX(3px); }
+.of-btn-send:active { transform: translateY(0); }
+
+/* Serviceavtalets tre val: en rad var, ingen beskrivningstext. Etiketten och
+   priset ligger på samma rad med kontrollen. */
+.of-svc__optin .of-addon label { grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; }
+.of-svc__optin .of-addon .a-name { font-size: 16px; }
+.of-svc__optin .of-addon .a-price { font-size: 15px; font-weight: 700; color: var(--navy); }
+@media (max-width: 560px) {
+  .of-svc__optin .of-addon label { grid-template-columns: 24px minmax(0, 1fr) auto; }
+  .of-svc__optin .of-addon .a-price { grid-column: auto; margin-top: 0; }
+}
+
+/* =========================================================================
+   PROCESSTEGEN — förloppsringen, portad från ROT/grön teknik/hemförsäkrings-
+   blocket (rot-gt-cro/designs/hemforsakring.html, "VARIANT F", ägarval
+   2026-08-17). Bågen fylls 1/3 → 2/3 → sluten och ligger i samma spår som
+   connectorn, så märke och linje blir en idé. Ingen fylld platta; siffran
+   står ensam i navy 500.
+   ========================================================================= */
+.of-steps--arc { --sgap: 28px; gap: var(--sgap); width: 100%; }
+.of-steps--arc .of-step { --nsz: 46px; display: grid; grid-template-columns: var(--nsz) 1fr; column-gap: 16px; align-items: center; position: relative; }
+.of-steps--arc .n {
+  width: var(--nsz); height: var(--nsz); border-radius: 50%;
+  background: none; color: var(--navy);
+  font-weight: 500; font-size: 17px; line-height: 1;
+  display: grid; place-items: center; position: relative; z-index: 1;
+  font-variant-numeric: tabular-nums;
+}
+.of-steps--arc .n .mark { position: absolute; inset: 0; width: 100%; height: 100%; }
+.of-steps--arc .n .mark .trk { stroke: rgba(0,169,145,.20); stroke-width: 1.5; }
+.of-steps--arc .n .mark .arc { stroke: var(--teal); stroke-width: 3; }
+.of-steps--arc .n .d { position: relative; z-index: 1; }
+.of-steps--arc .of-step h3 { font-size: clamp(16px, .4vw + 15px, 18px); font-weight: 500; line-height: 1.3; letter-spacing: -.01em; color: var(--ink); }
+.of-steps--arc .of-step:not(:last-child)::before {
+  content: ""; position: absolute; left: calc(var(--nsz) / 2 - 1px);
+  top: calc(var(--nsz) + 4px); bottom: calc(-1 * (var(--sgap) - 4px));
+  border-left: 2px solid rgba(0,169,145,.20);
+}
+@media (max-width: 560px) { .of-steps--arc { --sgap: 24px; } .of-steps--arc .of-step { --nsz: 40px; column-gap: 14px; } .of-steps--arc .n { font-size: 15px; } }
+
+/* villkorsexpandern: bokarens unika text + länk till allmänna villkor */
+.of-legal .l-unique {
+  padding: 12px 14px; border-radius: var(--r-md);
+  background: rgba(11,16,48,.035); border: 1px dashed var(--line-soft);
+  color: var(--muted);
+}
+.of-terms-link { color: var(--teal-link); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 10px 0; min-height: 44px; }

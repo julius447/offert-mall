@@ -31,19 +31,17 @@
       .co-layout { grid-template-columns: minmax(0, 1fr) clamp(420px, 34vw, 470px); }
       .co-a { grid-column: 1; grid-row: 1; }
       .co-b { grid-column: 1; grid-row: 2; }
-      /* Panelen får aldrig växa förbi viken. Med Express + tillval blev den
-         953px hög och accept-knappen låg permanent 160px under kanten på en
-         1280×800-laptop. Nu scrollar panelens innehåll och acceptzonen ligger
-         fast i botten av panelen. */
+      /* Panelen följer med i scroll men får växa fritt.
+         TIDIGARE BUGG: panelen hade max-height + intern scroll, och acceptzonen
+         var position:sticky;bottom:0. Eftersom acceptzonen även innehåller
+         utfällningspanelerna för "Fråga eller ändra något" och "Avböj offert"
+         växte det sticky-blocket när de öppnades och lade sig OVANPÅ totalen —
+         hela panelen blev oläslig. Ingen intern scroll, ingen inre sticky:
+         blir panelen högre än viken scrollar den med sidan, vilket aldrig
+         kan överlappa något. */
       .co-panel {
         grid-column: 2; grid-row: 1 / span 2; align-self: start;
         position: sticky; top: 24px;
-        max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain;
-      }
-      .co-panel .of-accept {
-        position: sticky; bottom: 0;
-        background: #fff; padding-top: 16px; margin-bottom: -4px;
-        box-shadow: 0 -12px 16px -8px rgba(255,255,255,.98);
       }
     }
     /* Under tvåspalten ska panelen inte bli en 690px lång prickrad.
@@ -109,7 +107,7 @@
     <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
     <div class="of-top__meta">
       <span class="of-pill">Offert #2026-0187</span>
-      <span class="of-top__valid"><span class="v-long">Gäller t.o.m. 31 augusti 2026</span><span class="v-short">T.o.m. 31 aug</span></span>
+      <span class="of-top__valid">Gäller t.o.m. 16 sep 2026</span>
     </div>
   </header>
 
@@ -164,7 +162,7 @@
         </ul>
         <details class="of-material co-sub">
           <summary>
-            Material som ingår <span class="m-count">9 poster</span>
+            Material som ingår
             <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <ul>
@@ -193,7 +191,6 @@
               <span>
                 <span class="t-name">Express</span>
                 <span class="t-date">24 till 48 timmar</span>
-                <span class="t-why">Du får en garanterad dag och en elektriker prioriteras till ditt jobb.</span>
               </span>
               <span class="t-price">+1 000 kr</span>
             </label>
@@ -205,7 +202,6 @@
               <span>
                 <span class="t-name">Prioritet</span>
                 <span class="t-date">2 till 5 dagar</span>
-                <span class="t-why">Garanterad dag inom tre dygn, när det är bråttom men inte akut.</span>
               </span>
               <span class="t-price">+700 kr</span>
             </label>
@@ -217,7 +213,6 @@
               <span>
                 <span class="t-name">Standard</span>
                 <span class="t-date">5 till 14 dagar</span>
-                <span class="t-why">Vi ringer och bokar en tid som passar dig, utan extra kostnad.</span>
               </span>
               <span class="t-price free">+0 kr</span>
             </label>
@@ -249,7 +244,7 @@
          kvittot och accepten då direkt efter "Forma ditt köp" i stället för sist
          av allt (uppmätt defekt i v1 — 58 % av kunderna är på mobil). -->
     <aside class="co-panel of-receipt" id="summering" aria-labelledby="price-h">
-      <h2 class="p-cap" id="price-h">Din summering <span class="fastpris-pill">Fast pris</span></h2>
+      <h2 class="p-cap" id="price-h">Din summering</h2>
 
       <div class="r-row">
         <span class="lbl">Byte av elcentral</span>
@@ -278,27 +273,30 @@
         <span>Behöver vi göra något utöver offerten frågar vi dig först. Alltid.</span>
       </p>
 
-      <!-- serviceavtalets månadskostnad: ALDRIG inne i engångstotalen -->
+      <!-- Serviceavtalet är en intresseanmälan, inte en post i summan. Egen yta,
+           eget språk, aldrig ett plustecken och aldrig inne i engångstotalen. -->
       <div class="r-monthly" data-monthly>
         <div class="m-top">
-          <span class="m-label">Därutöver, månadsvis</span>
+          <span class="m-label">Serviceavtal</span>
           <span class="m-amt">149 kr/mån</span>
         </div>
-        <p class="m-note">Serviceavtal, eget avtal som faktureras separat. Ingår inte i beloppet ovan.</p>
+        <p class="m-note">Du binder dig inte här. Marcus går igenom villkoren med dig innan något signeras.</p>
       </div>
 
       <div class="of-expired" style="margin-top:14px;" role="status">
-        Den här offerten gick ut den 31 augusti 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+        Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
       </div>
 
       <div class="of-accept">
-        <button class="of-btn-primary" type="button" data-accept aria-disabled="false" aria-describedby="payline">Acceptera offert</button>
-        <p class="of-payline" id="payline">Beställning med betalningsskyldighet · Totalt <strong data-total>11 900 kr</strong> inkl. moms</p>
+        <button class="of-btn-primary" type="button" data-accept aria-disabled="false">Acceptera offert</button>
           <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Fråga eller ändra något</button>
           <div class="of-change" id="change-panel">
-            <label for="change-text" class="c-hint" style="display:block;margin-bottom:6px;">Beskriv vad du vill ändra eller undrar över. Offerten ligger kvar oförändrad tills vi återkommer.</label>
+            <label for="change-text" class="sr-only">Din fråga eller ändring</label>
             <textarea id="change-text" placeholder="Till exempel: Kan ni även dra fram ett uttag i garaget?"></textarea>
-            <button class="of-btn-secondary c-send" type="button" data-send-change>Skicka till Marcus</button>
+            <button class="of-btn-send" type="button" data-send-change>
+              <span>Skicka till Marcus</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+            </button>
             <p class="c-hint" role="status"></p>
           </div>
           <p class="of-phone">Hellre prata? Ring <a href="tel:+46102657979">010-265 79 79</a></p>
@@ -316,7 +314,10 @@
               <label><input type="radio" name="avbojskal" value="prata"> Jag vill prata med någon först</label>
             </div>
             <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
-            <button class="of-btn-secondary c-send" type="button">Skicka och avsluta ärendet</button>
+            <button class="of-btn-send" type="button">
+              <span>Skicka svar</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+            </button>
             <p class="c-hint">Offerten ligger kvar och du kan öppna den igen om du ändrar dig.</p>
           </div>
       </div>
@@ -360,76 +361,37 @@
 
       <!-- 5 · serviceavtalet — egen sektion, allt innehåll [FELIX]-gated -->
       <section class="co-card of-svc" aria-labelledby="svc-h">
-        <p class="of-draftband">Utkast. Serviceavtalets innehåll och villkor är inte beslutade än.</p>
+        <p class="of-draftband">Serviceavtalet är nytt hos oss. Väljer du det här är det en intresseanmälan, inte en signering.</p>
         <div class="of-svc__head">
           <div class="of-svc__title">
-            <p class="of-eyebrow" style="margin-bottom:10px;">Serviceavtal · 149 kr/mån</p>
-            <h2 id="svc-h">En elcentral är ny en gång</h2>
-            <p>Sedan går det år innan någon tittar på den igen. Med serviceavtal kommer vi tillbaka vartannat år och går igenom anläggningen. Du får ett protokoll, och en elektriker som redan känner ditt hus när något händer.</p>
+            <h2 id="svc-h">Serviceavtal</h2>
+            <p>Ett löpande avtal för dig som vill att någon håller koll på elen även när inget är trasigt. Vi kommer tillbaka med jämna mellanrum, kontrollerar anläggningen och finns närmare till hands när något händer. Passar dig som äger ditt hem och vill slippa hålla reda på det själv.</p>
           </div>
           <div class="of-svc__price">
-            <span class="p-amt">149 kr</span>
-            <span class="p-per">per månad · 1 788 kr per år</span>
-            <span class="p-cancel">Ingen bindningstid <span class="of-gap of-gap--note">[FELIX]</span></span>
+            <span class="p-label">Pris</span>
+            <span class="p-amt">149 kr/mån</span>
           </div>
         </div>
 
-        <!-- Formuleringen är medvetet "ingår", inte "gratis": en förmån som kräver
-             att du betalar 149 kr/mån är inte gratis, och forskningen (Raghubir 2004)
-             visar dessutom att gratisgåvor VÄRDERAS LÄGRE. Ett eget, verifierbart
-             styckepris är starkare än ett påklistrat värdeankare. -->
         <div class="of-svc__anchor">
           <span class="a-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-          <span class="a-txt"><strong>Din första elbesiktning ingår, och vi gör den i samband med installationen.</strong> Du slipper ett separat besök. Samma besiktning kostar 1 500 kr om du beställer den fristående av oss. <span class="of-gap of-gap--note">[FELIX] styckepriset måste finnas på riktigt</span></span>
+          <span class="a-txt"><strong>Din första elbesiktning ingår.</strong> Vi gör den i samband med installationen, så du slipper ett separat besök. Samma besiktning kostar 2 000 kr om du beställer den fristående av oss.</span>
         </div>
 
         <ul class="of-svc__list">
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Elbesiktning vartannat år<small>En behörig elektriker går igenom anläggningen och du får ett protokoll. <span class="of-gap of-gap--note">[FELIX] intervallet bär kalkylen</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Intyg på jordfelsbrytare<small>Vi testar dina jordfelsbrytare och du får ett intyg. Länsförsäkringar ger 10 % rabatt på villaförsäkringen mot intyg. <span class="of-gap of-gap--note">[FELIX]</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Förlängd garanti på utfört arbete<small>Gäller så länge avtalet löper. <span class="of-gap of-gap--note">[FELIX] längd</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Lägre timpris på kommande jobb<small>Avtalskunder betalar [X] kr/tim mot [Y] kr/tim utan avtal. <span class="of-gap of-gap--note">[FELIX] satser: konkret timpris säljer bättre än en procentsats</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Förtur i bokningen<small>Avtalskunder går före när kalendern är full. <span class="of-gap of-gap--note">[FELIX]</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Jourutryckning ingår<small>Utan avtal kostar en jourutryckning från 1 600 kr. <span class="of-gap of-gap--note">[FELIX] antal per år</span></small></span>
-          </li>
-          <li>
-            <span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span class="l-txt">Felanmälan dygnet runt<small>Du når oss när som helst. Åtgärd sker vardagar om det inte är akut. <span class="of-gap of-gap--note">[FELIX] lova mottagning, inte utförande</span></small></span>
-          </li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Elbesiktning vartannat år</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förlängd produktgaranti på utfört arbete, 5 år</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förtur i bokningen utan extra kostnad</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Intyg på jordfelsbrytare</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Lägre timpris på kommande jobb: 150 kr/tim mot 850 kr/tim, efter ROT</span></li>
         </ul>
 
-        <!-- TVÅ vägar, ingen förvald. Den andra vägen finns för att researchen är
-             tydlig: ett avtal som stängs av elektrikern på plats tecknas 4-6× oftare
-             än ett som stängs i ett webbformulär. Den som inte vill bestämma nu ska
-             kunna säga "hör av er" utan att tappa erbjudandet. -->
-        <!-- Var två oberoende kryssrutor: båda kunde kryssas samtidigt, och
-             "berätta mer" var inte kopplad till någon logik alls. Nu tre
-             ömsesidigt uteslutande val, inget förvalt (AVLK 13 §). -->
         <div class="of-svc__optin of-addons" role="radiogroup" aria-label="Serviceavtal">
           <div class="of-addon">
             <input type="radio" name="svc" value="ja" id="svc-optin">
             <label for="svc-optin">
               <span class="a-box a-radio" aria-hidden="true"></span>
-              <span>
-                <span class="a-name">Ja, teckna serviceavtal</span>
-                <span class="a-desc">149 kr per månad. Första elbesiktningen ingår.</span>
-              </span>
+              <span class="a-name">Ja, teckna serviceavtal</span>
               <span class="a-price">149 kr/mån</span>
             </label>
           </div>
@@ -437,72 +399,54 @@
             <input type="radio" name="svc" value="senare" id="svc-later">
             <label for="svc-later">
               <span class="a-box a-radio" aria-hidden="true"></span>
-              <span>
-                <span class="a-name">Berätta mer när jobbet är klart</span>
-                <span class="a-desc">Marcus tar upp det på plats. Du binder dig inte till något nu och priset för installationen påverkas inte.</span>
-              </span>
-              <span class="a-price" style="font-weight:500;color:var(--muted);">0 kr</span>
+              <span class="a-name">Berätta mer när jobbet är klart</span>
+              <span class="a-price"></span>
             </label>
           </div>
           <div class="of-addon">
             <input type="radio" name="svc" value="nej" id="svc-no">
             <label for="svc-no">
               <span class="a-box a-radio" aria-hidden="true"></span>
-              <span>
-                <span class="a-name">Inte aktuellt för mig</span>
-                <span class="a-desc">Vi tar inte upp det igen.</span>
-              </span>
-              <span class="a-price" style="font-weight:500;color:var(--muted);">0 kr</span>
+              <span class="a-name">Inte aktuellt för mig</span>
+              <span class="a-price"></span>
             </label>
           </div>
-          <p class="of-svc__ack" data-svc-ack role="status"></p>
         </div>
-        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Fullständiga villkor, bindningstid och uppsägning skrivs av jurist. Ingen del av serviceavtalet är beslutad än. Din offert på byte av elcentral gäller som den står. <span class="of-gap of-gap--note">[FELIX] UTKAST</span></p>
+        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Vid accept kommer Marcus höra av sig till dig för genomgång av villkor innan signering.</p>
       </section>
 
       <!-- 6 · villkor, ändring, avböj, nästa steg -->
       <section class="co-card" aria-labelledby="legal-h">
-        <h2 class="of-h2" id="legal-h">Villkor och ångerrätt</h2>
+        <h2 class="of-h2" id="legal-h">Villkor och process</h2>
         <details class="of-legal">
           <summary>
-            Villkor för uppdraget <span class="jurist-tag of-gap--note">[JURIST]</span>
+            Villkor för uppdraget
             <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
-            <p>[JURIST] Fullständiga villkor baserade på Hantverkarformuläret 17: betalning och fakturering, ROT-hantering och din försäkran om ägande, tider och avbokning, garanti och reklamation, försäkring.</p>
-            <p>De villkor som väger tyngst står redan öppet på sidan: att ROT-avdraget är preliminärt, och att vi frågar dig innan vi gör något utöver offerten.</p>
-            <span class="l-version">Villkorsversion: 2026-08-17-mockup · versionsstämplas per offert</span>
+            <p>Fast pris enligt offerten. Behöver vi göra något utöver det som står här frågar vi dig först.</p>
+            <p>Arbetet utförs av behörig elektriker och dokumenteras. ROT-avdraget hanterar vi mot Skatteverket åt dig.</p>
+            <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
+            <p><a class="of-terms-link" href="#" onclick="return false;">Läs våra allmänna köpvillkor</a></p>
           </div>
         </details>
-        <details class="of-legal">
-          <summary>
-            Din ångerrätt, 14 dagar <span class="jurist-tag of-gap--note">[JURIST]</span>
-            <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-          </summary>
-          <div class="l-body">
-            <p>Du har 14 dagars ångerrätt från accepten. [JURIST] Fullständig ångerrättsinformation och Konsumentverkets standardformulär tillhandahålls här före accept.</p>
-            <p>Efter accept finns en tydligt märkt funktion »Ångra köp« här på sidan och i din bekräftelse. Du ska aldrig behöva leta.</p>
-          </div>
-        </details>
-
 
         <div class="co-sub">
           <h3 class="of-eyebrow">Vad händer när du accepterat</h3>
-          <ol class="of-steps">
-            <li class="of-step">
-              <span class="of-node" aria-hidden="true"><span>1</span></span>
-              <span class="of-step-text">Du får en bekräftelse direkt<small>Hela offerten, villkoren och ångerinformationen på mejl.</small></span>
-            </li>
-            <li class="of-step">
-              <span class="of-node" aria-hidden="true"><span>2</span></span>
-              <span class="of-step-text">Marcus ringer och bokar tid<small>Vi hör av oss inom 24 timmar.</small></span>
-            </li>
-            <li class="of-step">
-              <span class="of-node" aria-hidden="true"><span>3</span></span>
-              <span class="of-step-text">En behörig elektriker utför arbetet<small>På avtalad tid, till fast pris.</small></span>
-            </li>
+          <ol class="of-steps of-steps--arc">
+          <li class="of-step">
+            <span class="n" aria-hidden="true"><svg class="mark" viewBox="0 0 48 48" fill="none"><circle class="trk" cx="24" cy="24" r="22" stroke-width="2"/><circle class="arc" cx="24" cy="24" r="22" stroke-width="2" stroke-linecap="round" stroke-dasharray="46.08 92.15" transform="rotate(-90 24 24)"/></svg><span class="d">1</span></span>
+            <h3>Du får en bekräftelse direkt</h3>
+          </li>
+          <li class="of-step">
+            <span class="n" aria-hidden="true"><svg class="mark" viewBox="0 0 48 48" fill="none"><circle class="trk" cx="24" cy="24" r="22" stroke-width="2"/><circle class="arc" cx="24" cy="24" r="22" stroke-width="2" stroke-linecap="round" stroke-dasharray="92.15 46.08" transform="rotate(-90 24 24)"/></svg><span class="d">2</span></span>
+            <h3>Marcus ringer och bokar tid</h3>
+          </li>
+          <li class="of-step">
+            <span class="n" aria-hidden="true"><svg class="mark" viewBox="0 0 48 48" fill="none"><circle class="trk" cx="24" cy="24" r="22" stroke-width="2"/><circle class="arc" cx="24" cy="24" r="22" stroke-width="2" stroke-linecap="round" stroke-dasharray="138.23 0.00" transform="rotate(-90 24 24)"/></svg><span class="d">3</span></span>
+            <h3>En behörig elektriker utför arbetet</h3>
+          </li>
           </ol>
-          <p style="margin-top:18px;"><a href="#" class="of-verify" style="font-size:13.5px;" onclick="return false;">Ladda ner offerten som PDF</a></p>
         </div>
       </section>
     </div>
@@ -511,12 +455,6 @@
 
   <footer class="of-foot">
     Ampy Nordic AB · Org.nr 559254-9819 · <a href="tel:+46102657979" class="nb">010-265 79 79</a>
-    <div class="f-links">
-      <a href="#" onclick="return false;">Köpvillkor</a>
-      <a href="#" onclick="return false;">Ångerrätt och ångerformulär</a>
-      <a class="f-angra" href="#" onclick="return false;">Ångra köp</a>
-      <a href="#" onclick="return false;">Integritetspolicy</a>
-    </div>
   </footer>
 </div>
 
@@ -530,19 +468,15 @@
   <a class="of-btn-primary" href="#summering">Granska och acceptera</a>
 </div>
 
-<!-- bekräftelsemock: visar ångerknappens plats -->
-<div class="of-confirm-backdrop" id="confirm-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
-  <div class="of-confirm" tabindex="-1">
-    <h2 id="confirm-h">Tack Ali, din accept är mottagen</h2>
-    <p>Totalt <strong data-total>11 900 kr</strong> inkl. moms. Du får en bekräftelse med hela offerten på mejl, och Marcus ringer dig inom 24 timmar för att boka tid.</p>
-    <p class="cf-mock">Mockup: accept, tidsstämpel och offertversion loggas av backend</p>
-    <div class="cf-actions">
-      <button class="of-btn-secondary" type="button" data-close>Stäng</button>
-      <button class="cf-angra" type="button">Ångra köp<small>Din lagstadgade ångerfunktion, 14 dagar</small></button>
-    </div>
-  </div>
-</div>
 
+<script>
+  // Destinationer efter beslut. Accept går till den befintliga accepterad-sidan,
+  // avböjande till dess motsvarighet. Byt till produktions-URL:erna vid driftsättning.
+  window.AMPY_OFFER_DEST = {
+    accepterad: "https://julius447.github.io/Offer-accepted-preview/",
+    avbojd: "../offert-avbojd/"
+  };
+</script>
 <script src="../assets/offer-logic.js"></script>
 <script>
   // Bottenbaren. IntersectionObserver mot hela panelen var opålitlig: panelen är

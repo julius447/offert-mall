@@ -115,26 +115,17 @@
   svcRadios.forEach(function (i) { i.addEventListener("change", render); });
 
   // accept → bekräftelsemock (visar ångerknappens plats, DAL 2:10a)
-  var backdrop = document.getElementById("confirm-backdrop");
+  // Accept: kunden skickas till accepterad-sidan. Sidans URL:er sätts i
+  // window.AMPY_OFFER_DEST så de kan bytas till produktion utan att röra logiken.
   acceptBtns.forEach(function (b) {
     b.addEventListener("click", function (e) {
       e.preventDefault();
       if (acceptBlocked()) return;
-      if (backdrop) {
-        var t = backdrop.querySelector("[data-total]");
-        if (t) t.textContent = kr(total());
-        backdrop.classList.add("visible");
-        var card = backdrop.querySelector(".of-confirm");
-        if (card) card.focus();
-      }
+      var d = (window.AMPY_OFFER_DEST || {}).accepterad;
+      if (d) window.location.href = d;
     });
   });
-  if (backdrop) {
-    backdrop.addEventListener("click", function (e) { if (e.target === backdrop) backdrop.classList.remove("visible"); });
-    var closeBtn = backdrop.querySelector("[data-close]");
-    if (closeBtn) closeBtn.addEventListener("click", function () { backdrop.classList.remove("visible"); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") backdrop.classList.remove("visible"); });
-  }
+
 
   // "Begär ändring eller ställ en fråga" — synlig sekundärväg (Jobber-mönstret)
   var changeBtn = document.getElementById("change-btn");
@@ -162,6 +153,16 @@
   };
 
   // "Tacka nej"-vägen (GAP-N1 — ritas i Riktning 3)
+  // Avböj: "Skicka svar" tar kunden till avböjd-sidan.
+  var declineSend = document.querySelector("#decline-panel .of-btn-send");
+  if (declineSend) {
+    declineSend.addEventListener("click", function (e) {
+      e.preventDefault();
+      var d = (window.AMPY_OFFER_DEST || {}).avbojd;
+      if (d) window.location.href = d;
+    });
+  }
+
   var declineBtn = document.getElementById("decline-btn");
   var declinePanel = document.getElementById("decline-panel");
   if (declineBtn && declinePanel) {

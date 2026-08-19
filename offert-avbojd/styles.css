@@ -1,0 +1,114 @@
+/* =========================================================================
+   Ampy offert-AVBÖJD-sida — klonad 1:1 från offert-accepterad,
+   teal-släktet utbytt mot ett rött släkte i samma roller.
+   Ursprunglig fil — styles  (scoped to .oa, all px, no deps)
+   Same design language as the locked tack-sida (aurora + glass card + teal +
+   Outfit + pale-mint check). Register: calm / serious / reassuring.
+   v4 — first-principles review pass (composition · typography · a11y).
+   ========================================================================= */
+.oa{
+  --ink:#0b1030; --ink-soft:rgba(11,16,48,.62);
+  --teal:#d94f45; --teal-deep:#a8382f; --teal-ink:#8c2c25; --gold:#f6b53d; --line:rgba(11,16,48,.09);
+  --ease:cubic-bezier(.16,.84,.44,1); --ease-soft:cubic-bezier(.33,1,.68,1);
+  position:relative; z-index:0;
+  min-height:100vh; min-height:100dvh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; padding:clamp(32px,5vw,64px) clamp(16px,1.25vw + 12px,28px);
+  overflow:hidden; box-sizing:border-box;
+  font-family:"Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(115% 85% at 14% -12%, rgba(217,79,69,.12) 0%, rgba(217,79,69,0) 46%),
+    radial-gradient(105% 75% at 94% 6%,  rgba(182,242,255,.48) 0%, rgba(182,242,255,0) 44%),
+    radial-gradient(120% 95% at 90% 112%, rgba(160,251,201,.28) 0%, rgba(160,251,201,0) 48%),
+    radial-gradient(115% 90% at 8% 104%, rgba(217,79,69,.08) 0%, rgba(217,79,69,0) 46%),
+    #f5f9ff;
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+.oa *,.oa *::before,.oa *::after{ box-sizing:border-box; }
+.oa__aurora{ position:absolute; z-index:0; pointer-events:none; user-select:none; opacity:.8; height:auto; }
+.oa__aurora--top{ top:0; right:0; width:clamp(200px,30vw,400px); }
+.oa__aurora--bottom{ bottom:0; left:0; width:clamp(150px,22vw,280px); }
+
+/* the sectioned glass card */
+.oa__card{
+  position:relative; z-index:1; width:100%; max-width:540px;
+  display:flex; flex-direction:column;
+  background:rgba(255,255,255,.74);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:clamp(24px,0.83vw + 21px,32px);
+  box-shadow:0 30px 70px rgba(9,11,50,.12), inset 0 1px 0 rgba(255,255,255,.6);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1); backdrop-filter:blur(16px) saturate(1.1);
+  overflow:hidden;
+}
+.oa__section{ padding:clamp(24px,3vw,34px) clamp(24px,4vw,48px); }
+.oa__section + .oa__section{ border-top:1px solid var(--line); }
+
+/* --- confirmation head --- */
+.oa__head{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;
+  padding-top:clamp(28px,3.4vw,40px); padding-bottom:clamp(24px,3vw,34px); }
+.oa__check{ position:relative; width:clamp(72px,8.4vw,86px); height:clamp(72px,8.4vw,86px); display:grid; place-items:center;
+  margin-bottom:2px; }
+.oa__check-svg{ position:relative; z-index:2; width:100%; height:100%; overflow:visible; }
+.oa__halo{ position:absolute; inset:6%; z-index:1; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,179,168,.30) 0%, rgba(255,179,168,0) 72%); animation:oa-halo 4s var(--ease-soft) infinite; }
+.oa__disc{ transform-origin:center; animation:oa-disc 640ms var(--ease) both; }
+.oa__tick{ stroke-dasharray:120; stroke-dashoffset:120; animation:oa-tick 560ms var(--ease) 300ms both; }
+@keyframes oa-disc{ 0%{ transform:scale(.62); opacity:0; } 62%{ transform:scale(1.05); } 100%{ transform:scale(1); opacity:1; } }
+@keyframes oa-tick{ to{ stroke-dashoffset:0; } }
+@keyframes oa-halo{ 0%{ transform:scale(.8); opacity:0; } 34%{ opacity:.8; } 100%{ transform:scale(1.4); opacity:0; } }
+
+.oa__title{ margin:0; font-size:clamp(26px,1.1vw + 23px,36px); line-height:1.16; font-weight:600; letter-spacing:-.02em; color:var(--ink); text-wrap:balance; }
+.oa__ref{ display:inline-block; font-size:13px; font-weight:600; letter-spacing:.01em;
+  color:var(--teal-ink); background:rgba(217,79,69,.08); border:1px solid rgba(217,79,69,.16);
+  padding:6px 13px; border-radius:999px; }
+
+/* --- next-steps: centred group, internally left-aligned --- */
+.oa__next{ width:fit-content; max-width:100%; margin-inline:auto; }
+.oa__eyebrow{ margin:0 0 16px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.14em; color:var(--teal-deep); }
+.oa__steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:30px; }
+.oa__step{ position:relative; display:flex; align-items:center; gap:18px; }
+.oa__node{ position:relative; z-index:1; flex:0 0 auto; width:42px; height:42px; border-radius:50%;
+  display:grid; place-items:center; background:linear-gradient(145deg,#e8695c,#a8382f);
+  box-shadow:0 6px 16px rgba(217,79,69,.34), inset 0 0 0 3px rgba(255,255,255,.9); }
+/* connector is anchored to the node, so it tracks the node whatever the text height */
+.oa__step:not(:last-child) .oa__node::after{ content:""; position:absolute; left:50%; top:100%;
+  transform:translateX(-50%); width:2px; height:60px;
+  background:linear-gradient(180deg, rgba(217,79,69,.42), rgba(217,79,69,.12)); }
+.oa__node span{ font-size:16px; font-weight:600; color:#fff; line-height:1; }
+.oa__node svg{ width:18px; height:18px; fill:none; stroke:#fff; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+.oa__step-text{ font-size:17px; line-height:1.35; font-weight:600; color:var(--ink); }
+.oa__step-text small{ display:block; font-size:14px; font-weight:400; color:var(--ink-soft); line-height:1.4; margin-top:4px; }
+
+/* --- trust + contact + close --- */
+.oa__trust{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 18px; text-align:center; }
+.oa__trust-item{ display:inline-flex; align-items:center; gap:7px; font-size:13.5px; color:var(--ink-soft); }
+.oa__stars{ display:inline-flex; gap:2px; }
+.oa__stars svg{ width:14px; height:14px; fill:var(--gold); }
+.oa__contact{ margin:16px 0 0; text-align:center; font-size:14px; color:var(--ink-soft); }
+.oa__contact a{ color:var(--teal-deep); font-weight:600; text-decoration:none; white-space:nowrap; }
+
+.oa a:focus-visible{ outline:3px solid var(--teal); outline-offset:3px; border-radius:12px; }
+
+/* mobile */
+@media (max-width:560px){
+  .oa__trust-item{ font-size:14px; }
+  .oa__title{ font-size:clamp(27px,6.5vw,31px); }
+}
+
+/* motion safety */
+@media (prefers-reduced-motion: reduce){
+  .oa__disc,.oa__tick,.oa__halo{ animation:none !important; }
+  .oa__tick{ stroke-dashoffset:0; } .oa__halo{ opacity:.5; transform:scale(1.1); }
+}
+
+/* print — an accepted avtal is a document people save/print */
+@media print{
+  .oa{ min-height:auto; padding:0; background:#fff !important; display:block; }
+  .oa__aurora, .oa__halo{ display:none !important; }
+  .oa__card{ max-width:100%; box-shadow:none; border:1px solid #d5d9e4; border-radius:8px;
+    background:#fff; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .oa__tick{ stroke-dashoffset:0 !important; animation:none !important; }
+  .oa__disc{ animation:none !important; opacity:1 !important; transform:none !important; }
+}
