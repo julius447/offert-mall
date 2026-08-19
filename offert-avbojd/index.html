@@ -6,7 +6,7 @@
   <title>Tack för ditt svar · Ampy</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
-  <link rel="stylesheet" href="../assets/shared.css">
+  <link rel="preload" href="fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <style>html,body{margin:0;padding:0;}</style>
 </head>
@@ -46,7 +46,10 @@
         </li>
         <li class="oa__step">
           <span class="oa__node" aria-hidden="true"><span>3</span></span>
-          <span class="oa__step-text">Offerten ligger kvar om du ändrar dig<small>Du kan öppna den igen fram till <span data-oa="offert.giltig_till">16 september 2026</span>.</small></span>
+          <!-- Ägaren tog bort länken "Öppna offerten igen". Då får texten inte lova en
+               dörr som inte finns: kunden har ingen väg tillbaka på sidan. Formuleringen
+               säger vad som faktiskt gäller och pekar på den väg som finns. -->
+          <span class="oa__step-text">Offerten ligger kvar om du ändrar dig<small>Den är giltig till <span data-oa="offert.giltig_till">16 september 2026</span>. Ring oss så tar vi upp den igen.</small></span>
         </li>
       </ol>
       </div>

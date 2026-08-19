@@ -515,3 +515,60 @@ dekorativa svg under aria-hidden, och markupen är fortfarande en `<ul>` med fem
 **Bokarnamnet** är nu platshållaren `[Bokare]` på samtliga åtta ställen det förekom
 (offertsidan, prislogiken och accepterad-sidan). Det stod kvar som "Marcus" på sex ställen
 medan bokarkortet sa `[Bokare]`.
+
+---
+
+## v7.3 — slutbatch: ikonhantverk, prisparet, och 11 responsiva fynd
+
+Tre ikonuppsattningar och tva losningar for prisparet byggdes oberoende och bedomdes
+renderade i faktisk storlek. Parallellt svepte fem responsiva linser hela flodet fran
+320 till 1920 px, med adversariell motgranskning: 11 fynd av 26 overlevde.
+
+### Ikonerna
+Linjeuppsattningen vann (72 mot 64 och 5). Domaren invande mot att dokumentikonens
+vikhorn skulle rendera som en solid mork kil. **Den invandningen reproducerar inte:** jag
+matte rasterpixlarna vid dsf 1, 2 och 3 och vikens inre ar 78 / 40 / 64 procent ljust.
+Den ANDRA invandningen holl: femte ikonen var latt. Jag provade fyra varianter och matte
+blackytan i varje; pilhuvudet gick fran 8,8 till 12,5 enheter, vilket drog ihop
+uppsattningens spann till **12 procent vid dsf 2** (var 25) och 19 procent vid dsf 3.
+
+### Prisparet
+Leden var tva fristaende rutor med egen ram och 8 px luft: tva rutor laser som tva
+pastaenden, inte som ett par, och under 390 px staplades de (kortet 196 px vid 320). Nu ar
+det EN figur, en ram, en skiljelinje, tva exakt lika breda halvor, pa en rad hela vagen ner
+till 320. Uppmatt: 92/92, 112/112, 127/127, 169/169 px. Kortet ar 129 px vid 320 mot
+grannarnas 161.
+
+### De 11 fynden
+
+**P0 (bada regressioner fran tidigare fixar i det har projektet):**
+- Sticky-panelens takhojd klippte hela acceptzonen pa korta fonster. Uppmatt 1366x620 med
+  tillval valda: 735 px innehall mot 570 px synligt, och "Acceptera offert" helt synlig i
+  **0 %** av scrollagena. Panelen slapper nu stickyn aven nar den inte RYMS, inte bara nar
+  en utfallningspanel ar oppen. Efter: klipp 0 px pa alla sju testade fonster.
+- Avbojd-sidan lovade att offerten gick att oppna igen, men agaren hade tagit bort lanken.
+  Copyn bar darmed en dorr som inte fanns. Texten sager nu vad som faktiskt galler.
+
+**P1/P2:**
+- Kvittots tre rader fick tre olika justeringar under 356 px (beloppen 0,0 / 188,6 / 40,3 px
+  fran hogerkanten i samma kvitto): `.r-row.addon-row.visible` bar display:flex med tre
+  klasser och vann over grid-regeln. Nu 0,0 pa alla rader vid alla bredder.
+- Bottenbarens lank toppstallde panelen, sa acceptknappen hamnade under viken pa korta
+  telefoner (375x553: 45 px under). Ryms kortet toppstalls det som forut, annars rullas
+  acceptknappen fram.
+- Acceptknappen i baren brot till tva rader vid 320 nar serviceavtal valts.
+- Stegnodernas siffror matte 2,87:1 pa accepterad-sidan och 4,01:1 pa avbojd. Nu
+  **4,74:1** och **6,42:1**.
+- Accepterad-sidan hoppade 8 px nar fonten byttes pa mobilnat (CLS 0,125). Preload.
+- Avbojd-sidan laddade 61 KB renderblockerande shared.css dar exakt fem selektorer
+  matchade. Egen bas i stallet: **110 KB -> 43 KB**, CSS 69 KB -> 10 KB.
+- Bokarens verifieringsbock var bortklippt av avatarens overflow:hidden och renderades som
+  en gron kil. Badgens mittpunkt lag utanfor klippbanan.
+
+### Ett fynd som INTE atgardades
+Granskarna flaggade **"5 av 5 pa betyg pa Google"** som trasig svenska (dubbel preposition).
+Det ar agarens ordagranna instruktion 2026-08-19 och star kvar oforandrat. Se frageraden
+till agaren.
+
+Slutmatning: 65/65 kontroller, 0 konsolfel pa sex sidtillstand, 0 horisontellt overflode
+320-1920, 0 tankstreck i kundvand text.

@@ -138,6 +138,14 @@
     body.is-expired .co-bar__total,
     body.is-expired .co-bar .of-btn-primary { display: none; }
     body.is-expired .co-bar__expired { display: inline-flex; }
+    /* Vid 320 äter månadsraden upp barens bredd: .co-bar__total mäter 129,2 px
+       och knappen får 148,8 px mot de ~159 px etiketten behöver, så
+       "Granska och acceptera" bryter till två rader och baren växer till
+       76,2 px. 12 och 8 ligger på spacingskalan. */
+    @media (max-width: 359px) {
+      .co-bar { gap: 12px; padding-inline: 8px; }
+      .co-bar .of-btn-primary { font-size: 14px; padding: 9px 8px; }
+    }
     @media (min-width: 1140px) { .co-bar { display: none; } }
     /* baren mäter 71px (2 rader), 76px (3 rader) och ~100px med iOS safe-area */
     body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
@@ -346,39 +354,41 @@
 
           <ul class="ig-list" role="list" aria-label="Det här ingår så länge serviceavtalet löper">
             <li class="ig-item">
-              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20.4 3.6v4.2h-4.2"/></svg></span>
+              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10.8 3.4a7.4 7.4 0 1 0 0 14.8 7.4 7.4 0 1 0 0-14.8"/><path d="M16 16 20.6 20.6"/></svg></span>
               <span class="ig-t">Elbesiktning</span>
               <span class="ig-s">Vartannat år</span>
               <span class="ig-b">Vi kommer tillbaka och går igenom anläggningen. Du slipper hålla koll på när det var sist.</span>
             </li>
 
             <li class="ig-item">
-              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5.3 5.7v5c0 4.3 2.9 8.2 6.7 9.3 3.8-1.1 6.7-5 6.7-9.3v-5L12 3Z"/><path d="M9.2 11.8 11.3 14l3.7-3.9"/></svg></span>
+              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.9 4.3 5.8v5.5c0 4.4 3.1 8.4 7.7 9.8 4.6-1.4 7.7-5.4 7.7-9.8V5.8L12 2.9Z"/></svg></span>
               <span class="ig-t">Garanti på arbetet</span>
               <span class="ig-s">Fem år</span>
               <span class="ig-b">Med avtalet gäller garantin på arbetet vi gjort hos dig längre än den annars gör.</span>
             </li>
 
             <li class="ig-item">
-              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 8h8"/><path d="M12 16h8"/><path d="M5 19.4V5.6"/><path d="M2.2 8.4 5 5.6l2.8 2.8"/></svg></span>
+              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.2 4.2 12 12l-7.8 7.8"/><path d="M12.6 4.2 20.4 12l-7.8 7.8"/></svg></span>
               <span class="ig-t">Förtur i bokningen</span>
               <span class="ig-s">Utan extra kostnad</span>
               <span class="ig-b">Behöver du hjälp har du förtur när tiden bokas. Du behöver inte be om det.</span>
             </li>
 
             <li class="ig-item">
-              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 3.4h7L18 7.8v12.8H6.6z"/><path d="M13.6 3.4v4.4H18"/><path d="M9.6 12.6h4.8"/><path d="M9.6 16.2h3.2"/></svg></span>
+              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 3.7h6.2l4.8 4.8v11.6H6.5z"/><path d="M12.7 3.7v4.8h4.8"/></svg></span>
               <span class="ig-t">Intyg på jordfelsbrytaren</span>
               <span class="ig-s">Skriftligt</span>
               <span class="ig-b">Du får intyget från oss utan att behöva fråga efter det. Det är ditt att spara.</span>
             </li>
 
             <li class="ig-item ig-item--pris">
-              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.8 8.2l5.2 5.2 3.4-3.4 6 6"/><path d="M18.4 11.6V16h-4.4"/></svg></span>
+              <span class="ig-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.4 4.0 20.2 20.8"/><path d="M7.7 20.8h12.5v-12.5"/></svg></span>
               <span class="ig-t">Lägre timpris på kommande jobb</span>
               <span class="ig-fig">
-                <span class="ig-f ig-f--med"><span class="ig-fl">Med avtal</span><span class="ig-fv">750 kr/tim</span></span>
-                <span class="ig-f ig-f--utan"><span class="ig-fl">Utan avtal</span><span class="ig-fv">850 kr/tim</span></span>
+                <span class="ig-f ig-f--med"><span class="ig-fl">Med avtal</span>
+                <span class="ig-fv">750 <span class="ig-fu">kr/tim</span></span></span>
+                <span class="ig-f ig-f--utan"><span class="ig-fl">Utan avtal</span>
+                <span class="ig-fv">850 <span class="ig-fu">kr/tim</span></span></span>
               </span>
                     </li>
           </ul>
@@ -643,6 +653,24 @@
       var b = document.getElementById(id);
       if (b) b.addEventListener("click", function () { setTimeout(sync, 0); });
     });
+    // Bottenbarens länk var ett rent fragmenthopp, vilket lägger PANELENS
+    // ÖVERKANT vid viewportens överkant. På korta telefoner hamnade
+    // "Acceptera offert" då under viken: uppmätt 375x553 med tillval valda
+    // låg knappen 45 px UNDER vikkanten. Ryms kortet toppställs det som förut,
+    // annars rullas acceptknappen fram i stället.
+    var barLank = bar.querySelector('a[href="#summering"]');
+    var panel = document.getElementById("summering");
+    if (barLank && panel) {
+      barLank.addEventListener("click", function (e) {
+        e.preventDefault();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        if (panel.getBoundingClientRect().height <= vh - 48) panel.scrollIntoView({ block: "start" });
+        else accept.scrollIntoView({ block: "end" });
+        panel.focus({ preventScroll: true });
+        // Utan detta ligger baren kvar ovanpå knappens nya läge.
+        setTimeout(sync, 0);
+      });
+    }
     window.addEventListener("resize", sync);
     document.addEventListener("offer:render", sync);
     sync();

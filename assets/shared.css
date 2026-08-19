@@ -153,11 +153,16 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-signed__avatar {
   flex: 0 0 auto; position: relative;
   width: 56px; height: 56px; border-radius: 50%;
-  display: grid; place-items: center; overflow: hidden;
+  display: grid; place-items: center;
+  /* overflow: visible — badgen sitter på right/bottom -2px och dess MITTPUNKT
+     låg utanför klippbanan, så bocken renderades som en avhuggen grön kil.
+     Rundningen flyttas till bilden i stället (förberett för det riktiga
+     porträttet; i dag är platshållaren en svg). */
+  overflow: visible;
   background: linear-gradient(150deg, #0d1240, #1d2560);
   box-shadow: 0 4px 14px rgba(9,11,50,.18), inset 0 0 0 2px #fff, 0 0 0 3px rgba(0,169,145,.22);
 }
-.of-signed__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.of-signed__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 .of-signed__avatar .of-initials {
   font-size: 18px; font-weight: 600; letter-spacing: .02em; color: #fff;
   line-height: 1; user-select: none;
@@ -404,7 +409,12 @@ a { -webkit-tap-highlight-color: transparent; }
 }
 .of-price-note svg { width: 16px; height: 16px; margin-top: 2px; stroke: var(--teal-deep); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 @container (max-width: 300px) {
-  .r-row { display: grid; gap: 6px; padding: 14px 0; }
+  /* .r-row.addon-row.visible bär display:flex med tre klasser och vann annars
+     över den här regeln: tilläggsraderna blev kvar i flexläget medan grundraden
+     staplades. Uppmätt vid 320 låg de tre beloppen 0,0 / 188,6 / 40,3 px från
+     radens högerkant i samma kvitto. */
+  .r-row,
+  .r-row.addon-row.visible { display: grid; gap: 6px; padding: 14px 0; }
   .r-row .dots { display: none; }
   .r-row .lbl { font-size: 13px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
   .r-row .amt { margin-left: 0; white-space: normal; }
@@ -556,36 +566,89 @@ a { -webkit-tap-highlight-color: transparent; }
   line-height: 1.35; text-wrap: balance;
 }
 
+/* TIMPRISPOSTEN" till och med raden ".of-svc__ingar .ig-f--utan .ig-fv { font-weight: 600; color: var(--muted); }"). Rör inte .ig-note.
+
 /* TIMPRISPOSTEN — enda punkten med ett kronbelopp, och därför den enda som
    låter beloppen stå i en egen figur med båda leden märkta. Ingen överstruken
-   rabattlapp, ingen ensam siffra i högerfältet. Posten tar hela bredden och
-   avslutar listan: den är avsiktligt listans tyngsta rad. */
+   rabattlapp, ingen ensam siffra i högerfältet.
+
+   MOBILRÄTTNING: leden var två fristående rutor med 8px luft emellan. Två
+   rutor med egen ram och egen radie läser som två påståenden, och under 390
+   staplades de dessutom på höjden (uppmätt 196,4px vid 320) — då fanns
+   jämförelsen bara i läsarens minne. Nu är de EN figur: en ram, en
+   skiljelinje, två exakt lika breda halvor, på en rad hela vägen ner till 320.
+   Lika bredd är själva jämförelsen; den som ger det ena ledet mer yta har
+   redan svarat åt kunden. Beloppen står på samma baslinje i samma grad, så
+   ögat jämför 750 mot 850 utan att flytta blicken nedåt. */
 .of-svc__ingar .ig-item--pris { grid-template-columns: 34px minmax(0, 1fr); }
 .of-svc__ingar .ig-fig {
   grid-column: 2; grid-row: 2; margin-top: 4px;
-  display: flex; flex-wrap: wrap; gap: 8px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  /* Taket är figurens, inte halvornas: utan det blev de två 270px-plattor med
+     tomma slätter vid 768 och 1440. 340 håller paret som ETT objekt. */
+  max-width: 340px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  overflow: hidden;                      /* halvorna klipps av figurens hörn */
 }
-/* Basis 118 + max-width 270: båda leden står SIDA VID SIDA ända ner till 390
-   (jämförelsen är hela poängen och försvinner om de staplas), men växer inte
-   ut till halva spalten på 1440 där de blev två tomma slätter. */
 .of-svc__ingar .ig-f {
-  flex: 1 1 118px; min-width: 0; max-width: 270px;
-  display: grid; gap: 2px; padding: 8px 12px; border-radius: var(--r-md);
+  min-width: 0;
+  display: grid; align-content: center; gap: 2px;
+  padding: 8px clamp(8px, 3.6cqi, 16px);
 }
-.of-svc__ingar .ig-f--med { background: var(--teal-soft); border: 1px solid rgba(0,169,145,.24); }
-.of-svc__ingar .ig-f--utan { background: var(--offwhite); border: 1px solid var(--line); }
+.of-svc__ingar .ig-f--med { background: var(--teal-soft); }
+/* Skiljelinjen bär struktur, inte dekoration: den är det enda som säger att
+   detta är TVÅ led. Ytbytet teal-soft → sky-mist mäter 1,07:1 och duger inte
+   ensamt som gräns. --line-strong (samma token som kontrollkanterna, ~3:1)
+   ger den en kant som syns även när tonskillnaden inte gör det. Ram och
+   skiljelinje har SAMMA vikt: en tyngre söm än ram läser som ett hopfog. */
+.of-svc__ingar .ig-f--utan { background: var(--offwhite); border-left: 1px solid var(--line-strong); }
+/* Graderna följer BEHÅLLAREN (cqi), inte viewporten: kortet ligger i en spalt
+   som är 652px vid 1440 och 262px vid 320. Därför finns ingen bredd där raden
+   måste brytas, och ingen kant där en storlek hoppar.
+   Varje cqi-clamp har en statisk rad FÖRE sig. En webbläsare som inte kan cqi
+   kastar hela clamp():en som ogiltig — utan reserven ärvs 16px rakt in i
+   etiketten och paret spricker. Kunden öppnar sidan från ett SMS, i vilken
+   telefon som helst. Reserven är den smalaste graden: den ryms alltid. */
 .of-svc__ingar .ig-fl {
-  font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  line-height: 1.2;
+  font-size: 10.5px;
+  font-size: clamp(10.5px, 3.85cqi, 12.5px);
+  letter-spacing: .03em;
+  letter-spacing: clamp(.03em, .32cqi, .1em);
+  font-weight: 700; text-transform: uppercase;
+  line-height: 1.2; white-space: nowrap;
 }
 .of-svc__ingar .ig-f--med .ig-fl { color: var(--teal-ink); }
 .of-svc__ingar .ig-f--utan .ig-fl { color: var(--faint); }
 .of-svc__ingar .ig-fv {
-  font-size: 17px; letter-spacing: -.01em; line-height: 1.2;
+  font-size: 16px;
+  font-size: clamp(16px, 6.1cqi, 18px);
+  letter-spacing: -.01em; line-height: 1.18;
   font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+/* Enheten i egen grad: "750" bär jämförelsen, "kr/tim" bara sorten. Det är
+   också det som köper bredden att hålla paret på en rad vid 320. */
+.of-svc__ingar .ig-fu {
+  font-size: 10.5px;
+  font-size: clamp(10.5px, 3.9cqi, 12.5px);
+  font-weight: 500; letter-spacing: 0;
 }
 .of-svc__ingar .ig-f--med .ig-fv { font-weight: 700; color: var(--teal-ink); }
 .of-svc__ingar .ig-f--utan .ig-fv { font-weight: 600; color: var(--muted); }
+
+
+DESSUTOM, OBLIGATORISKT: ta bort EN rad ur det befintliga
+@container (max-width: 519px)-blocket längre ned i shared.css (rad 603):
+
+  .of-svc__ingar .ig-fig { margin-top: 2px; }
+
+Den raden är kvar från den gamla layouten och ligger EFTER blocket ovan i
+kaskaden, så den vinner på mobil. Lämnas den kvar får figuren 2px i stället för
+4px enbart under 520px behållarbredd (uppmätt: kortet blir 129,1 i stället för
+131,1 vid 320 och 113,6 i stället för 115,0 vid 390). Inget går sönder, men
+mobil och desktop får olika rytm utan skäl. Alla siffror jag rapporterar är
+mätta MED raden borttagen.
+
 .of-svc__ingar .ig-note {
   grid-column: 2; grid-row: 3; margin-top: 8px;
   font-size: 12.5px; font-weight: 400; color: var(--muted); line-height: 1.5;
@@ -1032,6 +1095,10 @@ body.show-gaps .of-gap--note { display: inline-block; }
 /* scroll-margin: utan den landar knappen kant i kant mot vikens över- eller
    underkant när panelen rullas fram. */
 .of-btn-send { scroll-margin: 20px; }
+/* Bottenbaren är 71-76 px hög; utan detta hamnar acceptknappen under den när
+   barens länk rullar fram den. */
+.co-panel [data-accept] { scroll-margin-bottom: 96px; }
+#summering { scroll-margin-top: 24px; }
 /* Panelen förankras som helhet. Med skicka-knappen som mål parkerade
    scroll-margin viken mitt i raden under den, så "Offerten ligger kvar och du
    kan öppna den igen" visades 12 av 39 px. */

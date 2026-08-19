@@ -140,7 +140,15 @@
     var panel = document.getElementById("summering");
     if (!panel) return;
     var fore = ankare ? ankare.getBoundingClientRect().top : null;
-    panel.classList.toggle("is-expanded", !!panel.querySelector(".of-change.visible"));
+    // Två skäl att släppa stickyn. (1) En utfällningspanel är öppen. (2) Kortet
+    // ryms helt enkelt inte i fönstret. Utan (2) klipptes hela acceptzonen bort
+    // på korta fönster: uppmätt 1366x620 med tillval valda gav 735 px innehåll
+    // mot 570 px synligt, och "Acceptera offert" var helt synlig i 0 % av
+    // scrollägena. Static tar samma plats i dokumentflödet som sticky, så
+    // omslaget flyttar ingenting i vänsterspalten.
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var slapp = !!panel.querySelector(".of-change.visible") || panel.scrollHeight > vh - 48;
+    panel.classList.toggle("is-expanded", slapp);
     if (fore === null) return;
     var efter = ankare.getBoundingClientRect().top;
     if (Math.abs(efter - fore) > 1) window.scrollBy(0, efter - fore);
@@ -264,5 +272,9 @@
     printOpened = [];
   });
 
+  window.addEventListener("resize", function () { syncPanelHojd(null); });
+  document.addEventListener("offer:render", function () { syncPanelHojd(null); });
+
   render();
+  syncPanelHojd(null);
 })();
