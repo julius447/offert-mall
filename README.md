@@ -262,3 +262,67 @@ ersättningen använde `requestAnimationFrame`, som pausas i dolda flikar — nu
 - **Antalet Google-omdömen.** Två agenter uppgav olika tal (16 respektive 27). Kortet visar
   »5 av 5 · Betyg på Google« precis som den ägargodkända energikalkylator-komponenten. Behöver
   ett aktuellt tal från dig innan det byggs ut.
+
+## v5 — ägarändringar 2026-08-19
+
+### Layout-buggen (P0, rapporterad av ägaren)
+
+Acceptzonen var `position: sticky; bottom: 0` **och** innehöll utfällningspanelerna för
+»Fråga eller ändra något« och »Avböj offert«. När en panel öppnades växte hela det sticky-blocket
+och lade sig **ovanpå totalen** — panelen blev oläslig på både desktop och mobil.
+
+Fixen: panelens `max-height` och interna scroll borttagna, den inre sticky borttagen. Panelen växer
+fritt och scrollar med sidan, vilket aldrig kan överlappa. Verifierat med överlappstest på alla
+kombinationer (total mot accept, total mot panel, accept mot panel), båda panelerna: noll överlapp.
+
+### Borttaget
+
+Betalningsraden vid knappen · »Fast pris«-pillen · hjälptexten över fritextfältet · »9 poster« ·
+undertexten under tidsvalen · telefonraden i panelen · PDF-länken · ångerrätts-expandern ·
+sidfotens fyra länkar · bekräftelsemocken (kunden går till en riktig sida i stället) ·
+elavtal och delbetalning (helt: markup, CSS och logik).
+
+**Om undertexten under tidsvalen:** den fanns för att motivera tillägget. Efter att datumen togs
+bort säger raden redan namn + tidsspann + pris, vilket är hela beslutet — och Prioritets undertext
+motsade sitt eget spann (»tre dygn« mot »2 till 5 dagar«). Borttagen, inte omskriven.
+
+### Ändrat
+
+- **Tidsvalen utan datum:** 24 till 48 timmar / 2 till 5 dagar / 5 till 14 dagar. Standard förvalt,
+  ingen rekommendationsmärkning.
+- **Skicka-knappen** var en outline-knapp identisk med »Fråga eller ändra något«, så det gick inte
+  att se vilken som var handlingen. Nu fylld navy med pil — primär inuti panelen, men aldrig teal
+  (teal är accept-knappens ensamma färg på sidan).
+- **Serviceavtalet** är nu en intresseanmälan, inte en signering. Rubrik »Serviceavtal«, »Pris
+  149 kr/mån«, beskrivning av vad det är och vem det passar. Elbesiktning 2 000 kr · förlängd
+  produktgaranti 5 år · förtur utan extra kostnad · intyg på jordfelsbrytare · 150 mot 850 kr/tim
+  efter ROT. Jourutryckningen borttagen. Valen utan brödtext. Månadsraden i summeringen säger att
+  kunden inte binder sig och att Marcus går igenom villkoren innan signering.
+- **Villkor och process:** en expander med generella villkor, en streckad yta för bokarens egen
+  text per uppdrag, och länk till allmänna köpvillkor.
+- **Processtegen 1-2-3** använder förloppsringen från ROT/grön teknik/hemförsäkringsblocket
+  (`rot-gt-cro/designs/hemforsakring.html`, »VARIANT F«, ägarval 2026-08-17): bågen fylls
+  1/3 → 2/3 → sluten, ingen fylld platta, siffran ensam i navy 500.
+- **Giltighet 30 dagar** (branschstandard). Dubbleringen i huvudet berodde på två datumvarianter i
+  DOM för mobilkortning — skärmläsare och textkopiering fick båda. Nu en enda sträng.
+- **Certifikatraden** börjar med Installatörsföretagen. Middot borta ur betygsraden. Lättare
+  gradient på beviskortet.
+
+### Nya destinationer
+
+Accept går till accepterad-sidan, avböjande till nya `offert-avbojd/` som är klonad från den med
+ett rött släkte i vågorna (teal-rollerna utbytta 1:1: `#00a991`→`#d94f45`, `#018271`→`#a8382f`,
+`#016a5d`→`#8c2c25`, `#00c2a6`→`#e8695c`, plus mint- och crystal-tonerna i bakgrunden). Copyn är
+varm och utan confirmshaming: svaret är registrerat, vi hör inte av oss igen, offerten ligger kvar.
+
+URL:erna ligger i `window.AMPY_OFFER_DEST` i r2:s markup så de kan bytas till produktion utan att
+röra logiken.
+
+### Öppna frågor till ägaren
+
+| # | Fråga |
+|---|---|
+| 1 | Timpriset 150 kr/tim mot 850 kr/tim är en rabatt på 82 %. Stämmer siffrorna? |
+| 2 | Allmänna köpvillkor: länken i villkorsexpandern pekar ingenstans än. |
+| 3 | Bokarens unika villkorstext per uppdrag — var kommer den ifrån i CRM:et? |
+| 4 | Produktions-URL:er för accepterad- och avböjd-sidan. |
