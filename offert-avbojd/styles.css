@@ -19,8 +19,8 @@
   color:var(--ink);
   background:
     radial-gradient(115% 85% at 14% -12%, rgba(217,79,69,.12) 0%, rgba(217,79,69,0) 46%),
-    radial-gradient(105% 75% at 94% 6%,  rgba(182,242,255,.48) 0%, rgba(182,242,255,0) 44%),
-    radial-gradient(120% 95% at 90% 112%, rgba(160,251,201,.28) 0%, rgba(160,251,201,0) 48%),
+    radial-gradient(105% 75% at 94% 6%,  rgba(255,214,206,.48) 0%, rgba(255,214,206,0) 44%),
+    radial-gradient(120% 95% at 90% 112%, rgba(255,199,190,.28) 0%, rgba(255,199,190,0) 48%),
     radial-gradient(115% 90% at 8% 104%, rgba(217,79,69,.08) 0%, rgba(217,79,69,0) 46%),
     #f5f9ff;
   background-attachment:fixed;
