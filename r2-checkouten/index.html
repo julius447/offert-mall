@@ -238,93 +238,7 @@
 
       </section>
 
-    </div>
 
-    <!-- summeringspanelen. Ligger MELLAN co-a och co-b i DOM:en: på mobil hamnar
-         kvittot och accepten då direkt efter "Forma ditt köp" i stället för sist
-         av allt (uppmätt defekt i v1 — 58 % av kunderna är på mobil). -->
-    <aside class="co-panel of-receipt" id="summering" aria-labelledby="price-h">
-      <h2 class="p-cap" id="price-h">Din summering</h2>
-
-      <div class="r-row">
-        <span class="lbl">Byte av elcentral</span>
-        <span class="dots" aria-hidden="true"></span>
-        <span class="amt">11 900 kr</span>
-      </div>
-      <div class="r-row addon-row" data-tier-row>
-        <span class="lbl" data-tier-label>Installationstid</span>
-        <span class="dots" aria-hidden="true"></span>
-        <span class="amt" data-tier-amt></span>
-      </div>
-      <div class="r-row addon-row" data-addon-row="timme">
-        <span class="lbl">Extra arbetstimme</span>
-        <span class="dots" aria-hidden="true"></span>
-        <span class="amt">+ 850 kr</span>
-      </div>
-
-      <div class="r-total">
-        <span class="t-label">Att betala</span>
-        <span class="amt" data-total>11 900 kr</span>
-        <span class="t-vat">inkl. moms, efter ROT-avdrag</span>
-      </div>
-
-      <p class="of-price-note" style="margin-top:16px;">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
-        <span>Behöver vi göra något utöver offerten frågar vi dig först. Alltid.</span>
-      </p>
-
-      <!-- Serviceavtalet är en intresseanmälan, inte en post i summan. Egen yta,
-           eget språk, aldrig ett plustecken och aldrig inne i engångstotalen. -->
-      <div class="r-monthly" data-monthly>
-        <div class="m-top">
-          <span class="m-label">Serviceavtal</span>
-          <span class="m-amt">149 kr/mån</span>
-        </div>
-        <p class="m-note">Du binder dig inte här. Marcus går igenom villkoren med dig innan något signeras.</p>
-      </div>
-
-      <div class="of-expired" style="margin-top:14px;" role="status">
-        Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
-      </div>
-
-      <div class="of-accept">
-        <button class="of-btn-primary" type="button" data-accept aria-disabled="false">Acceptera offert</button>
-          <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Fråga eller ändra något</button>
-          <div class="of-change" id="change-panel">
-            <label for="change-text" class="sr-only">Din fråga eller ändring</label>
-            <textarea id="change-text" placeholder="Till exempel: Kan ni även dra fram ett uttag i garaget?"></textarea>
-            <button class="of-btn-send" type="button" data-send-change>
-              <span>Skicka till Marcus</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-            </button>
-            <p class="c-hint" role="status"></p>
-          </div>
-          <button class="of-btn-tertiary" type="button" id="decline-btn" aria-expanded="false" aria-controls="decline-panel">Avböj offert</button>
-          <!-- Skälvalet är hela poängen med avböj-vägen: det skiljer "för dyrt"
-               (→ delbetalning) från "fel tid" (→ återkontakt) från "valde annan"
-               (→ konkurrensbild). Allt frivilligt, ingen confirmshaming. -->
-          <div class="of-change" id="decline-panel">
-            <p class="c-hint" style="margin-bottom:10px;">Tack för att du säger till, det hjälper oss mer än tystnad. Vill du berätta varför? Allt är frivilligt.</p>
-            <div class="of-reasons" role="group" aria-label="Skäl att avböja">
-              <label><input type="radio" name="avbojskal" value="pris"> Priset passade inte</label>
-              <label><input type="radio" name="avbojskal" value="tid"> Tidpunkten passar inte</label>
-              <label><input type="radio" name="avbojskal" value="annan"> Vi valde en annan firma</label>
-              <label><input type="radio" name="avbojskal" value="behov"> Vi behöver inte jobbet längre</label>
-              <label><input type="radio" name="avbojskal" value="prata"> Jag vill prata med någon först</label>
-            </div>
-            <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
-            <button class="of-btn-send" type="button">
-              <span>Skicka svar</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-            </button>
-            <p class="c-hint">Offerten ligger kvar och du kan öppna den igen om du ändrar dig.</p>
-          </div>
-      </div>
-    </aside>
-
-    <div class="co-main co-b">
-      <!-- bevispanelen (trust v2). Ligger mellan sidans TVÅ månadsbelopp
-           (delbetalning i panelen, serviceavtal nedan) och separerar dem. -->
       <section class="co-card" aria-labelledby="trust-h">
         <h2 class="of-h2" id="trust-h">Därför kan du känna dig trygg</h2>
 
@@ -415,6 +329,92 @@
       </section>
 
       <!-- 6 · villkor, ändring, avböj, nästa steg -->
+    </div>
+
+    <!-- Summeringspanelen ligger mellan co-a och co-b i DOM:en. På mobil hamnar
+         kvittot och accepten därmed efter serviceavtalet och före Villkor och
+         process, vilket är den ordning ägaren bad om. På desktop spänner panelen
+         båda raderna i högerspalten och är sticky. -->
+    <aside class="co-panel of-receipt" id="summering" aria-labelledby="price-h">
+      <h2 class="p-cap" id="price-h">Din summering</h2>
+
+      <div class="r-row">
+        <span class="lbl">Byte av elcentral</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">11 900 kr</span>
+      </div>
+      <div class="r-row addon-row" data-tier-row>
+        <span class="lbl" data-tier-label>Installationstid</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt" data-tier-amt></span>
+      </div>
+      <div class="r-row addon-row" data-addon-row="timme">
+        <span class="lbl">Extra arbetstimme</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">+ 850 kr</span>
+      </div>
+
+      <div class="r-total">
+        <span class="t-label">Att betala</span>
+        <span class="amt" data-total>11 900 kr</span>
+        <span class="t-vat">inkl. moms, efter ROT-avdrag</span>
+      </div>
+
+      <p class="of-price-note" style="margin-top:16px;">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
+        <span>Behöver vi göra något utöver offerten frågar vi dig först. Alltid.</span>
+      </p>
+
+      <!-- Serviceavtalet är en intresseanmälan, inte en post i summan. Egen yta,
+           eget språk, aldrig ett plustecken och aldrig inne i engångstotalen. -->
+      <div class="r-monthly" data-monthly>
+        <div class="m-top">
+          <span class="m-label">Serviceavtal</span>
+          <span class="m-amt">149 kr/mån</span>
+        </div>
+        <p class="m-note">Du binder dig inte här. Marcus går igenom villkoren med dig innan något signeras.</p>
+      </div>
+
+      <div class="of-expired" style="margin-top:14px;" role="status">
+        Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+      </div>
+
+      <div class="of-accept">
+        <button class="of-btn-primary" type="button" data-accept aria-disabled="false">Acceptera offert</button>
+          <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Fråga eller ändra något</button>
+          <div class="of-change" id="change-panel">
+            <label for="change-text" class="sr-only">Din fråga eller ändring</label>
+            <textarea id="change-text" placeholder="Till exempel: Kan ni även dra fram ett uttag i garaget?"></textarea>
+            <button class="of-btn-send" type="button" data-send-change>
+              <span>Skicka till Marcus</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="c-hint" role="status"></p>
+          </div>
+          <button class="of-btn-tertiary" type="button" id="decline-btn" aria-expanded="false" aria-controls="decline-panel">Avböj offert</button>
+          <!-- Skälvalet är hela poängen med avböj-vägen: det skiljer "för dyrt"
+               (→ delbetalning) från "fel tid" (→ återkontakt) från "valde annan"
+               (→ konkurrensbild). Allt frivilligt, ingen confirmshaming. -->
+          <div class="of-change" id="decline-panel">
+            <p class="c-hint" style="margin-bottom:10px;">Tack för att du säger till, det hjälper oss mer än tystnad. Vill du berätta varför? Allt är frivilligt.</p>
+            <div class="of-reasons" role="group" aria-label="Skäl att avböja">
+              <label><input type="radio" name="avbojskal" value="pris"> Priset passade inte</label>
+              <label><input type="radio" name="avbojskal" value="tid"> Tidpunkten passar inte</label>
+              <label><input type="radio" name="avbojskal" value="annan"> Vi valde en annan firma</label>
+              <label><input type="radio" name="avbojskal" value="behov"> Vi behöver inte jobbet längre</label>
+              <label><input type="radio" name="avbojskal" value="prata"> Jag vill prata med någon först</label>
+            </div>
+            <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
+            <button class="of-btn-send" type="button">
+              <span>Skicka svar</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="c-hint">Offerten ligger kvar och du kan öppna den igen om du ändrar dig.</p>
+          </div>
+      </div>
+    </aside>
+
+    <div class="co-main co-b">
       <section class="co-card" aria-labelledby="legal-h">
         <h2 class="of-h2" id="legal-h">Villkor och process</h2>
         <details class="of-legal">
@@ -423,8 +423,6 @@
             <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
-            <p>Fast pris enligt offerten. Behöver vi göra något utöver det som står här frågar vi dig först.</p>
-            <p>Arbetet utförs av behörig elektriker och dokumenteras. ROT-avdraget hanterar vi mot Skatteverket åt dig.</p>
             <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
             <p><a class="of-terms-link" href="#" onclick="return false;">Läs våra allmänna köpvillkor</a></p>
           </div>
@@ -495,16 +493,30 @@
     // Utan den var det andra en mobilkund såg en uppmaning att acceptera
     // 12 000 kr innan en enda rad om jobbet var läst.
     var work = document.getElementById("work-h");
+    var oppnaPaneler = ["change-panel", "decline-panel"];
+    function nagonPanelOppen() {
+      return oppnaPaneler.some(function (id) {
+        var el = document.getElementById(id);
+        return el && el.classList.contains("visible");
+      });
+    }
     function sync() {
       var r = accept.getBoundingClientRect();
       var vh = window.innerHeight || document.documentElement.clientHeight;
       var acceptSyns = r.top < vh - 24 && r.bottom > 24;
       var passerat = !work || work.getBoundingClientRect().bottom < vh * 0.5;
-      var show = passerat && !acceptSyns;
+      // Har kunden öppnat "Fråga eller ändra något" eller "Avböj offert" är hen
+      // mitt i en annan handling. Att då skjuta upp en accept-uppmaning nerifrån
+      // är störande och pekar åt fel håll.
+      var show = passerat && !acceptSyns && !nagonPanelOppen();
       bar.classList.toggle("visible", show);
       bar.setAttribute("aria-hidden", show ? "false" : "true");
     }
     window.addEventListener("scroll", sync, { passive: true });
+    ["change-btn", "decline-btn"].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) b.addEventListener("click", function () { setTimeout(sync, 0); });
+    });
     window.addEventListener("resize", sync);
     document.addEventListener("offer:render", sync);
     sync();
