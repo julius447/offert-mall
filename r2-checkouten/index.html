@@ -21,7 +21,11 @@
     }
     .co-layout {
       display: grid; grid-template-columns: minmax(0, 1fr);
-      gap: clamp(18px, 2.6vw, 36px); margin-top: 48px;
+      /* row-gap måste vara samma 48px som .co-main använder mellan sina kort,
+         annars läser panelen ihop med serviceavtalskortet ovanför: uppmätt
+         18px över och 66px under mot 48px mellan alla andra kort. 32 ligger
+         på skalan, 36 gör det inte. */
+      row-gap: 48px; column-gap: 32px; margin-top: 48px;
       align-items: start;
     }
     /* Tvåspalten tänder vid 1140, inte 980: vid 980 blev panelen 46 % av bredden
@@ -31,17 +35,38 @@
       .co-layout { grid-template-columns: minmax(0, 1fr) clamp(420px, 34vw, 470px); }
       .co-a { grid-column: 1; grid-row: 1; }
       .co-b { grid-column: 1; grid-row: 2; }
-      /* Panelen följer med i scroll men får växa fritt.
-         TIDIGARE BUGG: panelen hade max-height + intern scroll, och acceptzonen
-         var position:sticky;bottom:0. Eftersom acceptzonen även innehåller
-         utfällningspanelerna för "Fråga eller ändra något" och "Avböj offert"
-         växte det sticky-blocket när de öppnades och lade sig OVANPÅ totalen —
-         hela panelen blev oläslig. Ingen intern scroll, ingen inre sticky:
-         blir panelen högre än viken scrollar den med sidan, vilket aldrig
-         kan överlappa något. */
+      /* Panelen är sticky med ett eget takhöjd + scrollområde.
+         TIDIGARE BUGG 1: panelen hade max-height OCH acceptzonen var
+         position:sticky;bottom:0. Acceptzonen innehåller utfällningspanelerna,
+         så det inre sticky-blocket växte och la sig OVANPÅ totalen.
+         Den inre stickyn är borta (grep "sticky" i shared.css ger noll regler).
+         TIDIGARE BUGG 2: att bara ta bort takhöjden räckte inte. position:sticky
+         med enbart `top` pinnar ÖVERKANTEN; blir kortet högre än viken kommer
+         underkanten aldrig fram. Uppmätt 1440x800 med "Avböj offert" utfälld:
+         kortet 1036px mot vy 800px, och "Skicka svar" stod still 152px under
+         viken tills de sista 231px av sidans scroll (synlig först vid y=2580
+         av 2811). Kunden såg skälen, kryssade i ett, och hittade aldrig knappen.
+         Takhöjd + egen scroll löser det. INGEN overscroll-behavior: contain —
+         den låser sidans scroll när pekaren råkar stå över panelen. */
       .co-panel {
         grid-column: 2; grid-row: 1 / span 2; align-self: start;
         position: sticky; top: 24px;
+        max-height: calc(100vh - 48px);
+        max-height: calc(100dvh - 48px);
+        overflow-y: auto;
+      }
+      /* ...men nästlad scroll DUGER INTE i den interaktiva vägen. Med enbart
+         takhöjd hamnade "Avböj offerten" under panelens EGEN vik i stället
+         (uppmätt 1440x800: knappen på y=839 mot panelens underkant 776, synlig
+         i 0 % av sidans scroll), och kunden skulle behöva hitta en overlay-
+         scrollbar inuti ett kort. När en utfällningspanel är öppen släpper
+         kortet stickyn helt och scrollar med sidan som allt annat. Takhöjden
+         ovan står kvar som skydd för korta fönster i grundläget, där kortet
+         bara är 524px och aldrig behöver inre scroll. */
+      .co-panel.is-expanded {
+        position: static;
+        max-height: none;
+        overflow: visible;
       }
     }
     /* Under tvåspalten ska panelen inte bli en 690px lång prickrad.
@@ -55,8 +80,7 @@
     }
     /* sektionsbytet måste vara STÖRRE än största interna avstånd (var 24 mot 32) */
     .co-main { display: flex; flex-direction: column; gap: 48px; }
-    .co-b { margin-top: 48px; }
-    @media (min-width: 1140px) { .co-b { margin-top: 0; } }
+    .co-b { margin-top: 0; }
     .co-card {
       /* ingen backdrop-filter på stora innehållskort – GPU-risk på mobil i den ytstorleken */
       background: rgba(255, 255, 255, 0.85); border: 1px solid var(--card-border);
@@ -81,7 +105,10 @@
       border-top: 1px solid var(--line-strong);
       -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
       box-shadow: 0 -8px 24px rgba(9,11,50,.10);
-      transform: translateY(110%); transition: transform .25s var(--ease);
+      /* transition ägs av shared.css (.co-bar), som även fördröjer
+         visibility-växlingen. Deklareras den om här vinner den senare
+         regeln och baren blinkar bort i stället för att glida ut. */
+      transform: translateY(110%);
     }
     .co-bar.visible { transform: none; }
     .co-bar__total { display: flex; flex-direction: column; line-height: 1.2; }
@@ -90,6 +117,13 @@
     .co-bar__total .b-mo { display: none; font-size: 11.5px; font-weight: 500; color: var(--teal-ink); }
     .co-bar__total .b-mo.visible { display: block; }
     .co-bar .of-btn-primary { flex: 1; min-height: 50px; padding: 9px 18px; font-size: 15.5px; }
+    /* Utgången offert: baren visade fortfarande priset och en död acceptknapp
+       (pointer-events:none räcker inte, länken låg kvar i tab-ordningen och
+       annonserades som aktiv). display:none tar bort den ur trädet. */
+    .co-bar__expired { display: none; flex: 1; min-height: 50px; font-size: 14.5px; text-align: center; }
+    body.is-expired .co-bar__total,
+    body.is-expired .co-bar .of-btn-primary { display: none; }
+    body.is-expired .co-bar__expired { display: inline-flex; }
     @media (min-width: 1140px) { .co-bar { display: none; } }
     /* baren mäter 71px (2 rader), 76px (3 rader) och ~100px med iOS safe-area */
     body { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
@@ -111,7 +145,13 @@
     </div>
   </header>
 
-  <div class="co-layout">
+  <!-- Utgången offert: den befintliga rutan låg 79 % ner i dokumentet, efter att
+       kunden konfigurerat färdigt. Samma besked högst upp, före allt annat. -->
+  <div class="of-expired" role="status" style="margin-top:16px;">
+    Den här offerten gick ut den 16 september 2026 och kan inte längre accepteras. Ring oss på <a href="tel:+46102657979" class="nb">010-265 79 79</a> så tar vi fram en uppdaterad.
+  </div>
+
+  <main class="co-layout" id="innehall">
     <div class="co-main co-a">
 
       <!-- 1 · hälsning + bokaren -->
@@ -163,7 +203,7 @@
         <details class="of-material co-sub">
           <summary>
             Material som ingår
-            <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="m-arrow" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <ul>
             <li>2 st modulkapsling 2×13</li>
@@ -190,7 +230,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Express</span>
-                <span class="t-date">24 till 48 timmar</span>
+                <span class="t-date">24-48 timmar</span>
               </span>
               <span class="t-price">+1 000 kr</span>
             </label>
@@ -201,7 +241,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Prioritet</span>
-                <span class="t-date">2 till 5 dagar</span>
+                <span class="t-date">2-5 dagar</span>
               </span>
               <span class="t-price">+700 kr</span>
             </label>
@@ -212,7 +252,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Standard</span>
-                <span class="t-date">5 till 14 dagar</span>
+                <span class="t-date">5-14 dagar</span>
               </span>
               <span class="t-price free">+0 kr</span>
             </label>
@@ -220,7 +260,13 @@
         </div>
 
 
-        <p class="of-deltarow"><span class="of-delta" data-delta aria-live="polite"></span></p>
+        <p class="of-deltarow"><span class="of-delta" data-delta></span></p>
+        <!-- Chippet döljs när valet är +0 kr, så en aria-live där tiger när
+             priset går NER. Totalen annonseras i stället från en egen
+             sr-only-region. Mellanslagen nedan är U+00A0, byte-identiska med
+             det kr() i offer-logic.js producerar, så guarden mot omläsning
+             håller vid första render. -->
+        <p class="sr-only" data-total-live role="status" aria-live="polite">Att betala 11 900 kr</p>
         <h3 class="of-h3 co-sub">Vill du lägga till något?</h3>
         <div class="of-addons">
           <div class="of-addon">
@@ -242,8 +288,10 @@
       <section class="co-card" aria-labelledby="trust-h">
         <h2 class="of-h2" id="trust-h">Därför kan du känna dig trygg</h2>
 
-        <!-- Beviskortet, portat 1:1 från energikalkylatorns trust-block (ägargodkänt). -->
-        <aside class="trust">
+        <!-- Beviskortet, portat 1:1 från energikalkylatorns trust-block (ägargodkänt).
+             div, inte aside: en <aside> här blev en andra, namnlös
+             complementary-landmark inuti en redan namngiven region. -->
+        <div class="trust">
           <div class="trust-photo" role="img" aria-label="Ett upplyst villahem i skymningen"></div>
           <div class="trust-veil" aria-hidden="true"></div>
           <div class="trust-inner">
@@ -259,7 +307,7 @@
             <div class="trust-divider" aria-hidden="true"></div>
             <p class="trust-stat">3&nbsp;000+ genomförda installationer om året</p>
           </div>
-        </aside>
+        </div>
 
         <div class="of-certrow">
           <p class="c-eyebrow">Registrerade, försäkrade och kontrollerbara</p>
@@ -293,7 +341,7 @@
 
         <ul class="of-svc__list">
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Elbesiktning vartannat år</span></li>
-          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förlängd produktgaranti på utfört arbete, 5 år</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förlängd garanti på utfört arbete, 5 år</span></li>
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förtur i bokningen utan extra kostnad</span></li>
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Intyg på jordfelsbrytare</span></li>
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Lägre timpris på kommande jobb: 150 kr/tim mot 850 kr/tim, efter ROT</span></li>
@@ -304,7 +352,7 @@
             <input type="radio" name="svc" value="ja" id="svc-optin">
             <label for="svc-optin">
               <span class="a-box a-radio" aria-hidden="true"></span>
-              <span class="a-name">Ja, teckna serviceavtal</span>
+              <span class="a-name">Ja, jag är intresserad</span>
               <span class="a-price">149 kr/mån</span>
             </label>
           </div>
@@ -325,6 +373,10 @@
             </label>
           </div>
         </div>
+        <!-- Kvittensyta. offer-logic.js skrev till [data-svc-ack] och CSS-regeln
+             .of-svc__ack fanns, men elementet gjorde det inte: två av tre val
+             var därför stumma kontroller. -->
+        <p class="of-svc__ack" data-svc-ack role="status"></p>
         <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Vid accept kommer Marcus höra av sig till dig för genomgång av villkor innan signering.</p>
       </section>
 
@@ -335,7 +387,11 @@
          kvittot och accepten därmed efter serviceavtalet och före Villkor och
          process, vilket är den ordning ägaren bad om. På desktop spänner panelen
          båda raderna i högerspalten och är sticky. -->
-    <aside class="co-panel of-receipt" id="summering" aria-labelledby="price-h">
+    <!-- section, inte aside: de tre bindande knapparna (acceptera, fråga,
+         avböj) låg i en complementary-landmark, dvs. märkta som sidoinnehåll.
+         tabindex="-1" gör dessutom att bottenbarens #summering-länk faktiskt
+         flyttar fokus hit. -->
+    <section class="co-panel of-receipt" id="summering" aria-labelledby="price-h" tabindex="-1">
       <h2 class="p-cap" id="price-h">Din summering</h2>
 
       <div class="r-row">
@@ -381,6 +437,9 @@
 
       <div class="of-accept">
         <button class="of-btn-primary" type="button" data-accept aria-disabled="false">Acceptera offert</button>
+        <!-- Båda meningarna är ordagrant hämtade ur stegen längre ner på samma
+             sida, som ligger 355px (mobil) respektive 2 724px (desktop) bort. -->
+        <p class="of-payline">Du får en bekräftelse direkt. Sedan ringer Marcus och bokar tid.</p>
           <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Fråga eller ändra något</button>
           <div class="of-change" id="change-panel">
             <label for="change-text" class="sr-only">Din fråga eller ändring</label>
@@ -404,15 +463,16 @@
               <label><input type="radio" name="avbojskal" value="behov"> Vi behöver inte jobbet längre</label>
               <label><input type="radio" name="avbojskal" value="prata"> Jag vill prata med någon först</label>
             </div>
+            <label for="decline-text" class="sr-only">Något mer du vill säga (frivilligt)</label>
             <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
             <button class="of-btn-send" type="button">
-              <span>Skicka svar</span>
+              <span>Avböj offerten</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
             </button>
             <p class="c-hint">Offerten ligger kvar och du kan öppna den igen om du ändrar dig.</p>
           </div>
       </div>
-    </aside>
+    </section>
 
     <div class="co-main co-b">
       <section class="co-card" aria-labelledby="legal-h">
@@ -420,7 +480,7 @@
         <details class="of-legal">
           <summary>
             Villkor för uppdraget
-            <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            <svg class="m-arrow" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
             <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
@@ -448,7 +508,7 @@
       </section>
     </div>
 
-  </div>
+  </main>
 
   <footer class="of-foot">
     Ampy Nordic AB · Org.nr 559254-9819 · <a href="tel:+46102657979" class="nb">010-265 79 79</a>
@@ -463,12 +523,15 @@
     <span class="b-mo" data-monthly>därtill serviceavtal 149 kr/mån</span>
   </span>
   <a class="of-btn-primary" href="#summering">Granska och acceptera</a>
+  <a class="of-btn-secondary co-bar__expired" href="tel:+46102657979">Offerten har gått ut. Ring 010-265 79 79</a>
 </div>
 
 
 <script>
-  // Destinationer efter beslut. Accept går till den befintliga accepterad-sidan,
-  // avböjande till dess motsvarighet. Byt till produktions-URL:erna vid driftsättning.
+  // Destinationer efter beslut.
+  // [GAP] Produktions-URL för accepterad-sidan sätts vid driftsättning.
+  // Nuvarande värde är en förhandsvisning på GitHub Pages och får INTE gå ut
+  // i en skarp SMS-länk: den ligger utanför ampy.se och visar exempeldata.
   window.AMPY_OFFER_DEST = {
     accepterad: "https://julius447.github.io/Offer-accepted-preview/",
     avbojd: "../offert-avbojd/"

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tack för ditt svar — Ampy</title>
+  <title>Tack för ditt svar · Ampy</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
   <link rel="stylesheet" href="../assets/shared.css">
@@ -42,11 +42,14 @@
         </li>
         <li class="oa__step">
           <span class="oa__node" aria-hidden="true"><span>2</span></span>
-          <span class="oa__step-text">Vi hör inte av oss mer om den här offerten<small>Ingen påminnelse, inget uppföljningssamtal.</small></span>
+          <!-- Texten byts av script.js när ?skal=prata följer med från
+               offertsidan: den kunden bad uttryckligen om ett samtal och fick
+               här ett skriftligt löfte om tystnad. -->
+          <span class="oa__step-text" data-steg-2>Vi hör inte av oss mer om den här offerten<small>Ingen påminnelse, inget uppföljningssamtal.</small></span>
         </li>
         <li class="oa__step">
           <span class="oa__node" aria-hidden="true"><span>3</span></span>
-          <span class="oa__step-text">Offerten ligger kvar om du ändrar dig<small>Du kan öppna den igen fram till 16 september 2026.</small></span>
+          <span class="oa__step-text">Offerten ligger kvar om du ändrar dig<small>Du kan öppna den igen fram till <span data-oa="offert.giltig_till">16 september 2026</span>.</small><a class="oa__back" data-oa-href="offert.url" href="../r2-checkouten/">Öppna offerten igen</a></span>
         </li>
       </ol>
       </div>
@@ -54,18 +57,12 @@
 
     <!-- 3 · trust + kontakt -->
     <section class="oa__section">
-      <div class="oa__trust">
-        <span class="oa__trust-item">
-          <span class="oa__stars" aria-hidden="true">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.166L12 18.896l-7.335 3.864 1.401-8.166L.132 9.21l8.2-1.192z"/></svg>
-          </span>
-          5 av 5 i betyg på Google
-        </span>
-      </div>
+      <!-- Betygsblocket är BORTTAGET här, till skillnad från den accepterade
+           sidan. Fem gyllene stjärnor 200px under meningen "vi hör inte av oss
+           mer" riktar ett säljbudskap mot någon som just sagt nej, och läser
+           som att kunden gjort ett misstag. Det ligger för nära
+           confirmshaming för att stå kvar. ÄGARGRIND: vill du ha kvar det
+           säger du till, blocket finns kvar i oap/index.html rad 57-68. -->
       <p class="oa__contact">Vill du ha en ny offert, eller ändrade du dig? Ring <a href="tel:+46102657979">010-265 79 79</a></p>
     </section>
   </main>

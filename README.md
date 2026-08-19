@@ -326,3 +326,66 @@ röra logiken.
 | 2 | Allmänna köpvillkor: länken i villkorsexpandern pekar ingenstans än. |
 | 3 | Bokarens unika villkorstext per uppdrag — var kommer den ifrån i CRM:et? |
 | 4 | Produktions-URL:er för accepterad- och avböjd-sidan. |
+
+---
+
+## v6 — tio-lins granskning, 42 bekräftade fynd implementerade
+
+Tio specialister (CSS, JS, HTML/a11y, spacing, typografi, UX, CRO, copy, plus en var för
+accepterad- och avböjd-sidan) granskade sidorna. Varje fynd motgranskades sedan av en egen
+skeptiker vars uppgift var att **fälla** det. 69 fynd lämnades in, 42 överlevde. De 27 fällda
+var testartefakter, smakfrågor eller redan fattade ägarbeslut.
+
+Alla 42 är implementerade och uppmätta. Det som satt djupast:
+
+### P0
+
+| Fynd | Uppmätt före | Efter |
+|---|---|---|
+| **Avböjknappen onåbar på desktop.** `position: sticky` med enbart `top` pinnar ÖVERKANTEN. När avböjpanelen fälldes ut blev kortet 1 036 px mot en vy på 800 px, så underkanten kom aldrig fram. | "Skicka svar" synlig i 0 % av scrollen vid 1440×800, 1440×700, 1280×700 och 1152×800 | Kortet släpper stickyn när en panel öppnas (`.co-panel.is-expanded`), och knappen kunden tryckte på förankras med `scrollBy` så inget hoppar. Både skäl och knapp synliga vid **varje** scrollposition och fönsterhöjd |
+| **Två av tre serviceavtalsval var döda kontroller.** JS skrev till `[data-svc-ack]`, CSS stylade `.of-svc__ack` — men elementet fanns inte i HTML. | `document.querySelectorAll('[data-svc-ack]').length === 0` | Elementet inlagt. Alla tre valen kvitterar |
+| **Utgången offert gick att avböja**, och frågerutan svarade "Skickat till Marcus". Kunden landade på en sida som lovade att offerten låg kvar — tvärtemot vad offertsidan sa. | `acceptBlocked()` konsulterades bara i accept-handlaren | Grind i alla tre vägarna, med besked som säger vad som gäller och ger telefonvägen |
+| **Kunden som bad om ett samtal fick löftet att ingen ringer.** Skälet "Jag vill prata med någon först" skickades ingenstans; avböjd-sidan sa "Ingen påminnelse, inget uppföljningssamtal." | Skälet lästes aldrig av | Skälet följer med som `?skal=`, och avböjd-sidan byter steg 2 till "Du bad om ett samtal, så vi ringer upp". **Kontrakt för Yassine: backend måste ta emot samma värde** |
+| **Accepterad-sidan visade fel offertnummer** i sekunden efter att kunden bundit sig. | `#2026-0142` mot offertens `#2026-0187` | Rättat på båda sidorna plus i kontraktsdokumentationen |
+| **"Vi hör av oss inom 24 timmar"** var en SLA offerten aldrig ger, utlovad även till den som valt Standard (5-14 dagar). | Sökning i offertsidan: enda träffen på "timmar" är Express installationstid | Borttagen |
+| **Accepterad-sidan hämtade Outfit från Google.** Enda sidan i flödet som gjorde det. | Med `fonts.gstatic.com` blockerad: `document.fonts.size === 0`, h1 renderad i system-ui | Självhostad, samma produktionssubset som offertsidan. 0 externa anrop |
+| **Avböjd-sidan lovade att offerten låg kvar men hade ingen väg tillbaka.** | 1 interaktivt element på hela sidan, och det var telefonnumret | "Öppna offerten igen" inlagd, med `data-oa-href` |
+| **Hårdkodat giltighetsdatum** på avböjd-sidan: varje kund fick "16 september 2026". | Enda `data-oa` på sidan var referensnumret | Datumet är nu en datakrok |
+| **"Ja, teckna serviceavtal"** motsade "intresseanmälan, inte en signering" 230 px längre upp. | | → "Ja, jag är intresserad" |
+
+### P1 och P2 i urval
+
+- **Utskriften tappade hela materiallistan och villkorstexten.** `details { open: true }` är inte CSS
+  utan ett HTML-attribut, så deklarationen slängdes av parsern och en stängd `<details>` målades
+  aldrig. Uppmätt: 4 sidor mot 5, rubrikerna kvar men innehållet borta. `::details-content` +
+  `beforeprint` löser det. Verifierat: materiallistan, dvärgbrytarna, bokartexten och
+  köpvillkorslänken finns nu i PDF:en.
+- **Tom frågeruta kvitterades som skickad.** Kunden väntade på ett svar som aldrig kunde komma.
+- **Live-regionen tigde när priset gick NER.** Chippet döljs vid +0 kr, så `aria-live` där
+  annonserade bara höjningar. Totalen annonseras nu från en egen sr-only-region.
+- **Inga landmarks.** Sidan saknade `<main>` och de tre bindande knapparna låg i en
+  complementary-landmark, alltså märkta som sidoinnehåll.
+- **Panelen låg 18 px från serviceavtalskortet** och 66 px från villkoren, medan alla andra kort
+  låg 48 px isär. Nu 48/48 vid 390, 768 och 1024.
+- **Stegkopplingen bröts på mobil** på båda landningssidorna: fast `height: 60px` mot ett
+  nod-till-nod-avstånd som varierar med radbrytningen (uppmätt 66 px och 77 px vid 390 px, alltså
+  6 och 17 px synliga glapp). Linjen ankras nu i steget. Uppmätt glapp efter fixen: 0 px.
+- **Enda kontrollen på båda landningssidorna mätte 89×18 px** mot kravet 44×44, och på avböjd-sidan
+  skildes länken från brödtexten med i praktiken enbart färg (1,21:1). Nu 109×44 och understruken.
+- **Radlängd 185 tecken** i serviceavtalets finstilta mellan 768 och 1139 px. Tak på 48ch.
+- Fokusringen på landningssidorna mätte 2,91:1. Nu navy, samma ring som offertsidan.
+- Betygsblocket är **borttaget från avböjd-sidan**. Fem gyllene stjärnor 200 px under "vi hör inte
+  av oss mer" riktar ett säljbudskap mot någon som just sagt nej och läser som att kunden gjort
+  ett misstag. Det ligger för nära confirmshaming. **Ägargrind: säg till om du vill ha kvar det.**
+- Ledtiderna skrevs "24 till 48 timmar". Du skrev `24-48 timmar`. Bindestreck är tillåtet, det är
+  bara em- och en-dash som är bannlysta. Rättat.
+
+### Öppna ägargrindar
+
+- **150 kr/tim mot 850 kr/tim** i serviceavtalet är 82 % rabatt. Bekräfta att siffran stämmer.
+- **Grundgarantins längd** saknas, så "förlängd garanti i 5 år" går inte att ställa mot något. `[GAP]`
+- **Produktions-URL för accepterad-sidan.** Nuvarande värde är en GitHub Pages-förhandsvisning och
+  får inte gå ut i en skarp SMS-länk.
+- **Var köpvillkorslänken ska peka**, och var bokarens unika villkorstext hämtas i CRM:et.
+- **Google-betyget**: antal recensioner är inte bekräftat och står därför inte utskrivet någonstans.
+- **Betygsblocket på avböjd-sidan** (se ovan).

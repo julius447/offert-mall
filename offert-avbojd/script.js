@@ -7,9 +7,14 @@
    ---------------------------------------------------------------------------
    Expected AMPY_OFFER shape (all optional; server fills from the CRM):
      {
-       "offert.referens": "#2026-0142",
+       "offert.referens": "#2026-0187",
+       "offert.giltig_till": "16 september 2026",
+       "offert.url": "https://ampy.se/offert/<token>/",
        "offert.villkor_url": "https://ampy.se/kopvillkor/"
      }
+   SERVERREGEL: saknas giltig_till renderas meningen UTAN datum, och saknas
+   offert.url utelämnas hela länken. Aldrig en platshållare, aldrig ett gissat
+   datum, aldrig ett tomt href.
    (Name / e-post / price fields exist in the CRM but are not shown on this
    lean confirmation — kept off the page on purpose.)
    ========================================================================= */
@@ -27,4 +32,18 @@
     var key = el.getAttribute('data-oa-href');
     if (data[key]) el.setAttribute('href', data[key]);
   });
+})();
+
+/* Skälet följer med från offertsidan som ?skal=. Kunden som kryssade
+   "Jag vill prata med någon först" fick annars steg 2:s löfte om tystnad,
+   trots att hen uttryckligen bett om ett samtal.
+   KONTRAKT: backend måste ta emot samma värde när formuläret kopplas in.
+   Värden: pris | tid | annan | behov | prata. */
+(function () {
+  var m = /[?&]skal=([^&]*)/.exec(location.search);
+  if (!m || decodeURIComponent(m[1]) !== 'prata') return;
+  var steg = document.querySelector('[data-steg-2]');
+  if (!steg) return;
+  steg.innerHTML = 'Du bad om ett samtal, så vi ringer upp' +
+    '<small>I övrigt skickar vi ingen påminnelse om den här offerten.</small>';
 })();

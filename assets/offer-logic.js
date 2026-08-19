@@ -86,6 +86,15 @@
       chip.textContent = "+" + " " + kr(diff) + " · totalt " + kr(sum);
     });
 
+    // Egen live-region för totalen. Chippet ovan döljs vid +0 kr, så en
+    // aria-live DÄR annonserade prishöjningar men tigde när kunden gick
+    // tillbaka till Standard. Skriv bara vid faktisk ändring, annars läser
+    // skärmläsaren om samma belopp vid varje orelaterat val.
+    Array.prototype.forEach.call(document.querySelectorAll("[data-total-live]"), function (el) {
+      var t = "Att betala " + kr(sum);
+      if (el.textContent !== t) el.textContent = t;
+    });
+
     // serviceavtalets månadsrad — egen yta, aldrig inne i engångstotalen
     Array.prototype.forEach.call(document.querySelectorAll("[data-monthly]"), function (row) {
       row.classList.toggle("visible", svcChosen());
@@ -127,6 +136,23 @@
   });
 
 
+  // Summeringspanelen är sticky med takhöjd på desktop. Så fort en
+  // utfällningspanel öppnas släpper den stickyn (se .co-panel.is-expanded),
+  // annars hamnar innehållet under panelens egen vik.
+  // Kortet växlar mellan sticky och static när en panel öppnas eller stängs,
+  // och det flyttar kortet i dokumentet. Utan förankring hoppar sidan under
+  // fingret. Vi mäter knappen kunden just tryckte på före och efter växlingen
+  // och kompenserar med scrollBy, så den står stilla på skärmen.
+  function syncPanelHojd(ankare) {
+    var panel = document.getElementById("summering");
+    if (!panel) return;
+    var fore = ankare ? ankare.getBoundingClientRect().top : null;
+    panel.classList.toggle("is-expanded", !!panel.querySelector(".of-change.visible"));
+    if (fore === null) return;
+    var efter = ankare.getBoundingClientRect().top;
+    if (Math.abs(efter - fore) > 1) window.scrollBy(0, efter - fore);
+  }
+
   // "Begär ändring eller ställ en fråga" — synlig sekundärväg (Jobber-mönstret)
   var changeBtn = document.getElementById("change-btn");
   var changePanel = document.getElementById("change-panel");
@@ -134,13 +160,33 @@
     changeBtn.addEventListener("click", function () {
       var open = changePanel.classList.toggle("visible");
       changeBtn.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open) changePanel.querySelector("textarea").focus();
+      syncPanelHojd(changeBtn);
+      if (open) {
+        changePanel.scrollIntoView({ block: "nearest" });
+        changePanel.querySelector("textarea").focus();
+      }
     });
     var sendBtn = changePanel.querySelector("[data-send-change]");
     if (sendBtn) {
       sendBtn.addEventListener("click", function () {
         var hint = changePanel.querySelector(".c-hint");
+        var falt = changePanel.querySelector("textarea");
+        // Utgången offert: rutan svarade "Skickat till Marcus" på en offert
+        // som inte längre går att hantera här.
+        if (acceptBlocked()) {
+          if (hint) hint.textContent = "Den här offerten har gått ut, så meddelandet går inte fram här. Ring oss på 010-265 79 79 så tar vi det direkt.";
+          return;
+        }
+        // Tom ruta kvitterades som skickad: kunden väntade på ett svar som
+        // aldrig kunde komma.
+        if (!falt || !falt.value.trim()) {
+          if (hint) hint.textContent = "Skriv din fråga eller ändring i rutan först, så går den till Marcus.";
+          if (falt) falt.focus();
+          return;
+        }
         if (hint) hint.textContent = "Skickat till Marcus. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
+        sendBtn.disabled = true;
+        falt.readOnly = true;
       });
     }
   }
@@ -158,8 +204,25 @@
   if (declineSend) {
     declineSend.addEventListener("click", function (e) {
       e.preventDefault();
+      var panel = document.getElementById("decline-panel");
+      var hints = panel ? panel.querySelectorAll(".c-hint") : [];
+      // Utgången offert gick fortfarande att avböja, och kunden landade då på
+      // en sida som lovade att offerten låg kvar - tvärtemot vad den här sidan
+      // säger. Sista .c-hint är den avslutande raden, den första är introt.
+      if (acceptBlocked()) {
+        if (hints.length) hints[hints.length - 1].textContent = "Den här offerten har redan gått ut, så det finns inget att avböja. Ring oss på 010-265 79 79 om du vill ha en ny.";
+        declineSend.disabled = true;
+        return;
+      }
+      // Skälet följer med i URL:en. Utan det landade kunden som kryssat
+      // "Jag vill prata med någon först" på en sida som lovade tystnad.
+      // KONTRAKT: avböjd-sidan läser ?skal= och backend måste ta emot samma
+      // värde när formuläret kopplas in.
+      var skal = document.querySelector('input[name="avbojskal"]:checked');
       var d = (window.AMPY_OFFER_DEST || {}).avbojd;
-      if (d) window.location.href = d;
+      if (!d) return;
+      if (skal) d += (d.indexOf("?") < 0 ? "?" : "&") + "skal=" + encodeURIComponent(skal.value);
+      window.location.href = d;
     });
   }
 
@@ -169,6 +232,11 @@
     declineBtn.addEventListener("click", function () {
       var open = declinePanel.classList.toggle("visible");
       declineBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      syncPanelHojd(declineBtn);
+      if (open) {
+        var send = declinePanel.querySelector(".of-btn-send");
+        if (send) send.scrollIntoView({ block: "nearest" });
+      }
     });
   }
 
@@ -176,7 +244,26 @@
   if (/[?&]gaps=1/.test(location.search)) document.body.classList.add("show-gaps");
 
   // utgången offert — demo via ?expired=1 (§4.10)
-  if (/[?&]expired=1/.test(location.search)) document.body.classList.add("is-expired");
+  if (/[?&]expired=1/.test(location.search)) {
+    document.body.classList.add("is-expired");
+    // Huvudet sa "Gäller t.o.m. 16 sep 2026" samtidigt som rutan längre ner
+    // sa att offerten gått ut samma datum: två motsatta besked.
+    var giltig = document.querySelector(".of-top__valid");
+    if (giltig) giltig.textContent = "Gick ut 16 sep 2026";
+  }
+
+  // Utskriften är kundens sparade handling. En stängd <details> målas inte i
+  // print, så materiallistan och villkorstexten föll ur pappersofferten.
+  var printOpened = [];
+  window.addEventListener("beforeprint", function () {
+    printOpened = Array.prototype.filter.call(
+      document.querySelectorAll("details"), function (el) { return !el.open; });
+    printOpened.forEach(function (el) { el.open = true; });
+  });
+  window.addEventListener("afterprint", function () {
+    printOpened.forEach(function (el) { el.open = false; });
+    printOpened = [];
+  });
 
   render();
 })();

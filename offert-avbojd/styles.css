@@ -68,13 +68,20 @@
 .oa__next{ width:fit-content; max-width:100%; margin-inline:auto; }
 .oa__eyebrow{ margin:0 0 16px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.14em; color:var(--teal-deep); }
 .oa__steps{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:30px; }
-.oa__step{ position:relative; display:flex; align-items:center; gap:18px; }
+/* FYND: kopplingslinjen hade fast height:60px medan nod-till-nod-avståndet
+   varierar med radbrytningen. Uppmätt vid 390px: avstånden är 66px och 77px,
+   alltså synliga glapp på 6px och 17px, medan de vid 560px och uppåt är 35px
+   och linjen i stället sköt 25px förbi. Ankras nu i steget och sträcks från
+   nodens underkant till nästa nods överkant, vilket är exakt vid varje
+   texthöjd. align-items:flex-start ger noden samma linje som stegrubriken
+   i stället för att flyta mitt i textblocket. */
+.oa__step{ position:relative; display:flex; align-items:flex-start; gap:18px; }
 .oa__node{ position:relative; z-index:1; flex:0 0 auto; width:42px; height:42px; border-radius:50%;
   display:grid; place-items:center; background:linear-gradient(145deg,#e8695c,#a8382f);
   box-shadow:0 6px 16px rgba(217,79,69,.34), inset 0 0 0 3px rgba(255,255,255,.9); }
 /* connector is anchored to the node, so it tracks the node whatever the text height */
-.oa__step:not(:last-child) .oa__node::after{ content:""; position:absolute; left:50%; top:100%;
-  transform:translateX(-50%); width:2px; height:60px;
+.oa__step:not(:last-child)::after{ content:""; position:absolute; z-index:0;
+  left:21px; margin-left:-1px; width:2px; top:42px; height:calc(100% - 12px);
   background:linear-gradient(180deg, rgba(217,79,69,.42), rgba(217,79,69,.12)); }
 .oa__node span{ font-size:16px; font-weight:600; color:#fff; line-height:1; }
 .oa__node svg{ width:18px; height:18px; fill:none; stroke:#fff; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
@@ -87,9 +94,19 @@
 .oa__stars{ display:inline-flex; gap:2px; }
 .oa__stars svg{ width:14px; height:14px; fill:var(--gold); }
 .oa__contact{ margin:16px 0 0; text-align:center; font-size:14px; color:var(--ink-soft); }
-.oa__contact a{ color:var(--teal-deep); font-weight:600; text-decoration:none; white-space:nowrap; }
+/* Sidans enda kontroll mätte 89x18 px, och länkfärgen mot brödtexten mätte
+   1,21:1 — dvs. länken var i praktiken märkt med enbart färg. */
+.oa__contact a{ display:inline-flex; align-items:center; justify-content:center;
+  min-height:44px; padding:0 10px; margin:0 -6px;
+  color:var(--teal-deep); font-weight:600; white-space:nowrap;
+  text-decoration:underline; text-underline-offset:3px; }
+/* FYND: sidan lovade att offerten låg kvar men hade ingen väg tillbaka.
+   Detta är den enda handling sidan finns till för att möjliggöra. */
+.oa__back{ display:inline-flex; align-items:center; min-height:44px; margin-top:2px;
+  font-size:14px; font-weight:600; color:var(--teal-deep);
+  text-decoration:underline; text-underline-offset:3px; }
 
-.oa a:focus-visible{ outline:3px solid var(--teal); outline-offset:3px; border-radius:12px; }
+.oa a:focus-visible{ outline:3px solid #090b32; outline-offset:3px; border-radius:12px; }
 
 /* mobile */
 @media (max-width:560px){
