@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ampy quote · integration example</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root { color-scheme: light; }
+  body { margin:0; font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:#0b1030; background:#f5f9ff; }
+  header { padding:22px clamp(16px,4vw,32px); background:#090b32; color:#fff; }
+  header h1 { margin:0 0 8px; font-size:26px; font-weight:600; letter-spacing:-.015em; }
+  header p { margin:0; font-size:15px; color:#aeb8d4; max-width:70ch; }
+  main { display:grid; grid-template-columns:minmax(0,420px) minmax(0,1fr); gap:0; height:calc(100vh - 92px); }
+  @media (max-width:900px){ main { grid-template-columns:1fr; height:auto; } }
+  .pane { overflow:auto; }
+  .left { border-right:1px solid rgba(11,16,48,.12); background:#fff; padding:20px clamp(16px,3vw,24px) 60px; }
+  h2 { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#565e82; margin:28px 0 10px; }
+  h2:first-of-type { margin-top:6px; }
+  label { display:block; font-size:14px; font-weight:600; margin:14px 0 5px; }
+  input[type=text], input[type=number], textarea {
+    width:100%; padding:9px 11px; border:1px solid rgba(11,16,48,.22); border-radius:10px;
+    font:inherit; font-size:15px; background:#fff; }
+  textarea { min-height:76px; resize:vertical; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }
+  .row { display:flex; align-items:center; gap:10px; margin:10px 0; }
+  .row input[type=checkbox] { width:18px; height:18px; }
+  .row label { margin:0; }
+  button { margin-top:18px; padding:11px 18px; border:0; border-radius:999px; background:#017666; color:#fff;
+    font:inherit; font-weight:600; cursor:pointer; }
+  button.ghost { background:transparent; color:#017666; border:1.5px solid rgba(1,118,102,.4); margin-left:8px; }
+  pre { background:#0b1030; color:#c8f5ec; padding:14px 16px; border-radius:12px; overflow:auto;
+    font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  iframe { width:100%; height:100%; border:0; display:block; background:#f5f9ff; }
+  @media (max-width:900px){ iframe { height:900px; } }
+  .note { font-size:13px; color:#565e82; margin-top:10px; }
+  code { background:rgba(0,169,145,.1); padding:1px 5px; border-radius:4px; font-size:13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ampy quote · integration example</h1>
+  <p>Edit the fields, press <strong>Render</strong>, and the quote on the right is rebuilt from
+     <code>window.AMPY_OFFER</code>. This is the whole integration surface: your server emits one
+     object, the page does the rest. Nothing here is part of the production page. This file is a
+     harness for you to try the contract against.</p>
+</header>
+
+<main>
+  <section class="pane left">
+    <h2>Customer and booker</h2>
+    <label for="f-kund">kund.fornamn</label>
+    <input type="text" id="f-kund" value="Sofia">
+    <label for="f-bokare">bokare.namn</label>
+    <input type="text" id="f-bokare" value="Elin Norberg">
+    <label for="f-foto">bokare.profilbild_url</label>
+    <input type="text" id="f-foto" value="assets/hem-skymning.webp">
+    <p class="note">Any image URL. Leave empty to keep the silhouette placeholder.</p>
+
+    <h2>Identity</h2>
+    <label for="f-ref">offert.referens</label>
+    <input type="text" id="f-ref" value="Offert #2026-0421">
+    <label for="f-giltig">offert.giltig_till_kort</label>
+    <input type="text" id="f-giltig" value="Gäller t.o.m. 3 okt 2026">
+
+    <h2>Price</h2>
+    <label for="f-bas">offert.grundbelopp (number, SEK)</label>
+    <input type="number" id="f-bas" value="18400">
+
+    <h2>Lists</h2>
+    <label for="f-arbete">offert.arbetsbeskrivning (JSON array)</label>
+    <textarea id="f-arbete">[
+  { "rubrik": "Byte av huvudcentral" },
+  { "rubrik": "Ny jordfelsbrytare", "beskrivning": "Hela huset delas på två grupper." },
+  { "rubrik": "Uppmärkning av gruppschema" }
+]</textarea>
+    <label for="f-material">offert.material (JSON array of strings)</label>
+    <textarea id="f-material">[
+  "1 st normkapsling 3×12",
+  "2 st jordfelsbrytare 40 A",
+  "Installationsmaterial"
+]</textarea>
+
+    <h2>Terms</h2>
+    <label for="f-villkor">bokare.villkorstext</label>
+    <textarea id="f-villkor" style="min-height:60px;font-family:inherit;font-size:15px;">Vi drar ny matning till garaget i samma vända.</textarea>
+
+    <h2>Flags</h2>
+    <div class="row"><input type="checkbox" id="f-forma" checked><label for="f-forma">offert.forma_ditt_kop: show "Forma ditt köp"</label></div>
+    <div class="row"><input type="checkbox" id="f-utgangen"><label for="f-utgangen">offert.ar_utgangen: expired</label></div>
+
+    <button id="go">Render</button>
+    <button class="ghost" id="tom">Render with no data</button>
+
+    <h2>The object your server emits</h2>
+    <pre id="ut"></pre>
+    <p class="note">Declare this in a <code>&lt;script&gt;</code> <strong>before</strong>
+       <code>offer-logic.js</code>. A missing or empty value leaves the sample text in place,
+       so an unmapped field ships a placeholder to the customer. See HANDOVER.md section 8.</p>
+  </section>
+
+  <section class="pane"><iframe id="ram" title="Rendered quote"></iframe></section>
+</main>
+
+<script>
+(function () {
+  var ram = document.getElementById("ram");
+  var ut  = document.getElementById("ut");
+
+  function bygg() {
+    var d = {};
+    function s(id, key) { var v = document.getElementById(id).value.trim(); if (v) d[key] = v; }
+    s("f-kund", "kund.fornamn");
+    s("f-bokare", "bokare.namn");
+    s("f-foto", "bokare.profilbild_url");
+    s("f-ref", "offert.referens");
+    s("f-giltig", "offert.giltig_till_kort");
+    s("f-villkor", "bokare.villkorstext");
+    var bas = parseInt(document.getElementById("f-bas").value, 10);
+    if (!isNaN(bas)) d["offert.grundbelopp"] = bas;
+    ["f-arbete:offert.arbetsbeskrivning", "f-material:offert.material"].forEach(function (par) {
+      var p = par.split(":"), raw = document.getElementById(p[0]).value.trim();
+      if (!raw) return;
+      try { d[p[1]] = JSON.parse(raw); }
+      catch (e) { alert(p[1] + ": invalid JSON: " + e.message); throw e; }
+    });
+    d["offert.forma_ditt_kop"] = document.getElementById("f-forma").checked;
+    if (document.getElementById("f-utgangen").checked) d["offert.ar_utgangen"] = true;
+    return d;
+  }
+
+  // Skriver ett komplett dokument till iframen med globalen deklarerad FÖRE
+  // offer-logic.js, exakt den ordning servern måste använda.
+  function rendera(data) {
+    ut.textContent = data
+      ? "window.AMPY_OFFER = " + JSON.stringify(data, null, 2) + ";"
+      : "// no window.AMPY_OFFER: the page keeps its sample values";
+    fetch("r2-checkouten/index.html")
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        html = html.replace(/<head>/i,
+          '<head><base href="' + new URL("r2-checkouten/", location.href).href + '">');
+        if (data) {
+          html = html.replace(/<script src="\.\.\/assets\/offer-logic\.js"><\/script>/,
+            '<script>window.AMPY_OFFER=' + JSON.stringify(data).replace(/<\//g, "<\\/") +
+            ';<\/script>\n<script src="../assets/offer-logic.js"><\/script>');
+        }
+        var doc = ram.contentDocument;
+        doc.open(); doc.write(html); doc.close();
+      });
+  }
+
+  document.getElementById("go").addEventListener("click", function () { rendera(bygg()); });
+  document.getElementById("tom").addEventListener("click", function () { rendera(null); });
+  rendera(bygg());
+})();
+</script>
+</body>
+</html>

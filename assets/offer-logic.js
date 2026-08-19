@@ -19,6 +19,92 @@
     return n.toLocaleString("sv-SE").replace(/ /g, " ") + " kr";
   }
 
+  /* ===================================================================
+     CRM-INJEKTION. window.AMPY_OFFER fyller sidan; saknas objektet står
+     exempelvärdena kvar, vilket är precis vad mockupen ska visa.
+     Fyra sorters hookar, alla deklarativa i markupen:
+       data-oa="nyckel"            -> textContent
+       data-oa-list="nyckel"       -> bygger om en <ul> ur en array
+       data-oa-photo="nyckel"      -> byter platshållarsilhuetten mot <img>
+       data-base-amt               -> grundbeloppet, formaterat med kr()
+     Nycklar med tomt eller saknat värde rörs INTE: exempelvärdet står kvar
+     hellre än att raden blir tom mitt i en offert.
+     =================================================================== */
+  (function () {
+    var d = window.AMPY_OFFER;
+    if (!d || typeof d !== "object") return;
+    var har = function (k) { var v = d[k]; return v !== undefined && v !== null && v !== ""; };
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-oa]"), function (el) {
+      var k = el.getAttribute("data-oa");
+      if (har(k)) el.textContent = d[k];
+    });
+
+    // Arbetsbeskrivningen: array av {rubrik, beskrivning?}. Beskrivningen är
+    // valfri per punkt; utan den renderas ingen tom <p> som skulle ge
+    // punkten fel höjd mot sina syskon.
+    var work = document.querySelector('[data-oa-list="offert.arbetsbeskrivning"]');
+    if (work && Array.isArray(d["offert.arbetsbeskrivning"]) && d["offert.arbetsbeskrivning"].length) {
+      work.innerHTML = d["offert.arbetsbeskrivning"].map(function (p) {
+        var t = typeof p === "string" ? { rubrik: p } : (p || {});
+        if (!t.rubrik) return "";
+        return '<li><span class="w-check" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
+          "<div><h3></h3>" + (t.beskrivning ? "<p></p>" : "") + "</div></li>";
+      }).join("");
+      // Texten sätts som textContent, aldrig som HTML: fritext ur ett CRM
+      // får inte kunna injicera markup i kundens offert.
+      Array.prototype.forEach.call(work.children, function (li, i) {
+        var t = d["offert.arbetsbeskrivning"][i];
+        if (typeof t === "string") t = { rubrik: t };
+        li.querySelector("h3").textContent = t.rubrik;
+        if (t.beskrivning) li.querySelector("p").textContent = t.beskrivning;
+      });
+    }
+
+    // Materiallistan: array av strängar. Är den tom tas hela expandern bort,
+    // annars står rubriken "Material som ingår" kvar över ingenting.
+    var mat = document.querySelector('[data-oa-list="offert.material"]');
+    if (mat && Array.isArray(d["offert.material"])) {
+      var rader = d["offert.material"].filter(function (x) { return x; });
+      if (!rader.length) {
+        var box = mat.closest("details");
+        if (box) box.remove();
+      } else {
+        mat.innerHTML = "";
+        rader.forEach(function (txt) {
+          var li = document.createElement("li");
+          li.textContent = txt;
+          mat.appendChild(li);
+        });
+      }
+    }
+
+    // Bokarens porträtt ersätter silhuetten. object-fit och radie ligger
+    // redan i shared.css (.of-signed__avatar img).
+    var ph = document.querySelector("[data-oa-photo]");
+    if (ph && har(ph.getAttribute("data-oa-photo"))) {
+      var img = document.createElement("img");
+      img.src = d[ph.getAttribute("data-oa-photo")];
+      img.alt = "";
+      img.setAttribute("aria-hidden", "true");
+      img.width = 56; img.height = 56;
+      ph.replaceWith(img);
+    }
+
+    // Grundbeloppet. Sätts både i räknaren och i kvittoraden, och formateras
+    // med kr() så att tusenavskiljaren blir samma NBSP som i totalen under.
+    if (typeof d["offert.grundbelopp"] === "number") {
+      BASE_TOTAL = d["offert.grundbelopp"];
+      var rad = document.querySelector("[data-base-amt]");
+      if (rad) rad.textContent = kr(BASE_TOTAL);
+    }
+
+    // Utgången offert. Datumet i huvudet skrivs om till det RIKTIGA datumet
+    // i stället för den hårdkodade strängen.
+    if (d["offert.ar_utgangen"] === true) document.body.classList.add("is-expired");
+  })();
+
   // "Forma ditt köp" är valfri per offert. CRM-fältet offert.forma_ditt_kop är
   // en toggle som står PÅ som standard; slås den av ska hela sektionen bort,
   // inklusive tidsvalen och tillägget. Sektionen tas bort ur DOM:en, inte bara
@@ -274,7 +360,8 @@
     // Huvudet sa "Gäller t.o.m. 16 sep 2026" samtidigt som rutan längre ner
     // sa att offerten gått ut samma datum: två motsatta besked.
     var giltig = document.querySelector(".of-top__valid");
-    if (giltig) giltig.textContent = "Gick ut 16 sep 2026";
+    var d0 = window.AMPY_OFFER || {};
+    if (giltig) giltig.textContent = d0["offert.gick_ut_kort"] || "Gick ut 16 sep 2026";
   }
 
   // Utskriften är kundens sparade handling. En stängd <details> målas inte i

@@ -162,8 +162,8 @@
   <header class="of-top co-top">
     <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
     <div class="of-top__meta">
-      <span class="of-pill">Offert #2026-0187</span>
-      <span class="of-top__valid">Gäller t.o.m. 16 sep 2026</span>
+      <span class="of-pill" data-oa="offert.referens">Offert #2026-0187</span>
+      <span class="of-top__valid" data-oa="offert.giltig_till_kort">Gäller t.o.m. 16 sep 2026</span>
     </div>
   </header>
 
@@ -179,24 +179,24 @@
       <!-- 1 · hälsning + bokaren -->
       <section class="co-card of-greet" aria-labelledby="greet-h">
         <!-- [name] och [Bokare] är sammanslagningsfält: CRM:et fyller dem per offert. -->
-        <h1 id="greet-h">Hej [name], här kommer din offert!</h1>
+        <h1 id="greet-h">Hej <span data-oa="kund.fornamn">[name]</span>, här kommer din offert!</h1>
         <p class="of-lede">Allt innehåll du behöver för att bestämma dig står på den här sidan. Inget är bindande förrän du själv accepterar.</p>
         <div class="of-signed">
           <span class="of-signed__avatar">
             <!-- [BOKARBILD] bokarens profilbild kommer per offert. Silhuetten är
                  platshållaren; saknas foto men finns namn kan initialerna av
                  [Bokare] renderas här i stället (.of-initials finns kvar i CSS). -->
-            <svg class="of-avatar-fallback" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20.4c.6-3.9 3.6-6 7.2-6s6.6 2.1 7.2 6"/></svg>
+            <svg class="of-avatar-fallback" data-oa-photo="bokare.profilbild_url" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20.4c.6-3.9 3.6-6 7.2-6s6.6 2.1 7.2 6"/></svg>
             <span class="of-signed__verify" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
           </span>
-          <span class="of-signed__who">[Bokare]<small>Har räknat på ditt jobb</small></span>
+          <span class="of-signed__who"><span data-oa="bokare.namn">[Bokare]</span><small>Har räknat på ditt jobb</small></span>
         </div>
       </section>
 
       <!-- 2 · det här gör vi -->
       <section class="co-card" aria-labelledby="work-h">
         <h2 class="of-h2" id="work-h">Det här gör vi</h2>
-        <ul class="of-work">
+        <ul class="of-work" data-oa-list="offert.arbetsbeskrivning">
           <li>
             <span class="w-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
             <div><h3>Demontering av din gamla elcentral</h3></div>
@@ -229,7 +229,7 @@
             Material som ingår
             <svg class="m-arrow" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
-          <ul>
+          <ul data-oa-list="offert.material">
             <li>2 st modulkapsling 2×13</li>
             <li>2 st jordfelsbrytare</li>
             <li>1 st personskyddsautomat 10 A</li>
@@ -424,7 +424,7 @@
             </label>
           </div>
         </div>
-        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Vid accept kommer [Bokare] höra av sig till dig för genomgång av villkor innan signering.</p>
+        <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Vid accept kommer <span data-oa="bokare.namn">[Bokare]</span> höra av sig till dig för genomgång av villkor innan signering.</p>
       </section>
 
       <!-- 6 · villkor, ändring, avböj, nästa steg -->
@@ -448,7 +448,7 @@
       <div class="r-row">
         <span class="lbl">Komplett arbete</span>
         <span class="dots" aria-hidden="true"></span>
-        <span class="amt">11 900 kr</span>
+        <span class="amt" data-base-amt>11 900 kr</span>
       </div>
       <div class="r-row addon-row" data-tier-row>
         <span class="lbl" data-tier-label>Installationstid</span>
@@ -479,7 +479,7 @@
           <span class="m-label">Serviceavtal</span>
           <span class="m-amt">149 kr/mån</span>
         </div>
-        <p class="m-note">Du binder dig inte här. [Bokare] går igenom villkoren med dig innan något signeras.</p>
+        <p class="m-note">Du binder dig inte här. <span data-oa="bokare.namn">[Bokare]</span> går igenom villkoren med dig innan något signeras.</p>
       </div>
 
       <div class="of-expired" style="margin-top:14px;" role="status">
@@ -493,7 +493,7 @@
             <label for="change-text" class="sr-only">Din fråga eller ändring</label>
             <textarea id="change-text" placeholder="Till exempel: Kan ni även dra fram ett uttag i garaget?"></textarea>
             <button class="of-btn-send" type="button" data-send-change>
-              <span>Skicka till [Bokare]</span>
+              <span>Skicka till <span data-oa="bokare.namn">[Bokare]</span></span>
               <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
             </button>
             <p class="c-hint" role="status"></p>
@@ -530,7 +530,7 @@
             <svg class="m-arrow" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           </summary>
           <div class="l-body">
-            <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
+            <p class="l-unique" data-oa="bokare.villkorstext">[Bokarens text om just det här uppdraget läggs in här.]</p>
             <p><a class="of-terms-link" href="https://ampy.se/kopvillkor" target="_blank" rel="noopener">Läs våra allmänna köpvillkor</a></p>
           </div>
         </details>
@@ -544,7 +544,7 @@
           </li>
           <li class="of-step">
             <span class="n" aria-hidden="true"><svg class="mark" viewBox="0 0 48 48" fill="none"><circle class="trk" cx="24" cy="24" r="22" stroke-width="2"/><circle class="arc" cx="24" cy="24" r="22" stroke-width="2" stroke-linecap="round" stroke-dasharray="92.15 46.08" transform="rotate(-90 24 24)"/></svg><span class="d">2</span></span>
-            <h3>[Bokare] ringer och bokar tid</h3>
+            <h3><span data-oa="bokare.namn">[Bokare]</span> ringer och bokar tid</h3>
           </li>
           <li class="of-step">
             <span class="n" aria-hidden="true"><svg class="mark" viewBox="0 0 48 48" fill="none"><circle class="trk" cx="24" cy="24" r="22" stroke-width="2"/><circle class="arc" cx="24" cy="24" r="22" stroke-width="2" stroke-linecap="round" stroke-dasharray="138.23 0.00" transform="rotate(-90 24 24)"/></svg><span class="d">3</span></span>
