@@ -565,10 +565,9 @@ grannarnas 161.
 - Bokarens verifieringsbock var bortklippt av avatarens overflow:hidden och renderades som
   en gron kil. Badgens mittpunkt lag utanfor klippbanan.
 
-### Ett fynd som INTE atgardades
-Granskarna flaggade **"5 av 5 pa betyg pa Google"** som trasig svenska (dubbel preposition).
-Det ar agarens ordagranna instruktion 2026-08-19 och star kvar oforandrat. Se frageraden
-till agaren.
+### Fyndet om Google-betyget
+Granskarna flaggade "5 av 5 pa betyg pa Google" som trasig svenska (dubbel preposition).
+Agaren bekraftade 2026-08-19: strangen ar **"5 av 5 i betyg pa Google"** pa bada sidorna.
 
 Slutmatning: 65/65 kontroller, 0 konsolfel pa sex sidtillstand, 0 horisontellt overflode
 320-1920, 0 tankstreck i kundvand text.
