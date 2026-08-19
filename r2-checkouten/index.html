@@ -109,7 +109,7 @@
     <img class="of-top__logo" src="../assets/ampy-logo-dark.png" alt="Ampy" width="1600" height="468">
     <div class="of-top__meta">
       <span class="of-pill">Offert #2026-0187</span>
-      <span class="of-pill of-pill--date"><span class="d-long">Gäller t.o.m. 31 augusti 2026</span><span class="d-short">T.o.m. 31 aug 2026</span></span>
+      <span class="of-top__valid"><span class="v-long">Gäller t.o.m. 31 augusti 2026</span><span class="v-short">T.o.m. 31 aug</span></span>
     </div>
   </header>
 
@@ -184,7 +184,7 @@
       <!-- 3 · forma ditt köp -->
       <section class="co-card" aria-labelledby="shape-h">
         <h2 class="of-h2" id="shape-h">Forma ditt köp</h2>
-        <h3 class="of-h3">När vill du ha jobbet gjort? <span class="of-gap" title="Datum i mockupen är exempel">EXEMPEL-DATUM</span></h3>
+        <h3 class="of-h3">När vill du ha jobbet gjort?</h3>
         <div class="of-tiers" role="radiogroup" aria-label="Installationstid">
           <div class="of-tier">
             <input type="radio" name="tid" value="express" id="tid-express">
@@ -192,7 +192,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Express</span>
-                <span class="t-date">Installerad senast tisdag 18 augusti, inom 24 timmar</span>
+                <span class="t-date">24 till 48 timmar</span>
                 <span class="t-why">Du får en garanterad dag och en elektriker prioriteras till ditt jobb.</span>
               </span>
               <span class="t-price">+1 000 kr</span>
@@ -204,7 +204,7 @@
               <span class="t-radio" aria-hidden="true"></span>
               <span>
                 <span class="t-name">Prioritet</span>
-                <span class="t-date">Installerad senast torsdag 20 augusti, inom 72 timmar</span>
+                <span class="t-date">2 till 5 dagar</span>
                 <span class="t-why">Garanterad dag inom tre dygn, när det är bråttom men inte akut.</span>
               </span>
               <span class="t-price">+700 kr</span>
@@ -215,8 +215,8 @@
             <label for="tid-standard">
               <span class="t-radio" aria-hidden="true"></span>
               <span>
-                <span class="t-name">Standard <span class="t-rek">Vår rekommendation</span></span>
-                <span class="t-date">20 augusti till 31 augusti, inom 3 till 14 dagar</span>
+                <span class="t-name">Standard</span>
+                <span class="t-date">5 till 14 dagar</span>
                 <span class="t-why">Vi ringer och bokar en tid som passar dig, utan extra kostnad.</span>
               </span>
               <span class="t-price free">+0 kr</span>
@@ -236,7 +236,7 @@
                 <span class="a-name">Extra arbetstimme på plats</span>
                 <span class="a-desc">En timmes småfix medan elektrikern ändå är hemma hos dig, till exempel byte av vägguttag eller strömbrytare.</span>
               </span>
-              <span class="a-price">+850 kr <span class="of-gap">EXEMPEL</span></span>
+              <span class="a-price">+850 kr</span>
             </label>
           </div>
         </div>
@@ -271,23 +271,12 @@
         <span class="t-label">Att betala</span>
         <span class="amt" data-total>11 900 kr</span>
         <span class="t-vat">inkl. moms, efter ROT-avdrag</span>
-        <span class="t-note">ROT-avdraget är preliminärt. Har du inte utrymme kvar fakturerar vi mellanskillnaden.</span>
       </div>
 
       <p class="of-price-note" style="margin-top:16px;">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
         <span>Behöver vi göra något utöver offerten frågar vi dig först. Alltid.</span>
       </p>
-
-      <!-- delbetalning: ytan finns, siffran är gated -->
-      <p class="of-finance">
-        <span class="f-tag">Delbetalning</span>
-        <span>Vi kan erbjuda delbetalning på det här jobbet. <span class="of-gap">[LÅNGIVARE]</span></span>
-        <button class="f-terms" type="button" id="finance-btn" aria-expanded="false" aria-controls="finance-panel">Vad som gäller</button>
-      </p>
-      <div class="of-change" id="finance-panel">
-        <p class="c-hint">Månadsbelopp, effektiv ränta och representativt exempel får du innan du binder dig, och de hämtas från långivaren. Marknadens upplägg för den här typen av jobb är 0&nbsp;% ränta upp till 100 000 kr, plus en uppläggningsavgift runt 295 till 495 kr och en aviavgift runt 45 kr per månad. Med sådana avgifter blir den verkliga månadskostnaden högre än siffran ovan, och effektiv ränta beror på beloppet. Riktiga villkor, effektiv ränta och representativt exempel hämtas från långivaren innan detta aktiveras. Från 20 november 2026 gäller nya konsumentkreditlagen (2026:1011), som även kräver en särskild upplysning om kreditens kostnader och risken för skuldsättning. <span class="of-gap of-gap--note">[LÅNGIVARE] + [JURIST]</span></p>
-      </div>
 
       <!-- serviceavtalets månadskostnad: ALDRIG inne i engångstotalen -->
       <div class="r-monthly" data-monthly>
@@ -351,7 +340,7 @@
             </blockquote>
             <div class="trust-rating">
               <span class="trust-stars" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg></span>
-              <span class="trust-rating-txt">5 av 5 · Betyg på Google</span>
+              <span class="trust-rating-txt">5 av 5 i betyg på Google</span>
             </div>
             <div class="trust-divider" aria-hidden="true"></div>
             <p class="trust-stat">3&nbsp;000+ genomförda installationer om året</p>
@@ -361,10 +350,10 @@
         <div class="of-certrow">
           <p class="c-eyebrow">Registrerade, försäkrade och kontrollerbara</p>
           <div class="c-row">
+            <img class="logo-if" src="../assets/installatorsforetagen.svg" alt="Installatörsföretagen">
             <img class="logo-els" src="../assets/elsakerhetsverket.svg" alt="Elsäkerhetsverket">
             <img class="logo-id06" src="../assets/id06.svg" alt="ID06">
             <img class="logo-th" src="../assets/trygg-hansa.svg" alt="Trygg-Hansa">
-            <img class="logo-if" src="../assets/installatorsforetagen.svg" alt="Installatörsföretagen">
           </div>
         </div>
       </section>
@@ -424,21 +413,6 @@
             <span class="l-txt">Felanmälan dygnet runt<small>Du når oss när som helst. Åtgärd sker vardagar om det inte är akut. <span class="of-gap of-gap--note">[FELIX] lova mottagning, inte utförande</span></small></span>
           </li>
         </ul>
-
-        <div class="of-bundle">
-          <p class="b-eyebrow">Elavtal</p>
-          <p class="b-title">Tecknar du elavtal genom oss ingår serviceavtalet i 24 månader.</p>
-          <p class="b-after">Efter 24 månader kostar det 149 kr per månad om du inte säger upp det.</p>
-          <details class="of-legal b-more">
-            <summary>
-              Så fungerar erbjudandet <span class="jurist-tag of-gap--note">[FELIX] + [JURIST]</span>
-              <svg class="m-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </summary>
-            <div class="l-body">
-              <p>Elavtalet är ett eget avtal med egen elhandlare, egna villkor och egen ångerrätt. Elpriset redovisas separat med jämförpris för ditt elområde. Vilken elhandlare vi samarbetar med, och de fullständiga villkoren, låses innan erbjudandet aktiveras.</p>
-            </div>
-          </details>
-        </div>
 
         <!-- TVÅ vägar, ingen förvald. Den andra vägen finns för att researchen är
              tydlig: ett avtal som stängs av elektrikern på plats tecknas 4-6× oftare
@@ -601,16 +575,6 @@
     window.addEventListener("resize", sync);
     document.addEventListener("offer:render", sync);
     sync();
-  })();
-  // delbetalningsvillkoren
-  (function () {
-    var b = document.getElementById("finance-btn"), p = document.getElementById("finance-panel");
-    if (!b || !p) return;
-    b.addEventListener("click", function () {
-      var open = p.classList.toggle("visible");
-      b.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-  })();
-</script>
+  })();</script>
 </body>
 </html>
