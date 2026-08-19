@@ -34,16 +34,7 @@
   });
 })();
 
-/* Skälet följer med från offertsidan som ?skal=. Kunden som kryssade
-   "Jag vill prata med någon först" fick annars steg 2:s löfte om tystnad,
-   trots att hen uttryckligen bett om ett samtal.
-   KONTRAKT: backend måste ta emot samma värde när formuläret kopplas in.
-   Värden: pris | tid | annan | behov | prata. */
-(function () {
-  var m = /[?&]skal=([^&]*)/.exec(location.search);
-  if (!m || decodeURIComponent(m[1]) !== 'prata') return;
-  var steg = document.querySelector('[data-steg-2]');
-  if (!steg) return;
-  steg.innerHTML = 'Du bad om ett samtal, så vi ringer upp' +
-    '<small>I övrigt skickar vi ingen påminnelse om den här offerten.</small>';
-})();
+/* Skälet följer med från offertsidan som ?skal= och ska tas emot av backend
+   när formuläret kopplas in. Värden: pris | tid | annan | behov | ovrigt.
+   Ingen gren på sidan längre: "Jag vill prata med någon först" är borttaget
+   ur skällistan på ägarorder, så steg 2 gäller alla svar lika. */

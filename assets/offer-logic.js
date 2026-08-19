@@ -79,13 +79,6 @@
       }
     });
 
-    // delta-chips intill kontrollerna
-    Array.prototype.forEach.call(document.querySelectorAll("[data-delta]"), function (chip) {
-      var diff = sum - BASE_TOTAL;
-      chip.classList.toggle("visible", diff > 0);
-      chip.textContent = "+" + " " + kr(diff) + " · totalt " + kr(sum);
-    });
-
     // Egen live-region för totalen. Chippet ovan döljs vid +0 kr, så en
     // aria-live DÄR annonserade prishöjningar men tigde när kunden gick
     // tillbaka till Standard. Skriv bara vid faktisk ändring, annars läser
@@ -101,17 +94,8 @@
     });
 
 
-    // Alla tre serviceavtalsvalen kvitteras. Tidigare var två av tre döda
-    // kontroller: de gick att kryssa men gjorde ingenting alls.
-    Array.prototype.forEach.call(document.querySelectorAll("[data-svc-ack]"), function (el) {
-      var v = svcValue();
-      el.textContent =
-        v === "ja" ? "Serviceavtalet läggs till. Det faktureras separat från installationen." :
-        v === "senare" ? "Noterat. Marcus tar upp det när jobbet är klart." :
-        v === "nej" ? "Noterat. Vi tar inte upp det igen." : "";
-      el.classList.toggle("visible", !!v);
-    });
-
+    // Kvittenstexten under valen är borttagen på ägarorder: återkopplingen
+    // på "Ja, jag är intresserad" ges i summeringspanelen (r-monthly).
     var blocked = acceptBlocked();
     acceptBtns.forEach(function (b) { b.setAttribute("aria-disabled", blocked ? "true" : "false"); });
     blockMsgs.forEach(function (m) { m.classList.remove("visible"); });
@@ -143,6 +127,15 @@
   // och det flyttar kortet i dokumentet. Utan förankring hoppar sidan under
   // fingret. Vi mäter knappen kunden just tryckte på före och efter växlingen
   // och kompenserar med scrollBy, så den står stilla på skärmen.
+  // De två panelerna är ömsesidigt uteslutande: öppnade kunden den ena medan
+  // den andra stod öppen låg båda kvar samtidigt, med två motstridiga
+  // uppmaningar under varandra.
+  function stangPanel(panelId, knappId) {
+    var p = document.getElementById(panelId), b = document.getElementById(knappId);
+    if (p) p.classList.remove("visible");
+    if (b) b.setAttribute("aria-expanded", "false");
+  }
+
   function syncPanelHojd(ankare) {
     var panel = document.getElementById("summering");
     if (!panel) return;
@@ -160,6 +153,7 @@
     changeBtn.addEventListener("click", function () {
       var open = changePanel.classList.toggle("visible");
       changeBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) stangPanel("decline-panel", "decline-btn");
       syncPanelHojd(changeBtn);
       if (open) {
         changePanel.scrollIntoView({ block: "nearest" });
@@ -234,6 +228,7 @@
     declineBtn.addEventListener("click", function () {
       var open = declinePanel.classList.toggle("visible");
       declineBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) stangPanel("change-panel", "change-btn");
       syncPanelHojd(declineBtn);
       if (open) {
         // Förankra PANELEN, inte skicka-knappen. Med knappen som mål hamnade

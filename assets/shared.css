@@ -137,10 +137,18 @@ a { -webkit-tap-highlight-color: transparent; }
 /* BOKAREN — den som skickat offerten. Porträtt + namn, försignerad för Ampy.
    Fotot är per-offert-data (bokarens profilbild); initialavataren är fallback
    och shippas som default eftersom riktiga porträtt inte finns än [BOKARBILD]. */
+/* width: fit-content — sedan namnteckningsblocket togs bort finns bara avatar
+   och namnrad kvar, och en full bredd gav en lång tom list på desktop. Kortet
+   läser nu som en bricka om bokaren. På mobil (griden nedan) går det full bredd. */
 .of-signed {
   margin-top: 22px; display: flex; align-items: center; gap: 16px;
-  padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--r-md);
+  width: fit-content; max-width: 100%;
+  padding: 14px 22px 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md);
   background: rgba(255,255,255,.66);
+}
+.of-signed__avatar .of-avatar-fallback {
+  width: 30px; height: 30px; fill: none; stroke: rgba(255,255,255,.92);
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
 }
 .of-signed__avatar {
   flex: 0 0 auto; position: relative;
@@ -171,7 +179,7 @@ a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 560px) {
   .of-signed {
     display: grid; grid-template-columns: 56px minmax(0, 1fr);
-    gap: 10px 14px; align-items: center;
+    gap: 10px 14px; align-items: center; width: auto;
   }
   .of-signed__who { grid-column: 2; }
   .of-signed__sig { grid-column: 2; margin-left: 0; text-align: left; }
@@ -404,20 +412,6 @@ a { -webkit-tap-highlight-color: transparent; }
 }
 
 /* delta-chip intill kontrollerna (deltat syns där valet görs OCH i totalen) */
-/* visibility, inte display: boxen finns alltid och tar alltid sin plats.
-   Med display:none reserverades ingen höjd, så i samma stund kunden kryssade
-   i tillvalet tändes chippet OVANFÖR kortet och hela kortet gled 40,5 px
-   nedåt under fingret. Andra trycket på samma punkt träffade då rubriken
-   ovanför, ingenting hände, och kunden satt kvar med 850 kr hen försökte
-   ta bort. Samma sak vid varje byte av tidsnivå. */
-.of-delta {
-  display: inline-block; visibility: hidden;
-  font-size: 13px; font-weight: 600; color: var(--teal-ink);
-  background: var(--teal-soft); border-radius: 999px; padding: 3px 10px; white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-.of-delta.visible { visibility: visible; animation: of-fade .25s var(--ease) both; }
-
 /* =========================================================================
    SERVICEAVTALET — egen sektion (ägarorder: "likt hur vi gjort med Därför kan
    du känna dig trygg"). UTKAST: allt innehåll [FELIX]-gated.
@@ -432,33 +426,26 @@ a { -webkit-tap-highlight-color: transparent; }
     linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,249,255,.92));
   padding: clamp(20px, 3vw, 30px) clamp(18px, 3.2vw, 34px);
 }
-.of-svc__head { display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
-.of-svc__title { flex: 1 1 260px; min-width: 0; }
-.of-svc__title h2 {
+/* Rubrik, sedan pris, sedan beskrivning. Priset låg tidigare långt ut till
+   höger OCH var större än rubriken (29 px mot 26 px). Ett pris får inte vara
+   sidans största typografi i en sektion som uttryckligen inte är bindande. */
+.of-svc__head h2 {
   font-size: clamp(21px, .9vw + 18px, 26px); font-weight: 600; letter-spacing: -.015em;
   color: var(--ink); line-height: 1.2; text-wrap: balance;
 }
-.of-svc__title p {
-  margin-top: 8px; font-size: 15px; font-weight: 300; color: var(--body-ink);
-  line-height: 1.55; max-width: 52ch; text-wrap: pretty;
-}
-/* prisbrickan — månadspriset, tydligt separerat från engångspriset */
 .of-svc__price {
-  flex: 0 0 auto; text-align: right; padding-left: 8px;
-}
-/* när prisbrickan wrappar till egen rad ska den vänsterställas — högerställd
-   text under vänsterställd rubrik läses som ett centrerat block (uppmätt 390px) */
-@media (max-width: 620px) {
-  .of-svc__price { text-align: left; padding-left: 0; margin-top: 4px; }
-}
-.of-svc__price .p-label {
-  display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--faint); margin-bottom: 6px;
+  margin-top: 10px; display: inline-flex; align-items: baseline; gap: 2px;
+  padding: 5px 12px; border-radius: 999px;
+  background: rgba(0,169,145,.08); border: 1px solid rgba(0,169,145,.18);
 }
 .of-svc__price .p-amt {
-  display: block; font-size: clamp(24px, 1.6vw, 29px); font-weight: 700;
-  letter-spacing: -.02em; line-height: 1; color: var(--navy); font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  font-size: 19px; font-weight: 700; letter-spacing: -.01em; line-height: 1;
+  color: var(--teal-ink); font-variant-numeric: tabular-nums;
+}
+.of-svc__price .p-per { font-size: 13.5px; font-weight: 600; color: var(--teal-ink); }
+.of-svc__intro {
+  margin-top: 14px; font-size: 15px; font-weight: 300; color: var(--body-ink);
+  line-height: 1.55; max-width: 58ch; text-wrap: pretty;
 }
 
 /* värdeankaret — gratis elbesiktning */
@@ -489,7 +476,12 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-svc__optin .of-addon label { background: rgba(255,255,255,.86); }
 /* max-width: serviceavtalskortet är enda stället där prosan saknade måttak.
    Uppmätt vid 1139px: 185 tecken på en enda rad (1006px textbredd). */
-.of-svc__fine { margin-top: 14px; font-size: 12.5px; font-weight: 400; color: var(--faint); line-height: 1.55; text-wrap: pretty; max-width: 48ch; }
+/* Högerställd på ägarorder: den balanserar den vänsterställda rubrik-, pris-
+   och innehållskolumnen och läser som en avslutande not, inte som brödtext. */
+.of-svc__fine {
+  margin-top: 18px; font-size: 12.5px; font-weight: 400; color: var(--faint);
+  line-height: 1.55; text-wrap: pretty; max-width: 52ch; margin-left: auto; text-align: right;
+}
 
 /* månadsraden i summeringspanelen — UTANFÖR engångstotalen */
 .r-monthly {
@@ -568,27 +560,34 @@ a { -webkit-tap-highlight-color: transparent; }
   font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
   color: var(--faint); margin-bottom: 18px;
 }
+/* Höjderna är normaliserade på BLÄCKAREA, inte på boxhöjd. Alla fyra filerna
+   är beskurna till sin faktiska bläckyta först — Trygg-Hansas märke var bara
+   38 % av sin bildhöjd, så vid 21 px box renderades det 8 px högt, sju gånger
+   mindre yta än ID06. Måttet är satt så att varje märke upptar ~2 585 px²,
+   vilket motsvarar Installatörsföretagen på 26 px. En kvadratisk logotyp
+   behöver mer höjd än en bred för samma visuella tyngd; det är avsikten. */
 .of-certrow .c-row {
   display: flex; flex-wrap: wrap; align-items: center;
-  gap: 22px 36px;
+  gap: 26px 40px;
 }
 .of-certrow img { width: auto; opacity: 1; }
-.of-certrow .logo-els { height: 42px; }   /* 1.13:1 */
-.of-certrow .logo-id06 { height: 28px; }  /* 2.69:1 */
-.of-certrow .logo-th { height: 21px; }    /* 5.18:1 */
-.of-certrow .logo-if { height: 25px; }    /* 3.82:1 */
+.of-certrow .logo-if   { height: 26px; }   /* 3.82:1 -> 99 px bred */
+.of-certrow .logo-els  { height: 48px; }   /* 1.12:1 -> 54 px */
+.of-certrow .logo-id06 { height: 32px; }   /* 2.56:1 -> 81 px */
+.of-certrow .logo-th   { height: 24px; }   /* 4.42:1 -> 106 px */
 @media (max-width: 560px) {
-  /* Fyra logotyper i en wrappande flexrad bröt 3+1 vid 390px, med Trygg-Hansa
+  /* Fyra logotyper i en wrappande flexrad bröt 3+1 vid 390 px, med Trygg-Hansa
      ensam och vänsterställd på rad två. 2x2 håller ihop väggen. */
   .of-certrow .c-row {
     display: grid; grid-template-columns: 1fr 1fr;
-    justify-items: center; align-items: center; gap: 22px 16px;
+    justify-items: center; align-items: center; gap: 26px 14px;
   }
-  .of-certrow .logo-els { height: 36px; }
-  .of-certrow .logo-id06 { height: 24px; }
-  .of-certrow .logo-th { height: 18px; }
-  .of-certrow .logo-if { height: 22px; }
+  .of-certrow .logo-if   { height: 22px; }
+  .of-certrow .logo-els  { height: 41px; }
+  .of-certrow .logo-id06 { height: 27px; }
+  .of-certrow .logo-th   { height: 21px; }
 }
+
 
 /* ---------- trust-raden (v1 — används av R1/R3) ---------- */
 .of-trust { display: flex; flex-direction: column; gap: 18px; }
@@ -838,9 +837,6 @@ a.of-verify { display: inline-block; padding: 12px 0; min-height: 44px; }
 
 /* P1-3: delta-chippet låg under den sticky bottenbaren och syntes aldrig.
    Flyttat ovanför tillvalen, där valet faktiskt görs. */
-/* Raden bär nu alltid sin boxhöjd. `:empty`-regeln som skulle kollapsa den
-   kunde aldrig matcha: <p> innehåller alltid <span class="of-delta">. */
-.of-deltarow { min-height: 32px; margin-top: 0; display: flex; align-items: center; }
 
 /* radiovarianten av tillvalsboxen (serviceavtalets tre val) */
 .of-addon .a-box.a-radio { border-radius: 50%; }
@@ -848,13 +844,6 @@ a.of-verify { display: inline-block; padding: 12px 0; min-height: 44px; }
   background: #fff; border-color: var(--teal); box-shadow: inset 0 0 0 5px var(--teal);
 }
 .of-addon input[type="radio"]:checked + label .a-box.a-radio svg { opacity: 0; }
-/* Samma sak som .of-delta: kvittensen sköt allt under sig 52,5 px när den
-   tändes. Höjden reserveras, intoningen behålls. */
-.of-svc__ack {
-  display: block; visibility: hidden; min-height: 40px; margin-top: 12px;
-  font-size: 13.5px; font-weight: 500; color: var(--teal-link); line-height: 1.5;
-}
-.of-svc__ack.visible { visibility: visible; animation: of-fade .25s var(--ease) both; }
 
 /* Bottenbaren var fokusbar när den var aria-hidden — en tangentbordsanvändare
    tabbade in i ett element utanför skärmen (WCAG 4.1.2). visibility tas bort
@@ -868,10 +857,14 @@ a.of-verify { display: inline-block; padding: 12px 0; min-height: 44px; }
    utkastband ersätter dem. Felix ser alla igen med ?gaps=1 i URL:en. */
 .of-gap--note { display: none; }
 body.show-gaps .of-gap--note { display: inline-block; }
+/* Centrerad, både texten och själva rutan: den är en avisering om hela
+   sektionen, inte en inledande mening i den. */
 .of-draftband {
-  margin-bottom: 18px; padding: 10px 14px; border-radius: var(--r-md);
+  display: block; width: fit-content; max-width: 100%;
+  margin: 0 auto 22px; padding: 10px 18px; border-radius: 999px;
   background: rgba(246,181,61,.14); border: 1px solid rgba(246,181,61,.42);
   font-size: 13px; font-weight: 600; color: #7a5512; line-height: 1.45;
+  text-align: center; text-wrap: balance;
 }
 
 /* Skicka-knappen: var en outline-knapp identisk med "Fråga eller ändra något",

@@ -170,16 +170,18 @@
 
       <!-- 1 · hälsning + bokaren -->
       <section class="co-card of-greet" aria-labelledby="greet-h">
-        <h1 id="greet-h">Hej Ali, här är din offert för byte av elcentral</h1>
-        <p class="of-lede">Allt du behöver för att bestämma dig står på den här sidan. Inget är bindande förrän du själv accepterar.</p>
+        <!-- [name] och [Bokare] är sammanslagningsfält: CRM:et fyller dem per offert. -->
+        <h1 id="greet-h">Hej [name], här kommer din offert!</h1>
+        <p class="of-lede">Allt innehåll du behöver för att bestämma dig står på den här sidan. Inget är bindande förrän du själv accepterar.</p>
         <div class="of-signed">
           <span class="of-signed__avatar">
-            <!-- [BOKARBILD] bokarens profilbild kommer per offert; initialerna är fallback -->
-            <span class="of-initials" aria-hidden="true">ME</span>
+            <!-- [BOKARBILD] bokarens profilbild kommer per offert. Silhuetten är
+                 platshållaren; saknas foto men finns namn kan initialerna av
+                 [Bokare] renderas här i stället (.of-initials finns kvar i CSS). -->
+            <svg class="of-avatar-fallback" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20.4c.6-3.9 3.6-6 7.2-6s6.6 2.1 7.2 6"/></svg>
             <span class="of-signed__verify" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
           </span>
-          <span class="of-signed__who">Marcus Ek <span class="of-gap">EXEMPEL</span><small>Har räknat på ditt jobb</small></span>
-          <span class="of-signed__sig"><span class="of-script">Marcus Ek</span>Undertecknare för Ampy</span>
+          <span class="of-signed__who">[Bokare]<small>Har räknat på ditt jobb</small></span>
         </div>
       </section>
 
@@ -268,7 +270,6 @@
         </div>
 
 
-        <p class="of-deltarow"><span class="of-delta" data-delta></span></p>
         <!-- Chippet döljs när valet är +0 kr, så en aria-live där tiger när
              priset går NER. Totalen annonseras i stället från en egen
              sr-only-region. Mellanslagen nedan är U+00A0, byte-identiska med
@@ -308,7 +309,7 @@
             </blockquote>
             <div class="trust-rating">
               <span class="trust-stars" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.8 6 21l1.2-6.6L2.4 9.7l6.6-.9z"/></svg></span>
-              <span class="trust-rating-txt">5 av 5 i betyg på Google</span>
+              <span class="trust-rating-txt">5 av 5 på betyg på Google</span>
             </div>
             <div class="trust-divider" aria-hidden="true"></div>
             <p class="trust-stat">3&nbsp;000+ genomförda installationer om året</p>
@@ -319,25 +320,20 @@
           <p class="c-eyebrow">Registrerade, försäkrade och kontrollerbara</p>
           <div class="c-row">
             <img class="logo-if" src="../assets/installatorsforetagen.svg" width="719" height="188" loading="lazy" decoding="async" alt="Installatörsföretagen">
-            <img class="logo-els" src="../assets/elsakerhetsverket.webp" width="300" height="300" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
-            <img class="logo-id06" src="../assets/id06.webp" width="300" height="119" loading="lazy" decoding="async" alt="ID06">
-            <img class="logo-th" src="../assets/trygg-hansa.webp" width="300" height="179" loading="lazy" decoding="async" alt="Trygg-Hansa">
+            <img class="logo-els" src="../assets/elsakerhetsverket.webp" width="122" height="109" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
+            <img class="logo-id06" src="../assets/id06.webp" width="210" height="82" loading="lazy" decoding="async" alt="ID06">
+            <img class="logo-th" src="../assets/trygg-hansa.webp" width="106" height="24" loading="lazy" decoding="async" alt="Trygg-Hansa">
           </div>
         </div>
       </section>
 
       <!-- 5 · serviceavtalet — egen sektion, allt innehåll [FELIX]-gated -->
       <section class="co-card of-svc" aria-labelledby="svc-h">
-        <p class="of-draftband">Serviceavtalet är nytt hos oss. Väljer du det här är det en intresseanmälan, inte en signering.</p>
+        <p class="of-draftband">Väljer du serviceavtal är det en intresseanmälan, inte en signering.</p>
         <div class="of-svc__head">
-          <div class="of-svc__title">
-            <h2 id="svc-h">Serviceavtal</h2>
-            <p>Ett löpande avtal för dig som vill att någon håller koll på elen även när inget är trasigt. Vi kommer tillbaka med jämna mellanrum, kontrollerar anläggningen och finns närmare till hands när något händer. Passar dig som äger ditt hem och vill slippa hålla reda på det själv.</p>
-          </div>
-          <div class="of-svc__price">
-            <span class="p-label">Pris</span>
-            <span class="p-amt">149 kr/mån</span>
-          </div>
+          <h2 id="svc-h">Serviceavtal</h2>
+          <p class="of-svc__price"><span class="p-amt">149 kr</span><span class="p-per">/mån</span></p>
+          <p class="of-svc__intro">Ett löpande avtal för dig som vill att någon håller koll på elen även när inget är trasigt. Vi kommer tillbaka med jämna mellanrum, kontrollerar anläggningen och finns närmare till hands när något händer.</p>
         </div>
 
         <div class="of-svc__anchor">
@@ -379,10 +375,6 @@
             </label>
           </div>
         </div>
-        <!-- Kvittensyta. offer-logic.js skrev till [data-svc-ack] och CSS-regeln
-             .of-svc__ack fanns, men elementet gjorde det inte: två av tre val
-             var därför stumma kontroller. -->
-        <p class="of-svc__ack" data-svc-ack role="status"></p>
         <p class="of-svc__fine">Serviceavtalet är ett eget avtal som löper månadsvis och påverkar inte priset för installationen. Vid accept kommer Marcus höra av sig till dig för genomgång av villkor innan signering.</p>
       </section>
 
@@ -400,11 +392,9 @@
     <section class="co-panel of-receipt" id="summering" aria-labelledby="price-h" tabindex="-1">
       <h2 class="p-cap" id="price-h">Din summering</h2>
 
-      <div class="r-row">
-        <span class="lbl">Byte av elcentral</span>
-        <span class="dots" aria-hidden="true"></span>
-        <span class="amt">11 900 kr</span>
-      </div>
+      <!-- Grundraden borttagen på ägarorder: etiketten är jobbets beskrivning och
+           varierar per offert, vilket gör den svår att mappa i CRM:et. Kvittot är
+           nu totalen plus de tillval kunden själv lagt till. -->
       <div class="r-row addon-row" data-tier-row>
         <span class="lbl" data-tier-label>Installationstid</span>
         <span class="dots" aria-hidden="true"></span>
@@ -424,7 +414,7 @@
 
       <p class="of-price-note" style="margin-top:16px;">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>
-        <span>Behöver vi göra något utöver offerten frågar vi dig först. Alltid.</span>
+        <span>Behöver vi göra något utöver offerten frågar vi dig först.</span>
       </p>
 
       <!-- Serviceavtalet är en intresseanmälan, inte en post i summan. Egen yta,
@@ -458,13 +448,13 @@
                (→ delbetalning) från "fel tid" (→ återkontakt) från "valde annan"
                (→ konkurrensbild). Allt frivilligt, ingen confirmshaming. -->
           <div class="of-change" id="decline-panel">
-            <p class="c-hint" style="margin-bottom:10px;">Tack för att du säger till, det hjälper oss mer än tystnad. Vill du berätta varför? Allt är frivilligt.</p>
+            <p class="c-hint" style="margin-bottom:10px;">Vill du berätta varför?</p>
             <div class="of-reasons" role="group" aria-label="Skäl att avböja">
               <label><input type="radio" name="avbojskal" value="pris"> Priset passade inte</label>
               <label><input type="radio" name="avbojskal" value="tid"> Tidpunkten passar inte</label>
               <label><input type="radio" name="avbojskal" value="annan"> Vi valde en annan firma</label>
               <label><input type="radio" name="avbojskal" value="behov"> Vi behöver inte jobbet längre</label>
-              <label><input type="radio" name="avbojskal" value="prata"> Jag vill prata med någon först</label>
+              <label><input type="radio" name="avbojskal" value="ovrigt"> Övrigt</label>
             </div>
             <label for="decline-text" class="sr-only">Något mer du vill säga (frivilligt)</label>
             <textarea id="decline-text" placeholder="Något mer du vill säga? (frivilligt)" style="margin-top:12px;min-height:80px;"></textarea>
@@ -472,7 +462,6 @@
               <span>Avböj offerten</span>
               <svg viewBox="0 0 24 24" aria-hidden="true" width="17" height="17"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
             </button>
-            <p class="c-hint">Offerten ligger kvar och du kan öppna den igen om du ändrar dig.</p>
           </div>
       </div>
     </section>
