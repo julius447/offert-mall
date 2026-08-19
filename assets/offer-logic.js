@@ -174,11 +174,11 @@
         // Tom ruta kvitterades som skickad: kunden väntade på ett svar som
         // aldrig kunde komma.
         if (!falt || !falt.value.trim()) {
-          if (hint) hint.textContent = "Skriv din fråga eller ändring i rutan först, så går den till Marcus.";
+          if (hint) hint.textContent = "Skriv din fråga eller ändring i rutan först, så går den till [Bokare].";
           if (falt) falt.focus();
           return;
         }
-        if (hint) hint.textContent = "Skickat till Marcus. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
+        if (hint) hint.textContent = "Skickat till [Bokare]. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
         sendBtn.disabled = true;
         falt.readOnly = true;
         // Panelen är avklarad: bottenbaren ska inte längre hållas nere av den.

@@ -476,3 +476,42 @@ landade flyttades allt under rubriken 22 px).
   månadsraden står kvar; enda spaken är att korta en av strängarna. **Ägargrind.**
 - Trygg-Hansa-logotypen renderas 18 px hög på mobil och är svårläst. Samma som före, ingen
   regression, men värd ett beslut.
+
+---
+
+## v7.1 — serviceavtalets innehållslista
+
+Ägaren underkände punktlistan: "det är bara en tråkig punktlista som är svårläst" och
+"just nu är den delen extremt, extremt dålig". Tre divergenta riktningar byggdes
+oberoende av varandra (ett värdekvitto, fem kort, en tidslinje över året), var och en
+bedömd av en designchef, en copychef med candour-grind och en utvecklare. Resultat
+23 / 23 / 22 poäng, ingen diskvalificerad. Vinnaren byggdes vidare med det domarna pekade
+ut som bäst hos de andra två.
+
+**Formen.** Varje punkt är nu en egen container: vit yta, hårfin ram, mjuk skugga, och en
+rundad teal-bricka med en egen ritad ikon. Containern är ett medvetet syskon till
+värdeankaret (samma radie, samma innerpadding, samma ikonstil) men med neutral ram i
+stället för teal, så ankaret behåller sin plats som sektionens första röst. Punktens
+konkreta nyttolast ligger i ett eget fack till höger, avskilt med en hårfin lodrät linje.
+Ingen prickad leader och inget ensamt kronbelopp i facket: leader plus högerställd
+tabular-nums är sidans PRIS-idiom, och den här listan är inte en avgiftslista.
+
+Layoutbytet styrs av en **container query**, inte av viewporten: under 520 px behållarbredd
+fälls facket ner som ett teal-chip under rubriken. Det är rätt eftersom sektionen ligger i
+vänsterspalten och kan bli smal även på en bred skärm.
+
+Timprisposten fick en egen bredare form med båda leden märkta, MED AVTAL 750 kr/tim mot
+UTAN AVTAL 850 kr/tim, plus raden "Båda priserna är efter ROT".
+
+**Copyn.** Varje punkt har en rubrik, en nyttolast och en mening om vad kunden faktiskt får.
+Ingen fakta utanför underlaget: "förlängd garanti" formuleras som "längre än den annars
+gör" utan att namnge en grundgaranti som inte finns dokumenterad, och inget av de fyra
+övriga leden har fått ett påhittat värdebelopp.
+
+**Uppmätt** vid 320/360/390/430/768/1024/1440: noll horisontellt överflöde, titlarnas
+vänsterkant identisk på alla fem rader vid varje bredd, alla fem ikoner unika, alla
+dekorativa svg under aria-hidden, och markupen är fortfarande en `<ul>` med fem `<li>`.
+
+**Bokarnamnet** är nu platshållaren `[Bokare]` på samtliga åtta ställen det förekom
+(offertsidan, prislogiken och accepterad-sidan). Det stod kvar som "Marcus" på sex ställen
+medan bokarkortet sa `[Bokare]`.

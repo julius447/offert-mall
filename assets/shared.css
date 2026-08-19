@@ -459,16 +459,147 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-svc__anchor .a-txt { font-size: 14.5px; font-weight: 400; color: var(--ink); line-height: 1.5; text-wrap: pretty; max-width: 48ch; }
 .of-svc__anchor .a-txt strong { font-weight: 600; }
 
-/* innehållslistan — två kolumner på desktop, en på mobil */
-.of-svc__list {
-  list-style: none; margin-top: 20px;
-  display: grid; grid-template-columns: 1fr; gap: 12px 26px;
+/* =========================================================================
+   DET HÄR INGÅR — ersätter .of-svc__list (den underkända punktlistan).
+   I shared.css: radera rad 462-471, dvs kommentaren "innehållslistan — två
+   kolumner på desktop, en på mobil" + .of-svc__list, dess @media 620px,
+   .of-svc__list li, .l-check, .l-check svg och .l-txt. VERIFIERAT mot filen:
+   raderna 452-460 ovanför är .of-svc__anchor (värdeankaret) och får INTE
+   röras. .l-check/.l-txt används ingen annanstans.
+
+   Formen: varje punkt är en egen container — vit yta, hårfin ram, mjuk skugga,
+   rundad kvadratisk teal-bricka med egen ritad ikon. Containern är ett SYSKON
+   till värdeankaret (samma radie var(--r-md), samma 16px innerpadding, samma
+   ikonstil) men medvetet lugnare: neutral ram i stället för teal, så att
+   ankaret behåller sin plats som sektionens första röst.
+
+   Fältet till höger: varje punkt bär sin konkreta nyttolast i ett eget fack,
+   avskilt med en hårfin lodrät linje. Facket är VÄNSTERSTÄLLT i sin kolumn och
+   har INGEN prickad leader — båda är medvetna beslut. Prickad leader plus
+   högerställd tabular-nums är sidans PRIS-idiom (.r-row .dots / .r-row .amt),
+   och det här är inte en avgiftslista. Av samma skäl står inget ensamt
+   kronbelopp i fältet: timprisparet ligger i sin egen post med båda leden
+   märkta "Med avtal" / "Utan avtal".
+   ========================================================================= */
+.of-svc__ingar {
+  margin-top: 20px;              /* sektionens befintliga rytm: ankare 20 / lista 20 / optin 20 */
+  container-type: inline-size;   /* samma idiom som .of-receipt — en- eller tvåfältslayout är
+                                    en behållarfråga, inte en viewport-fråga */
 }
-@media (min-width: 620px) { .of-svc__list { grid-template-columns: 1fr 1fr; } }
-.of-svc__list li { display: grid; grid-template-columns: 22px 1fr; gap: 11px; align-items: center; }
-.of-svc__list .l-check { width: 22px; height: 22px; border-radius: 50%; background: var(--teal-soft); display: grid; place-items: center; margin-top: 1px; }
-.of-svc__list .l-check svg { width: 12px; height: 12px; fill: none; stroke: var(--teal-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.of-svc__list .l-txt { font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.4; text-wrap: balance; }
+
+/* Gränden mellan engångsvärdet (ankaret ovanför) och det löpande.
+   Sidans egen etikettstil, samma som .of-receipt .p-cap. */
+.of-svc__ingar .ig-cap {
+  font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--navy); line-height: 1.2;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+
+.of-svc__ingar .ig-list { list-style: none; margin-top: 12px; display: grid; gap: 8px; }
+
+/* en punkt = en egen container */
+.of-svc__ingar .ig-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 150px;
+  column-gap: 12px; row-gap: 4px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  background: #fff;
+  border: 1px solid rgba(11,16,48,.11);
+  box-shadow: 0 1px 2px rgba(15,18,60,.05), 0 6px 14px -10px rgba(9,11,50,.14);
+}
+
+/* Ikonbrickan: rundad kvadrat, inte cirkel. Cirkeln är både den underkända
+   punktlistans form och värdeankarets — kvadraten skiljer punkten från båda
+   utan att lämna familjen. */
+.of-svc__ingar .ig-ico {
+  grid-column: 1; grid-row: 1 / span 2; align-self: start;
+  width: 34px; height: 34px; border-radius: var(--r-md);
+  display: grid; place-items: center;
+  background: var(--teal-soft); border: 1px solid rgba(0,169,145,.24);
+}
+.of-svc__ingar .ig-ico svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: var(--teal-ink); stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.of-svc__ingar .ig-t {
+  grid-column: 2; grid-row: 1; align-self: center;
+  font-size: 16px; font-weight: 600; color: var(--ink);
+  line-height: 1.3; letter-spacing: -.005em;
+}
+/* text-wrap: balance, inte pretty — brödtexten är två rader i tvåfältsläget
+   och pretty lämnade en ensam kort andrarad ("annars gör.", "att spara.")
+   som läste som en ofärdig rad i ett annars slutet kort. */
+.of-svc__ingar .ig-b {
+  grid-column: 2; grid-row: 2;
+  font-size: 13.5px; font-weight: 400; color: var(--body-ink);
+  line-height: 1.5; max-width: 66ch; text-wrap: balance;
+}
+
+/* Nyttolasten i eget fack. Facket sträcker sig över hela kortets höjd så att
+   den hårfina linjen läses som en avdelare mellan två fält, inte som ett
+   löst streck bredvid en rad. */
+.of-svc__ingar .ig-s {
+  grid-column: 3; grid-row: 1 / span 2; align-self: stretch;
+  display: flex; align-items: center;
+  border-left: 1px solid var(--line); padding-left: 16px;
+  font-size: 13.5px; font-weight: 600; color: var(--teal-ink);
+  line-height: 1.35; text-wrap: balance;
+}
+
+/* TIMPRISPOSTEN — enda punkten med ett kronbelopp, och därför den enda som
+   låter beloppen stå i en egen figur med båda leden märkta. Ingen överstruken
+   rabattlapp, ingen ensam siffra i högerfältet. Posten tar hela bredden och
+   avslutar listan: den är avsiktligt listans tyngsta rad. */
+.of-svc__ingar .ig-item--pris { grid-template-columns: 34px minmax(0, 1fr); }
+.of-svc__ingar .ig-fig {
+  grid-column: 2; grid-row: 2; margin-top: 4px;
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+/* Basis 118 + max-width 270: båda leden står SIDA VID SIDA ända ner till 390
+   (jämförelsen är hela poängen och försvinner om de staplas), men växer inte
+   ut till halva spalten på 1440 där de blev två tomma slätter. */
+.of-svc__ingar .ig-f {
+  flex: 1 1 118px; min-width: 0; max-width: 270px;
+  display: grid; gap: 2px; padding: 8px 12px; border-radius: var(--r-md);
+}
+.of-svc__ingar .ig-f--med { background: var(--teal-soft); border: 1px solid rgba(0,169,145,.24); }
+.of-svc__ingar .ig-f--utan { background: var(--offwhite); border: 1px solid var(--line); }
+.of-svc__ingar .ig-fl {
+  font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  line-height: 1.2;
+}
+.of-svc__ingar .ig-f--med .ig-fl { color: var(--teal-ink); }
+.of-svc__ingar .ig-f--utan .ig-fl { color: var(--faint); }
+.of-svc__ingar .ig-fv {
+  font-size: 17px; letter-spacing: -.01em; line-height: 1.2;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.of-svc__ingar .ig-f--med .ig-fv { font-weight: 700; color: var(--teal-ink); }
+.of-svc__ingar .ig-f--utan .ig-fv { font-weight: 600; color: var(--muted); }
+.of-svc__ingar .ig-note {
+  grid-column: 2; grid-row: 3; margin-top: 8px;
+  font-size: 12.5px; font-weight: 400; color: var(--muted); line-height: 1.5;
+}
+
+/* Under 520px behållarbredd finns ingen plats för ett eget fack. Nyttolasten
+   fälls då ner på egen rad under rubriken som ett litet teal-chip — sidans
+   befintliga chip-idiom (.fastpris-pill), inte en halvt kollapsad kolumn. */
+@container (max-width: 519px) {
+  .of-svc__ingar .ig-item { grid-template-columns: 34px minmax(0, 1fr); padding: 12px 14px; }
+  .of-svc__ingar .ig-s {
+    grid-column: 2; grid-row: 2; align-self: start; justify-self: start;
+    border-left: 0; padding: 2px 10px; margin-top: 2px;
+    border-radius: 999px; background: var(--teal-soft);
+    font-size: 12.5px; font-weight: 600; color: var(--teal-ink);
+  }
+  /* pretty, inte balance: på 334px behållare är brödtexten tre rader, och
+     balance jämnade då ut dem så kortet fick en tom högerkant. */
+  .of-svc__ingar .ig-b { grid-row: 3; margin-top: 2px; text-wrap: pretty; }
+  .of-svc__ingar .ig-fig { margin-top: 2px; }
+}
 
 
 /* teckna-kontrollen */
