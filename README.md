@@ -322,7 +322,7 @@ röra logiken.
 
 | # | Fråga |
 |---|---|
-| 1 | Timpriset 150 kr/tim mot 850 kr/tim är en rabatt på 82 %. Stämmer siffrorna? |
+| 1 | ~~Timpriset 150 kr/tim mot 850 kr/tim~~ — AVGJORT 2026-08-19: **750 kr/tim mot 850 kr/tim**. |
 | 2 | Allmänna köpvillkor: länken i villkorsexpandern pekar ingenstans än. |
 | 3 | Bokarens unika villkorstext per uppdrag — var kommer den ifrån i CRM:et? |
 | 4 | Produktions-URL:er för accepterad- och avböjd-sidan. |
@@ -382,7 +382,6 @@ Alla 42 är implementerade och uppmätta. Det som satt djupast:
 
 ### Öppna ägargrindar
 
-- **150 kr/tim mot 850 kr/tim** i serviceavtalet är 82 % rabatt. Bekräfta att siffran stämmer.
 - **Grundgarantins längd** saknas, så "förlängd garanti i 5 år" går inte att ställa mot något. `[GAP]`
 - **Produktions-URL för accepterad-sidan.** Nuvarande värde är en GitHub Pages-förhandsvisning och
   får inte gå ut i en skarp SMS-länk.

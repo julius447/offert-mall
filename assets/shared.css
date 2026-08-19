@@ -222,8 +222,15 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-tiers { display: flex; flex-direction: column; gap: 12px; }
 .of-tier { position: relative; }
 .of-tier input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
+/* Två rader: [radio | namn | pris] och [beskrivning i full bredd].
+   Tidigare låg namn och beskrivning i ett gemensamt span, så prisspåret
+   (nowrap, ~140px av 390px) klämde beskrivningen till 17-24 tecken per rad.
+   Fixen då var att flytta priset till egen rad, men det gav ett kort med
+   priset nere till vänster och en tom högersida. Nu får beskrivningen hela
+   bredden OCH priset står högerställt på namnraden. */
 .of-tier label {
-  display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: start;
+  display: grid; grid-template-columns: 24px minmax(0, 1fr) auto;
+  column-gap: 12px; row-gap: 3px; align-items: center;
   border: 1.5px solid var(--line-strong); border-radius: var(--r-md);
   padding: 14px 16px; cursor: pointer; background: rgba(255,255,255,.6);
   transition: border-color .15s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
@@ -243,7 +250,10 @@ a { -webkit-tap-highlight-color: transparent; }
   font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
   color: var(--teal-ink); background: var(--teal-soft); border-radius: 999px; padding: 3px 9px;
 }
-.of-tier .t-date { display: block; font-size: 13.5px; font-weight: 400; color: var(--ink-soft); margin-top: 3px; }
+.of-tier .t-radio { grid-column: 1; grid-row: 1; }
+.of-tier .t-name { grid-column: 2; grid-row: 1; }
+.of-tier .t-price { grid-column: 3; grid-row: 1; justify-self: end; }
+.of-tier .t-date { grid-column: 2 / -1; grid-row: 2; display: block; font-size: 13.5px; font-weight: 400; color: var(--ink-soft); }
 .of-tier .t-why { display: block; font-size: 13.5px; font-weight: 300; color: var(--muted); margin-top: 5px; max-width: 46ch; text-wrap: pretty; }
 .of-tier .t-price { font-size: 15px; font-weight: 700; color: var(--navy); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .of-tier .t-price.free { color: var(--teal-ink); font-weight: 600; }
@@ -267,7 +277,8 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-addon { position: relative; }
 .of-addon input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
 .of-addon label {
-  display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: start;
+  display: grid; grid-template-columns: 24px minmax(0, 1fr) auto;
+  column-gap: 12px; row-gap: 4px; align-items: center;
   border: 1.5px solid var(--line-strong); border-radius: var(--r-md);
   padding: 14px 16px; cursor: pointer; background: rgba(255,255,255,.6);
   transition: border-color .15s var(--ease), background .15s var(--ease);
@@ -283,16 +294,13 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-addon input:checked + label .a-box { background: var(--teal); border-color: var(--teal); }
 .of-addon input:checked + label .a-box svg { opacity: 1; }
 .of-addon .a-name { font-size: 16.5px; font-weight: 600; color: var(--ink); }
-.of-addon .a-desc { display: block; font-size: 13.5px; font-weight: 300; color: var(--muted); margin-top: 4px; max-width: 46ch; text-wrap: pretty; }
+.of-addon .a-box { grid-column: 1; grid-row: 1; }
+.of-addon .a-name { grid-column: 2; grid-row: 1; }
+.of-addon .a-price { grid-column: 3; grid-row: 1; justify-self: end; }
+.of-addon .a-desc { grid-column: 2 / -1; grid-row: 2; display: block; font-size: 13.5px; font-weight: 300; color: var(--muted); max-width: 46ch; text-wrap: pretty; }
 .of-addon .a-price { font-size: 15px; font-weight: 700; color: var(--navy); white-space: nowrap; font-variant-numeric: tabular-nums; }
-/* Tillvals- och tidskorten: på mobil tog det nowrap:ade prisspåret ~140px av
-   390px, så beskrivningen bröt på 17-24 tecken. Priset flyttas till egen rad. */
-@media (max-width: 560px) {
-  .of-tier label, .of-addon label { grid-template-columns: 24px minmax(0, 1fr); }
-  .of-tier .t-price, .of-addon .a-price {
-    grid-column: 2; margin-top: 8px; white-space: normal;
-  }
-}
+/* Den gamla mobilregeln (priset på egen rad) är borttagen: tvåradsgriden
+   ovan löser trängseln på alla bredder. */
 
 .of-gap {
   display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
@@ -538,7 +546,12 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-certrow .logo-th { height: 21px; }    /* 5.18:1 */
 .of-certrow .logo-if { height: 25px; }    /* 3.82:1 */
 @media (max-width: 560px) {
-  .of-certrow .c-row { gap: 20px 28px; }
+  /* Fyra logotyper i en wrappande flexrad bröt 3+1 vid 390px, med Trygg-Hansa
+     ensam och vänsterställd på rad två. 2x2 håller ihop väggen. */
+  .of-certrow .c-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    justify-items: center; align-items: center; gap: 22px 16px;
+  }
   .of-certrow .logo-els { height: 36px; }
   .of-certrow .logo-id06 { height: 24px; }
   .of-certrow .logo-th { height: 18px; }

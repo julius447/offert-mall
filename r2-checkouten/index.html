@@ -19,6 +19,11 @@
       -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
       box-shadow: var(--shadow-1);
     }
+    /* Glaset kostar en backdrop-sampling per ruta men ligger över en mjuk
+       gradient, där suddet inte syns. På mobil väger det inte upp. */
+    @media (max-width: 1139px) {
+      .co-top { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255,255,255,.86); }
+    }
     .co-layout {
       display: grid; grid-template-columns: minmax(0, 1fr);
       /* row-gap måste vara samma 48px som .co-main använder mellan sina kort,
@@ -101,9 +106,12 @@
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
       display: flex; align-items: center; gap: 14px;
       padding: 10px max(14px, env(safe-area-inset-left)) max(10px, env(safe-area-inset-bottom));
-      background: rgba(255,255,255,.94);
+      /* Ingen backdrop-filter. Baren är position:fixed, så webbläsaren fick
+         sampla om och sudda bakgrunden vid VARJE scrollruta. Det är den
+         enskilt dyraste raden på mobil. Bakgrunden är ändå nästan opak
+         (.94), så skillnaden är knappt synlig medan kostnaden är stor. */
+      background: rgba(255,255,255,.97);
       border-top: 1px solid var(--line-strong);
-      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
       box-shadow: 0 -8px 24px rgba(9,11,50,.10);
       /* transition ägs av shared.css (.co-bar), som även fördröjer
          visibility-växlingen. Deklareras den om här vinner den senare
@@ -228,33 +236,27 @@
             <input type="radio" name="tid" value="express" id="tid-express">
             <label for="tid-express">
               <span class="t-radio" aria-hidden="true"></span>
-              <span>
-                <span class="t-name">Express</span>
-                <span class="t-date">24-48 timmar</span>
-              </span>
+              <span class="t-name">Express</span>
               <span class="t-price">+1 000 kr</span>
+              <span class="t-date">24-48 timmar</span>
             </label>
           </div>
           <div class="of-tier">
             <input type="radio" name="tid" value="prioritet" id="tid-prio">
             <label for="tid-prio">
               <span class="t-radio" aria-hidden="true"></span>
-              <span>
-                <span class="t-name">Prioritet</span>
-                <span class="t-date">2-5 dagar</span>
-              </span>
+              <span class="t-name">Prioritet</span>
               <span class="t-price">+700 kr</span>
+              <span class="t-date">2-5 dagar</span>
             </label>
           </div>
           <div class="of-tier">
             <input type="radio" name="tid" value="standard" id="tid-standard" checked>
             <label for="tid-standard">
               <span class="t-radio" aria-hidden="true"></span>
-              <span>
-                <span class="t-name">Standard</span>
-                <span class="t-date">5-14 dagar</span>
-              </span>
+              <span class="t-name">Standard</span>
               <span class="t-price free">+0 kr</span>
+              <span class="t-date">5-14 dagar</span>
             </label>
           </div>
         </div>
@@ -273,11 +275,9 @@
             <input type="checkbox" data-addon="timme" id="addon-timme">
             <label for="addon-timme">
               <span class="a-box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>
-              <span>
-                <span class="a-name">Extra arbetstimme på plats</span>
-                <span class="a-desc">En timmes småfix medan elektrikern ändå är hemma hos dig, till exempel byte av vägguttag eller strömbrytare.</span>
-              </span>
+              <span class="a-name">Extra arbetstimme på plats</span>
               <span class="a-price">+850 kr</span>
+              <span class="a-desc">En timmes småfix medan elektrikern ändå är hemma hos dig, till exempel byte av vägguttag eller strömbrytare.</span>
             </label>
           </div>
         </div>
@@ -344,7 +344,7 @@
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förlängd garanti på utfört arbete, 5 år</span></li>
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Förtur i bokningen utan extra kostnad</span></li>
           <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Intyg på jordfelsbrytare</span></li>
-          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Lägre timpris på kommande jobb: 150 kr/tim mot 850 kr/tim, efter ROT</span></li>
+          <li><span class="l-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span><span class="l-txt">Lägre timpris på kommande jobb: 750 kr/tim mot 850 kr/tim, efter ROT</span></li>
         </ul>
 
         <div class="of-svc__optin of-addons" role="radiogroup" aria-label="Serviceavtal">
@@ -437,9 +437,6 @@
 
       <div class="of-accept">
         <button class="of-btn-primary" type="button" data-accept aria-disabled="false">Acceptera offert</button>
-        <!-- Båda meningarna är ordagrant hämtade ur stegen längre ner på samma
-             sida, som ligger 355px (mobil) respektive 2 724px (desktop) bort. -->
-        <p class="of-payline">Du får en bekräftelse direkt. Sedan ringer Marcus och bokar tid.</p>
           <button class="of-btn-secondary" type="button" id="change-btn" aria-expanded="false" aria-controls="change-panel">Fråga eller ändra något</button>
           <div class="of-change" id="change-panel">
             <label for="change-text" class="sr-only">Din fråga eller ändring</label>
@@ -563,6 +560,7 @@
         return el && el.classList.contains("visible");
       });
     }
+    var senast = null;
     function sync() {
       var r = accept.getBoundingClientRect();
       var vh = window.innerHeight || document.documentElement.clientHeight;
@@ -572,10 +570,25 @@
       // mitt i en annan handling. Att då skjuta upp en accept-uppmaning nerifrån
       // är störande och pekar åt fel håll.
       var show = passerat && !acceptSyns && !nagonPanelOppen();
+      // Skriv bara när läget faktiskt ändras. Utan den här grinden ogiltig-
+      // förklarades stilen på ett position:fixed-element vid varje scroll-event.
+      if (show === senast) return;
+      senast = show;
       bar.classList.toggle("visible", show);
       bar.setAttribute("aria-hidden", show ? "false" : "true");
     }
-    window.addEventListener("scroll", sync, { passive: true });
+    // Scrollvägen samlas ihop till en gång per ruta. sync() gör två
+    // getBoundingClientRect, alltså två framtvingade layoutberäkningar, och
+    // scroll-event kan komma tätare än rutorna: på mobil blev det synligt hack.
+    // rAF pausas när fliken är dold, men då scrollar heller ingen, och de
+    // direkta anropen nedan (init, resize, render, panelklick) går utanför
+    // kön så det gamla felet med fel starttillstånd inte kan återkomma.
+    var koad = false;
+    window.addEventListener("scroll", function () {
+      if (koad) return;
+      koad = true;
+      requestAnimationFrame(function () { koad = false; sync(); });
+    }, { passive: true });
     ["change-btn", "decline-btn"].forEach(function (id) {
       var b = document.getElementById(id);
       if (b) b.addEventListener("click", function () { setTimeout(sync, 0); });
