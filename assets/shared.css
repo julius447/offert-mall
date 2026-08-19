@@ -513,7 +513,14 @@ a { -webkit-tap-highlight-color: transparent; }
    punktlistans form och värdeankarets — kvadraten skiljer punkten från båda
    utan att lämna familjen. */
 .of-svc__ingar .ig-ico {
-  grid-column: 1; grid-row: 1 / span 2; align-self: start;
+  /* Ikonen centreras i kortets fulla höjd i stället för att toppställas vid
+     rubriken. Den hör till HELA punkten, inte bara till dess första rad.
+     span 3, inte `1 / -1`: -1 löses mot det EXPLICITA rutnätet, och eftersom
+     .ig-item saknar grid-template-rows blev -1 lika med linje 1, så ikonen
+     centrerades bara i rubrikens rad (uppmätt 22-47 px för högt). Korten har
+     som mest 3 innehållsrader; ett spann över alla ger äkta centrering, och
+     ett tomt spannsteg får höjden 0. */
+  grid-column: 1; grid-row: 1 / span 3; align-self: center;
   width: 34px; height: 34px; border-radius: var(--r-md);
   display: grid; place-items: center;
   background: var(--teal-soft); border: 1px solid rgba(0,169,145,.24);
@@ -607,11 +614,13 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-svc__optin .of-addon label { background: rgba(255,255,255,.86); }
 /* max-width: serviceavtalskortet är enda stället där prosan saknade måttak.
    Uppmätt vid 1139px: 185 tecken på en enda rad (1006px textbredd). */
-/* Högerställd på ägarorder: den balanserar den vänsterställda rubrik-, pris-
-   och innehållskolumnen och läser som en avslutande not, inte som brödtext. */
+/* Centrerad på ägarorder. Den är en avslutande not om hela sektionen, inte
+   brödtext i en kolumn, och centrerad bär den den rollen utan att peka åt
+   vare sig vänster eller höger. */
 .of-svc__fine {
   margin-top: 18px; font-size: 12.5px; font-weight: 400; color: var(--faint);
-  line-height: 1.55; text-wrap: pretty; max-width: 52ch; margin-left: auto; text-align: right;
+  line-height: 1.55; text-wrap: pretty; max-width: 56ch;
+  margin-inline: auto; text-align: center;
 }
 
 /* månadsraden i summeringspanelen — UTANFÖR engångstotalen */

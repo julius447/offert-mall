@@ -320,9 +320,9 @@
           <p class="c-eyebrow">Registrerade, försäkrade och kontrollerbara</p>
           <div class="c-row">
             <img class="logo-if" src="../assets/installatorsforetagen.svg" width="719" height="188" loading="lazy" decoding="async" alt="Installatörsföretagen">
-            <img class="logo-els" src="../assets/elsakerhetsverket.webp" width="122" height="109" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
-            <img class="logo-id06" src="../assets/id06.webp" width="210" height="82" loading="lazy" decoding="async" alt="ID06">
-            <img class="logo-th" src="../assets/trygg-hansa.webp" width="106" height="24" loading="lazy" decoding="async" alt="Trygg-Hansa">
+            <img class="logo-els" src="../assets/elsakerhetsverket.webp" width="162" height="144" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
+            <img class="logo-id06" src="../assets/id06.webp" width="250" height="96" loading="lazy" decoding="async" alt="ID06">
+            <img class="logo-th" src="../assets/trygg-hansa.webp" width="295" height="56" loading="lazy" decoding="async" alt="Trygg-Hansa">
           </div>
         </div>
       </section>
@@ -380,8 +380,7 @@
                 <span class="ig-f ig-f--med"><span class="ig-fl">Med avtal</span><span class="ig-fv">750 kr/tim</span></span>
                 <span class="ig-f ig-f--utan"><span class="ig-fl">Utan avtal</span><span class="ig-fv">850 kr/tim</span></span>
               </span>
-              <span class="ig-note">Båda priserna är efter ROT.</span>
-            </li>
+                    </li>
           </ul>
         </div>
 
@@ -428,9 +427,15 @@
     <section class="co-panel of-receipt" id="summering" aria-labelledby="price-h" tabindex="-1">
       <h2 class="p-cap" id="price-h">Din summering</h2>
 
-      <!-- Grundraden borttagen på ägarorder: etiketten är jobbets beskrivning och
-           varierar per offert, vilket gör den svår att mappa i CRM:et. Kvittot är
-           nu totalen plus de tillval kunden själv lagt till. -->
+      <!-- Grundraden bär en GENERISK etikett. Den var tidigare jobbets egen
+           beskrivning ("Byte av elcentral"), vilken varierar per offert och
+           därför är svår att mappa i CRM:et. "Komplett arbete" är samma post
+           för varje offert; bara beloppet byts. -->
+      <div class="r-row">
+        <span class="lbl">Komplett arbete</span>
+        <span class="dots" aria-hidden="true"></span>
+        <span class="amt">11 900 kr</span>
+      </div>
       <div class="r-row addon-row" data-tier-row>
         <span class="lbl" data-tier-label>Installationstid</span>
         <span class="dots" aria-hidden="true"></span>
