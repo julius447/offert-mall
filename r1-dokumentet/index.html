@@ -6,6 +6,10 @@
   <title>Din offert – Ampy · Riktning 1 »Dokumentet«</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
+  <!-- Fonten upptäcktes först när shared.css var parsad, alltså en tredje
+       seriell tur och retur. När den landade flyttades allt under rubriken
+       22 px (uppmätt docH 4585 -> 4607). Preload startar den direkt. -->
+  <link rel="preload" href="../assets/fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/shared.css">
   <style>
@@ -279,10 +283,10 @@
         </figcaption>
       </figure>
       <div class="of-certs" aria-label="Certifieringar och partners">
-        <img src="../assets/elsakerhetsverket.svg" alt="Elsäkerhetsverket">
-        <img src="../assets/id06.svg" alt="ID06">
-        <img src="../assets/trygg-hansa.svg" alt="Trygg-Hansa">
-        <img src="../assets/installatorsforetagen.svg" alt="Installatörsföretagen">
+        <img src="../assets/elsakerhetsverket.webp" width="300" height="300" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
+        <img src="../assets/id06.webp" width="300" height="119" loading="lazy" decoding="async" alt="ID06">
+        <img src="../assets/trygg-hansa.webp" width="300" height="179" loading="lazy" decoding="async" alt="Trygg-Hansa">
+        <img src="../assets/installatorsforetagen.svg" width="719" height="188" loading="lazy" decoding="async" alt="Installatörsföretagen">
       </div>
       <p class="of-verify">Kontrollera oss gärna själv – Ampy finns i Elsäkerhetsverkets företagsregister <a href="https://www.elsakerhetsverket.se" rel="noopener">Kolla elföretaget</a>.</p>
     </section>

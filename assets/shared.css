@@ -108,9 +108,20 @@ a { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 480px) {
   .of-top { min-height: 56px; padding: 0 14px; gap: 8px; }
   .of-top__logo { height: 20px; }
-  .of-top__meta { gap: 8px; }
-  .of-pill { font-size: 12px; padding: 4px 10px; }
+  .of-top__meta { gap: 8px; min-width: 0; }
+  /* 12 -> 8 px sidopadding ger tillbaka de 4 px som saknades vid 360.
+     8 ligger på spacingskalan, 10 gjorde inte det. */
+  .of-pill { font-size: 12px; padding: 4px 8px; }
   .of-top__valid { font-size: 11px; }
+}
+/* Både .of-pill och .of-top__valid är nowrap, så raden kunde inte ge efter
+   utan svämmade över i stället: uppmätt scrollWidth minus clientWidth = 41 px
+   vid 320 och 1 px vid 360, och giltighetsdatumet kapades mitt i ordet.
+   Hela sidan gick att dra i sidled. Under 360 får raden brytas. */
+@media (max-width: 359px) {
+  .of-top { flex-wrap: wrap; row-gap: 8px; padding-block: 8px; }
+  .of-top__meta { flex-wrap: wrap; }
+  .of-top__valid { white-space: normal; }
 }
 
 /* ---------- hälsning ---------- */
@@ -297,11 +308,25 @@ a { -webkit-tap-highlight-color: transparent; }
 .of-addon .a-box { grid-column: 1; grid-row: 1; }
 .of-addon .a-name { grid-column: 2; grid-row: 1; }
 .of-addon .a-price { grid-column: 3; grid-row: 1; justify-self: end; }
+/* Priskolumnen klämde rubriken till 197,5 px vid 390 medan "Extra arbetstimme
+   på plats" behöver 203,5 px, så den bröt efter "på". Smalare kolumnavstånd
+   och padding ger tillbaka bredden; align-items:start lägger kryssrutan i
+   linje med rubrikens FÖRSTA rad i stället för mitt i textblocket. */
+.of-addon label { column-gap: 8px; padding-inline: 12px; align-items: start; }
+.of-addon .a-box { margin-top: 2px; }
+.of-addon .a-name { text-wrap: balance; }
 .of-addon .a-desc { grid-column: 2 / -1; grid-row: 2; display: block; font-size: 13.5px; font-weight: 300; color: var(--muted); max-width: 46ch; text-wrap: pretty; }
 .of-addon .a-price { font-size: 15px; font-weight: 700; color: var(--navy); white-space: nowrap; font-variant-numeric: tabular-nums; }
 /* Den gamla mobilregeln (priset på egen rad) är borttagen: tvåradsgriden
    ovan löser trängseln på alla bredder. */
 
+/* [GAP] Utan URL får raden inte se ut som en länk: den mätte 174x44 px, i
+   teal och understruken, och ett tryck gjorde ingenting alls — inte ens
+   webbläsarens grå blinkning, eftersom tap-highlight är avstängd. */
+.of-terms-link.is-gap {
+  color: var(--muted); text-decoration: none; cursor: default;
+  padding: 0; min-height: 0; display: inline;
+}
 .of-gap {
   display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
   color: #8a6116; background: rgba(246,181,61,.16); border: 1px solid rgba(246,181,61,.4);
@@ -379,12 +404,19 @@ a { -webkit-tap-highlight-color: transparent; }
 }
 
 /* delta-chip intill kontrollerna (deltat syns där valet görs OCH i totalen) */
+/* visibility, inte display: boxen finns alltid och tar alltid sin plats.
+   Med display:none reserverades ingen höjd, så i samma stund kunden kryssade
+   i tillvalet tändes chippet OVANFÖR kortet och hela kortet gled 40,5 px
+   nedåt under fingret. Andra trycket på samma punkt träffade då rubriken
+   ovanför, ingenting hände, och kunden satt kvar med 850 kr hen försökte
+   ta bort. Samma sak vid varje byte av tidsnivå. */
 .of-delta {
-  display: none; font-size: 13px; font-weight: 600; color: var(--teal-ink);
+  display: inline-block; visibility: hidden;
+  font-size: 13px; font-weight: 600; color: var(--teal-ink);
   background: var(--teal-soft); border-radius: 999px; padding: 3px 10px; white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.of-delta.visible { display: inline-block; animation: of-fade .25s var(--ease) both; }
+.of-delta.visible { visibility: visible; animation: of-fade .25s var(--ease) both; }
 
 /* =========================================================================
    SERVICEAVTALET — egen sektion (ägarorder: "likt hur vi gjort med Därför kan
@@ -729,6 +761,16 @@ a { -webkit-tap-highlight-color: transparent; }
   line-height: 1.55; text-wrap: pretty;
 }
 body.is-expired .of-expired { display: block; }
+/* Telefonnumret är enda handlingen på FÖRSTA skärmen när offerten gått ut
+   (bottenbarens motsvarighet tänds först längre ner). Det låg som inline-text:
+   uppmätt 91x19 px i rgb(0,0,238), webbläsarens standardblå, mitt i ett tre
+   rader högt stycke. */
+.of-expired a[href^="tel:"] {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 12px; margin: 0 -6px;
+  color: var(--teal-link); font-weight: 600; white-space: nowrap;
+  text-decoration: underline; text-underline-offset: 3px;
+}
 body.is-expired .of-btn-primary { opacity: .45; cursor: not-allowed; filter: saturate(.4); pointer-events: none; }
 /* En utgången offert gick att konfigurera färdigt: tidsval, tillägg och
    serviceavtal svarade normalt ända fram till den döda knappen. */
@@ -796,8 +838,9 @@ a.of-verify { display: inline-block; padding: 12px 0; min-height: 44px; }
 
 /* P1-3: delta-chippet låg under den sticky bottenbaren och syntes aldrig.
    Flyttat ovanför tillvalen, där valet faktiskt görs. */
-.of-deltarow { min-height: 0; margin-top: 14px; }
-.of-deltarow:empty { display: none; }
+/* Raden bär nu alltid sin boxhöjd. `:empty`-regeln som skulle kollapsa den
+   kunde aldrig matcha: <p> innehåller alltid <span class="of-delta">. */
+.of-deltarow { min-height: 32px; margin-top: 0; display: flex; align-items: center; }
 
 /* radiovarianten av tillvalsboxen (serviceavtalets tre val) */
 .of-addon .a-box.a-radio { border-radius: 50%; }
@@ -805,11 +848,13 @@ a.of-verify { display: inline-block; padding: 12px 0; min-height: 44px; }
   background: #fff; border-color: var(--teal); box-shadow: inset 0 0 0 5px var(--teal);
 }
 .of-addon input[type="radio"]:checked + label .a-box.a-radio svg { opacity: 0; }
+/* Samma sak som .of-delta: kvittensen sköt allt under sig 52,5 px när den
+   tändes. Höjden reserveras, intoningen behålls. */
 .of-svc__ack {
-  display: none; margin-top: 12px; font-size: 13.5px; font-weight: 500;
-  color: var(--teal-link); line-height: 1.5;
+  display: block; visibility: hidden; min-height: 40px; margin-top: 12px;
+  font-size: 13.5px; font-weight: 500; color: var(--teal-link); line-height: 1.5;
 }
-.of-svc__ack.visible { display: block; animation: of-fade .25s var(--ease) both; }
+.of-svc__ack.visible { visibility: visible; animation: of-fade .25s var(--ease) both; }
 
 /* Bottenbaren var fokusbar när den var aria-hidden — en tangentbordsanvändare
    tabbade in i ett element utanför skärmen (WCAG 4.1.2). visibility tas bort
@@ -854,6 +899,10 @@ body.show-gaps .of-gap--note { display: inline-block; }
 /* scroll-margin: utan den landar knappen kant i kant mot vikens över- eller
    underkant när panelen rullas fram. */
 .of-btn-send { scroll-margin: 20px; }
+/* Panelen förankras som helhet. Med skicka-knappen som mål parkerade
+   scroll-margin viken mitt i raden under den, så "Offerten ligger kvar och du
+   kan öppna den igen" visades 12 av 39 px. */
+#decline-panel, #change-panel { scroll-margin-bottom: 24px; }
 .of-btn-send:disabled { opacity: .45; cursor: default; box-shadow: none; }
 .of-btn-send:disabled:hover { background: var(--navy); transform: none; box-shadow: none; }
 .of-btn-send:disabled:hover svg { transform: none; }

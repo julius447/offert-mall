@@ -388,3 +388,91 @@ Alla 42 är implementerade och uppmätta. Det som satt djupast:
 - **Var köpvillkorslänken ska peka**, och var bokarens unika villkorstext hämtas i CRM:et.
 - **Google-betyget**: antal recensioner är inte bekräftat och står därför inte utskrivet någonstans.
 - **Betygsblocket på avböjd-sidan** (se ovan).
+
+---
+
+## v6.2 — mobilsvep: 14 bekräftade fynd
+
+Sex mobillinser (prestanda, interaktionsbuggar, layout/overflow, touch-ergonomi, sidans
+tillstånd, iOS/Android-fällor), varje fynd motgranskat av en skeptiker med uppgift att fälla
+det och att underkänna headless-artefakter. 24 inlämnade, 14 överlevde.
+
+### Det som gjorde sidan "buggig"
+
+**Hela sidan hoppade under fingret vid varje val.** `.of-delta` (chippet som visar
+prisändringen) låg på `display: none` och reserverade därför ingen höjd, och det ligger
+i DOM:en OVANFÖR tillvalskortet. I samma stund kunden kryssade i tillvalet tändes chippet
+och kortet gled 40,5 px nedåt. Tryckte kunden en gång till på exakt samma punkt för att
+ångra sig träffade fingret rubriken ovanför, ingenting hände, och kunden satt kvar med
+850 kr hen försökte ta bort. Samma sak vid varje byte av tidsnivå, och 52,5 px när
+serviceavtalet valdes (`.of-svc__ack`, samma orsak).
+
+Fix: `visibility` i stället för `display`, plus reserverad höjd på båda raderna. Den döda
+regeln `.of-deltarow:empty { display: none }` är borttagen; den kunde aldrig matcha
+eftersom `<p>` alltid innehåller sitt `<span>`.
+
+Uppmätt efter fixen vid 320/360/390/430/768: skift **0 px** vid tidsval, tillval och
+urkryssning, 0,5 px vid serviceavtal. Andra trycket på samma punkt träffar kortet igen
+och kryssar ur, totalen tillbaka till 11 900 kr.
+
+**Sidan gick att dra i sidled under 361 px.** Både `.of-pill` och `.of-top__valid` är
+`nowrap`, så sidhuvudet kunde inte ge efter utan svämmade över: uppmätt 41 px vid 320 och
+1 px vid 360, och giltighetsdatumet kapades mitt i ordet. Pill-paddingen 12 → 8 px ger
+tillbaka de 4 px som saknades vid 360, och under 360 får raden brytas. Uppmätt överflöde
+nu **0 px** vid 320, 340, 360, 390, 430 och 768.
+
+**Bottenbaren försvann för gott** så fort kunden öppnat en panel, även om hen bara läste
+och scrollade vidare. Grinden frågade bara om panelen bar `.visible`. Nu räknas en panel
+som pågående bara medan den upptar nedre halvan av skärmen, och inte alls när den är
+avklarad.
+
+**"Avböj offert" kastade sidan 292-365 px** och klippte raden "Offerten ligger kvar och du
+kan öppna den igen" till 12 av 39 px, eftersom förankringen satt på skicka-knappen och
+`scroll-margin: 20px` parkerade viken mitt i raden under. Panelen förankras nu som helhet.
+
+### Det som gjorde den "laggig"
+
+**Logotypväggen var 131 KB, 41 % av all sidvikt.** Tre av fyra "SVG" var i själva verket
+base64-PNG inbakade i ett SVG-`<pattern>`: elsakerhetsverket.svg ensam var 58 542 B för en
+logotyp som renderas 36 px hög, alltså större än hela shared.css. Alla fyra begärdes i
+samma första skur som stilmallen, före webbfonten, och rastrering genom ett SVG-`<pattern>`
+har ingen snabbväg i Skia utan går på huvudtråden.
+
+Omkodade till webp vid 3× renderad höjd (bitmapparna är INTE beskurna: en beskärning hade
+ändrat hur logotypen renderas vid en given höjd, och godkänd rendering är kanon):
+
+| | före | efter | |
+|---|---|---|---|
+| elsakerhetsverket | 58 542 B | 8 832 B | −85 % |
+| id06 | 38 895 B | 9 890 B | −75 % |
+| trygg-hansa | 26 754 B | 2 924 B | −89 % |
+
+Plus `elektriker-elcentral.jpg` (89 060 B, noll referenser i hela repot) borttagen.
+Total assetvikt 320 KB → 107 KB. Renderade mått verifierade identiska på 390 och 1440.
+
+Övrigt: `backdrop-filter` bort från den fixerade bottenbaren och från headern under 1140 px,
+scroll-lyssnaren koalescerad till en gång per ruta, `loading="lazy"` + intrinsiska
+`width`/`height` på alla logotyper, och `<link rel="preload">` på webbfonten (den upptäcktes
+tidigare först när shared.css var parsad, en tredje seriell tur och retur, och när den
+landade flyttades allt under rubriken 22 px).
+
+### Övriga fynd
+
+- Tilläggskortet blev aldrig 78 px som tidsvalen: priskolumnen klämde rubriken till
+  197,5 px medan "Extra arbetstimme på plats" behöver 203,5 px. Smalare kolumnavstånd och
+  padding: **144 → 120 px** vid 390, och serviceavtalets val 78 → 54 px.
+- Acceptknappen i bottenbaren bröts till två rader så fort serviceavtalet valdes.
+  Padding 18 → 12 px och kortare månadsrad: **50 px (en rad) från 360 px och uppåt.**
+- "Läs våra allmänna köpvillkor" var en död träffyta på 174×44 px som såg ut precis som en
+  levande länk, med tap-highlight avstängd så trycket gav noll respons. Renderas nu som
+  text tills URL:en finns.
+- Telefonnumret i utgånget läge var 91×19 px i `rgb(0,0,238)`, webbläsarens standardblå.
+  Nu 44 px träffyta i teal.
+
+### Kvar
+
+- Vid **320 px** bryts acceptknappen i bottenbaren fortfarande till två rader när
+  serviceavtalet är valt. De 18 px som saknas går inte att hämta med CSS så länge
+  månadsraden står kvar; enda spaken är att korta en av strängarna. **Ägargrind.**
+- Trygg-Hansa-logotypen renderas 18 px hög på mobil och är svårläst. Samma som före, ingen
+  regression, men värd ett beslut.

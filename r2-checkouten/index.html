@@ -6,6 +6,10 @@
   <title>Din offert från Ampy</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
+  <!-- Fonten upptäcktes först när shared.css var parsad, alltså en tredje
+       seriell tur och retur. När den landade flyttades allt under rubriken
+       22 px (uppmätt docH 4585 -> 4607). Preload startar den direkt. -->
+  <link rel="preload" href="../assets/fonts/Outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/tokens.css">
   <link rel="stylesheet" href="../assets/shared.css">
   <style>@media (max-width: 1139px) { html { scroll-behavior: auto; } }</style>
@@ -124,7 +128,9 @@
     .co-bar__total strong { font-size: 19px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .co-bar__total .b-mo { display: none; font-size: 11.5px; font-weight: 500; color: var(--teal-ink); }
     .co-bar__total .b-mo.visible { display: block; }
-    .co-bar .of-btn-primary { flex: 1; min-height: 50px; padding: 9px 18px; font-size: 15.5px; }
+    /* padding 18 -> 12 px: när serviceavtalet valdes tände månadsraden och
+       knappen fick 194,7 px vid 390. Etiketten bryter under 158,7 px. */
+    .co-bar .of-btn-primary { flex: 1; min-height: 50px; padding: 9px 12px; font-size: 15.5px; }
     /* Utgången offert: baren visade fortfarande priset och en död acceptknapp
        (pointer-events:none räcker inte, länken låg kvar i tab-ordningen och
        annonserades som aktiv). display:none tar bort den ur trädet. */
@@ -312,10 +318,10 @@
         <div class="of-certrow">
           <p class="c-eyebrow">Registrerade, försäkrade och kontrollerbara</p>
           <div class="c-row">
-            <img class="logo-if" src="../assets/installatorsforetagen.svg" alt="Installatörsföretagen">
-            <img class="logo-els" src="../assets/elsakerhetsverket.svg" alt="Elsäkerhetsverket">
-            <img class="logo-id06" src="../assets/id06.svg" alt="ID06">
-            <img class="logo-th" src="../assets/trygg-hansa.svg" alt="Trygg-Hansa">
+            <img class="logo-if" src="../assets/installatorsforetagen.svg" width="719" height="188" loading="lazy" decoding="async" alt="Installatörsföretagen">
+            <img class="logo-els" src="../assets/elsakerhetsverket.webp" width="300" height="300" loading="lazy" decoding="async" alt="Elsäkerhetsverket">
+            <img class="logo-id06" src="../assets/id06.webp" width="300" height="119" loading="lazy" decoding="async" alt="ID06">
+            <img class="logo-th" src="../assets/trygg-hansa.webp" width="300" height="179" loading="lazy" decoding="async" alt="Trygg-Hansa">
           </div>
         </div>
       </section>
@@ -481,7 +487,11 @@
           </summary>
           <div class="l-body">
             <p class="l-unique">[Bokarens text om just det här uppdraget läggs in här.]</p>
-            <p><a class="of-terms-link" href="#" onclick="return false;">Läs våra allmänna köpvillkor</a></p>
+            <!-- [GAP] URL till Ampys allmänna köpvillkor saknas. Tills den är satt
+                 renderas raden som TEXT: en teal understruken länk som inte gör
+                 något är en död träffyta på 174x44 px mitt i villkorsrutan.
+                 När URL:en finns: <a class="of-terms-link" href="..."> utan onclick. -->
+            <p><span class="of-terms-link is-gap">Läs våra allmänna köpvillkor</span><span class="of-gap of-gap--note">GAP: URL</span></p>
           </div>
         </details>
 
@@ -517,7 +527,7 @@
   <span class="co-bar__total">
     <small>Att betala</small>
     <strong data-total>11 900 kr</strong>
-    <span class="b-mo" data-monthly>därtill serviceavtal 149 kr/mån</span>
+    <span class="b-mo" data-monthly>+ serviceavtal 149 kr/mån</span>
   </span>
   <a class="of-btn-primary" href="#summering">Granska och acceptera</a>
   <a class="of-btn-secondary co-bar__expired" href="tel:+46102657979">Offerten har gått ut. Ring 010-265 79 79</a>
@@ -554,10 +564,20 @@
     // 12 000 kr innan en enda rad om jobbet var läst.
     var work = document.getElementById("work-h");
     var oppnaPaneler = ["change-panel", "decline-panel"];
+    // En ÖPPEN panel är inte samma sak som en PÅGÅENDE handling. Med enbart
+    // .visible som grind försvann baren för gott: kunden som öppnade "Avböj
+    // offert" bara för att läsa skälen, lät den stå och scrollade vidare, hade
+    // därefter ingen väg till accepten (uppmätt: 1 041 px tillbaka uppåt).
+    // Panelen räknas som pågående bara medan den upptar nedre halvan av
+    // skärmen, där fingret är, och inte alls när den är avklarad.
     function nagonPanelOppen() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
       return oppnaPaneler.some(function (id) {
         var el = document.getElementById(id);
-        return el && el.classList.contains("visible");
+        if (!el || !el.classList.contains("visible")) return false;
+        if (el.classList.contains("is-done")) return false;
+        var r = el.getBoundingClientRect();
+        return r.top < vh && r.bottom > vh * 0.5;
       });
     }
     var senast = null;

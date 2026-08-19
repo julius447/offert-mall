@@ -187,6 +187,8 @@
         if (hint) hint.textContent = "Skickat till Marcus. Du får svar inom 24 timmar på vardagar. Offerten ligger kvar oförändrad tills dess.";
         sendBtn.disabled = true;
         falt.readOnly = true;
+        // Panelen är avklarad: bottenbaren ska inte längre hållas nere av den.
+        changePanel.classList.add("is-done");
       });
     }
   }
@@ -234,8 +236,10 @@
       declineBtn.setAttribute("aria-expanded", open ? "true" : "false");
       syncPanelHojd(declineBtn);
       if (open) {
-        var send = declinePanel.querySelector(".of-btn-send");
-        if (send) send.scrollIntoView({ block: "nearest" });
+        // Förankra PANELEN, inte skicka-knappen. Med knappen som mål hamnade
+        // viken mitt i raden under den, så "Offerten ligger kvar och du kan
+        // öppna den igen" visades 12 av 39 px (uppmätt 360-768 px).
+        declinePanel.scrollIntoView({ block: "nearest" });
       }
     });
   }
