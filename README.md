@@ -612,3 +612,26 @@ Verifierat med full payload: noll kvarvarande platshallare pa alla tre sidorna.
 - Hela kundflodet i ett repo: `r2-checkouten/`, `offert-accepterad/`, `offert-avbojd/`.
 
 66/66 kontroller, 0 konsolfel pa sex sidtillstand.
+
+---
+
+## v7.7 — repot flyttat till Ampy-nordic
+
+Repot ligger nu på **Ampy-nordic/offert-mall**. Repo-URL:en omdirigeras från det gamla
+kontot, men **Pages-URL:en gör det inte**: `julius447.github.io/offert-mall/...` ger 404.
+Nya adresser:
+
+| | |
+|---|---|
+| Repo | https://github.com/Ampy-nordic/offert-mall |
+| Offerten | https://ampy-nordic.github.io/offert-mall/r2-checkouten/ |
+| Accepterad | https://ampy-nordic.github.io/offert-mall/offert-accepterad/ |
+| Avbojd | https://ampy-nordic.github.io/offert-mall/offert-avbojd/ |
+
+**AMPY_OFFER_DEST pekar nu relativt**, inom samma repo. Accepten gick tidigare till
+`julius447.github.io/Offer-accepted-preview/`, en forhandsvisning pa ett privatkonto
+utanfor organisationen, och den lanken overlevde inte flytten. Verifierat: klick pa
+"Acceptera offert" landar pa `/offert-mall/offert-accepterad/` med ratt rubrik.
+
+`julius447/Offer-accepted-preview` finns kvar och fungerar, men ar inte langre en del av
+flodet. Den kan arkiveras nar du vill.

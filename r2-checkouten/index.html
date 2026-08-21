@@ -576,11 +576,13 @@
 
 <script>
   // Destinationer efter beslut.
-  // [GAP] Produktions-URL för accepterad-sidan sätts vid driftsättning.
-  // Nuvarande värde är en förhandsvisning på GitHub Pages och får INTE gå ut
-  // i en skarp SMS-länk: den ligger utanför ampy.se och visar exempeldata.
+  // Båda vägarna pekar nu RELATIVT, inom samma repo. Tidigare gick accepten
+  // till en förhandsvisning på ett privatkonto utanför organisationen; den
+  // länken överlevde inte flytten till Ampy-nordic.
+  // [GAP] Produktions-URL:er sätts vid driftsättning. Sidorna ska ligga under
+  // ampy.se med token-baserade adresser, inte på GitHub Pages.
   window.AMPY_OFFER_DEST = {
-    accepterad: "https://julius447.github.io/Offer-accepted-preview/",
+    accepterad: "../offert-accepterad/",
     avbojd: "../offert-avbojd/"
   };
 </script>

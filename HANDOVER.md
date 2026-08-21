@@ -2,7 +2,7 @@
 
 **For:** Yassine
 **From:** Julius (owner) — design and front-end are locked and owner-approved
-**Repo:** `julius447/offert-mall`
+**Repo:** `Ampy-nordic/offert-mall`
 **Status:** front-end complete and verified. No backend exists yet. That is your part.
 
 ---
@@ -21,9 +21,9 @@ main case. Every measurement in this document was taken at 320, 360, 390, 430, 7
 
 | Page | Path in this repo | Live preview |
 |---|---|---|
-| The quote | `r2-checkouten/` | https://julius447.github.io/offert-mall/r2-checkouten/ |
-| Accepted | `offert-accepterad/` | https://julius447.github.io/Offer-accepted-preview/ |
-| Declined | `offert-avbojd/` | https://julius447.github.io/offert-mall/offert-avbojd/ |
+| The quote | `r2-checkouten/` | https://ampy-nordic.github.io/offert-mall/r2-checkouten/ |
+| Accepted | `offert-accepterad/` | https://ampy-nordic.github.io/offert-mall/offert-accepterad/ |
+| Declined | `offert-avbojd/` | https://ampy-nordic.github.io/offert-mall/offert-avbojd/ |
 
 ### Demo parameters (development only — remove nothing, they are inert in production)
 
@@ -37,7 +37,7 @@ main case. Every measurement in this document was taken at 320, 360, 390, 430, 7
 ### Run it locally
 
 ```bash
-git clone https://github.com/julius447/offert-mall.git
+git clone https://github.com/Ampy-nordic/offert-mall.git
 cd offert-mall
 python3 -m http.server 8000
 ```
@@ -296,7 +296,7 @@ declared inline in `r2-checkouten/index.html`.
 
 ```js
 window.AMPY_OFFER_DEST = {
-  accepterad: "https://julius447.github.io/Offer-accepted-preview/",
+  accepterad: "https://ampy-nordic.github.io/offert-mall/offert-accepterad/",
   avbojd: "../offert-avbojd/"
 };
 ```
